@@ -27,7 +27,7 @@ public class VendingMachine {
         return removed;
     }
 
-    public List<Kuchen> listItems() {
+    public List<KuchenImpl> listItems() {
         return Collections.unmodifiableList(inventory);
     }
 
