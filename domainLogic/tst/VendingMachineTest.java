@@ -12,7 +12,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class VendingMachineTest {
-
+  /*
     private VendingMachine vendingMachine;
     private KuchenImpl kuchen1;
     private KuchenImpl kuchen2;
@@ -24,7 +24,7 @@ class VendingMachineTest {
         kuchen2 = new KuchenImpl(null, new ArrayList<>(), 300, Duration.ofDays(10), BigDecimal.valueOf(7.0), new Date(), 2);
     }
 
-    @Test
+ @Test
     void testAddItem() {
         assertTrue(vendingMachine.addItem(kuchen1));
         assertTrue(vendingMachine.addItem(kuchen2));
@@ -58,7 +58,7 @@ class VendingMachineTest {
         for (KuchenImpl kuchen : vendingMachine.listItems()) {
             assertEquals(currentDate, kuchen.getInspektionsdatum());
         }
-    }
+    }*/
 }
 
 

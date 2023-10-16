@@ -1,5 +1,6 @@
 package cakes;
 
+import administration.HerstellerImpl;
 import kuchen.Allergen;
 import kuchen.Kuchen;
 import verwaltung.Hersteller;
@@ -11,30 +12,28 @@ import java.util.Collection;
 import java.util.Date;
 
 public class KuchenImpl implements Kuchen, Verkaufsobjekt {
-    private Hersteller hersteller;
+    private HerstellerImpl hersteller;
     private Collection<Allergen> allergene;
     private int naehrwert;
     private Duration haltbarkeit;
-    private BigDecimal preis;
+    private BigDecimal preis;          // Added property
     private Date inspektionsdatum;
-    private int fachnummer;
+    private int fachnummer;             // Added property
 
     public KuchenImpl(
-            Hersteller hersteller,
+            HerstellerImpl hersteller,
             Collection<Allergen> allergene,
             int naehrwert,
             Duration haltbarkeit,
             BigDecimal preis,
-            Date inspektionsdatum,
-            int fachnummer
+            Date inspektionsdatum
     ) {
         this.hersteller = hersteller;
         this.allergene = allergene;
         this.naehrwert = naehrwert;
         this.haltbarkeit = haltbarkeit;
-        this.preis = preis;
+        this.preis = preis;             // Initialize the preis property
         this.inspektionsdatum = inspektionsdatum;
-        this.fachnummer = fachnummer;
     }
 
     @Override
@@ -67,11 +66,16 @@ public class KuchenImpl implements Kuchen, Verkaufsobjekt {
         return inspektionsdatum;
     }
 
+    public void setFachnummer(int fachnummer) {
+        this.fachnummer = fachnummer;
+    }
+
     @Override
     public int getFachnummer() {
         return fachnummer;
     }
 
     public void setInspektionsdatum(Date currentDate) {
+        this.inspektionsdatum = currentDate;
     }
 }

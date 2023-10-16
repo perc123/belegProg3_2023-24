@@ -2,6 +2,8 @@ package administration;
 
 import cakes.KuchenImpl;
 import kuchen.Kuchen;
+import verwaltung.Hersteller;
+
 import java.util.*;
 
 public class VendingMachine {
@@ -13,13 +15,16 @@ public class VendingMachine {
         this.inventory = new ArrayList<>();
     }
 
-    public boolean addItem(Kuchen kuchen) {
+    public boolean addItem(Kuchen kuchen, Hersteller hersteller) {
         if (inventory.size() < capacity && kuchen instanceof KuchenImpl) {
-            inventory.add((KuchenImpl) kuchen);
-            return true;
-        } else {
-            return false; // Vending machine is full, or kuchen is not an instance of KuchenImpl
+            KuchenImpl kuchenImpl = (KuchenImpl) kuchen;
+            if (kuchenImpl.getHersteller() == hersteller) {
+                kuchenImpl.setFachnummer(inventory.size() + 1);
+                inventory.add(kuchenImpl);
+                return true;
+            }
         }
+        return false; // Vending machine is full, kuchen is not an instance of KuchenImpl, or wrong Hersteller
     }
 
     public boolean removeItem(Kuchen kuchen) {
@@ -35,9 +40,7 @@ public class VendingMachine {
         Date currentDate = new java.sql.Date(System.currentTimeMillis());
 
         for (KuchenImpl kuchen : inventory) {
-            if (kuchen instanceof KuchenImpl) {
-                ((KuchenImpl) kuchen).setInspektionsdatum(currentDate);
-            }
+            kuchen.setInspektionsdatum(currentDate);
         }
 
         Collections.sort(inventory, Comparator.comparing(KuchenImpl::getInspektionsdatum));

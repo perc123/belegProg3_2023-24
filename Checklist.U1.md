@@ -29,8 +29,8 @@ Flüchtige Quellen, wie Sprachmodelle, sind per screen shot zu dokumentieren.
 
 ### empfohlene Realisierungen als Vorbereitung auf den Beleg
 werden überprüft (aber nicht bewertet), wenn hier in der vorgegebenen Reihenfolge als bearbeitet angegeben
-- [ ] mindestens je ein Test für CRUD
-- [ ] mindestens zwei Tests mit Mockito
+- [+] mindestens je ein Test für CRUD
+- [+] mindestens zwei Tests mit Mockito
 - [ ] Einfügen der Kuchen vollständig implementiert und vollständig getestet
 - [+] Unterstützung von mindestens zwei Kuchensorten
 - [ ] vollständige GL

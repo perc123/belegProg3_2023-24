@@ -1,5 +1,6 @@
 package cakes;
 
+import administration.HerstellerImpl;
 import kuchen.Allergen;
 import kuchen.Kremkuchen;
 import verwaltung.Hersteller;
@@ -17,20 +18,18 @@ public class KremkuchenImpl extends KuchenImpl implements Kremkuchen, Verkaufsob
     private int fachnummer;
 
     public KremkuchenImpl(
-            Hersteller hersteller,
+            HerstellerImpl hersteller,
             Collection<Allergen> allergene,
             int naehrwert,
             Duration haltbarkeit,
             String kremsorte,
             BigDecimal preis,
-            Date inspektionsdatum,
-            int fachnummer
+            Date inspektionsdatum
     ) {
-        super(hersteller, allergene, naehrwert, haltbarkeit, preis, inspektionsdatum, fachnummer);
+        super(hersteller, allergene, naehrwert, haltbarkeit, preis, inspektionsdatum);
         this.kremsorte = kremsorte;
         this.preis = preis;
         this.inspektionsdatum = inspektionsdatum;
-        this.fachnummer = fachnummer;
     }
 
     @Override
