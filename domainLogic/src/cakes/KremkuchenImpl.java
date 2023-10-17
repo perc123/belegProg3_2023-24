@@ -13,9 +13,6 @@ import java.util.Date;
 
 public class KremkuchenImpl extends KuchenImpl implements Kremkuchen, Verkaufsobjekt {
     private String kremsorte;
-    private BigDecimal preis;
-    private Date inspektionsdatum;
-    private int fachnummer;
 
     public KremkuchenImpl(
             HerstellerImpl hersteller,
@@ -28,8 +25,6 @@ public class KremkuchenImpl extends KuchenImpl implements Kremkuchen, Verkaufsob
     ) {
         super(hersteller, allergene, naehrwert, haltbarkeit, preis, inspektionsdatum);
         this.kremsorte = kremsorte;
-        this.preis = preis;
-        this.inspektionsdatum = inspektionsdatum;
     }
 
     @Override
@@ -37,18 +32,4 @@ public class KremkuchenImpl extends KuchenImpl implements Kremkuchen, Verkaufsob
         return kremsorte;
     }
 
-    @Override
-    public BigDecimal getPreis() {
-        return preis;
-    }
-
-    @Override
-    public Date getInspektionsdatum() {
-        return inspektionsdatum;
-    }
-
-    @Override
-    public int getFachnummer() {
-        return fachnummer;
-    }
 }

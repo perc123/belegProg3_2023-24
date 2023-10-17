@@ -27,7 +27,7 @@ public class Main {
 
         // Create some Kuchen (cakes)
         KuchenImpl cake1 = new KuchenImpl(hersteller1, new ArrayList<>(), 400, Duration.ofDays(8),BigDecimal.valueOf(5.0),new Date());
-        KremkuchenImpl cake2 = new KremkuchenImpl(hersteller2, new ArrayList<>(), 300, Duration.ofDays(10), "Schokolade", BigDecimal.valueOf(7.0), new Date());
+        KuchenImpl cake2 = new KremkuchenImpl(hersteller2, new ArrayList<>(), 300, Duration.ofDays(10), "Schokolade", BigDecimal.valueOf(7.0), new Date());
         KuchenImpl cake3 = new KuchenImpl(hersteller1, new ArrayList<>(), 400, Duration.ofDays(8),BigDecimal.valueOf(5.0),new Date());
 
         // Add the cakes to the vending machine
