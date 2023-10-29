@@ -24,7 +24,7 @@ class VendingMachineTest {
         kuchen2 = new KuchenImpl(null, new ArrayList<>(), 300, Duration.ofDays(10), BigDecimal.valueOf(7.0), new Date(), 2);
     }
 
- @Test
+    @Test
     void testAddItem() {
         assertTrue(vendingMachine.addItem(kuchen1));
         assertTrue(vendingMachine.addItem(kuchen2));

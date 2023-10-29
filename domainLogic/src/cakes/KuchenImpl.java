@@ -16,9 +16,9 @@ public class KuchenImpl implements Kuchen, Verkaufsobjekt {
     private Collection<Allergen> allergene;
     private int naehrwert;
     private Duration haltbarkeit;
-    private BigDecimal preis;          // Added property
+    private BigDecimal preis;
     private Date inspektionsdatum;
-    private int fachnummer;             // Added property
+    private int fachnummer;
 
     public KuchenImpl(
             HerstellerImpl hersteller,
@@ -32,7 +32,7 @@ public class KuchenImpl implements Kuchen, Verkaufsobjekt {
         this.allergene = allergene;
         this.naehrwert = naehrwert;
         this.haltbarkeit = haltbarkeit;
-        this.preis = preis;             // Initialize the preis property
+        this.preis = preis;
         this.inspektionsdatum = inspektionsdatum;
     }
 

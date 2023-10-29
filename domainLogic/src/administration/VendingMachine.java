@@ -18,6 +18,7 @@ public class VendingMachine {
     public boolean addItem(Kuchen kuchen, Hersteller hersteller) {
         if (inventory.size() < capacity && kuchen instanceof KuchenImpl) {
             KuchenImpl kuchenImpl = (KuchenImpl) kuchen;
+            // Check if Hersteller exists
             if (kuchenImpl.getHersteller() == hersteller) {
                 kuchenImpl.setFachnummer(inventory.size() + 1);
                 inventory.add(kuchenImpl);
@@ -33,6 +34,7 @@ public class VendingMachine {
     }
 
     public List<KuchenImpl> listItems() {
+        // The list is made unmodifiable to prevent external code from modifying the vending machine's inventory directly
         return Collections.unmodifiableList(inventory);
     }
 
