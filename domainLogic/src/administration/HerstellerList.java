@@ -28,18 +28,20 @@ public class HerstellerList implements EventListener {
 
     @Override
     public void onEvent(EventType eventType, Object data) {
+        // Handle events related to HerstellerList
         if (eventType == EventType.INSERT_HERSTELLER) {
-            // Handle deletion of Hersteller
-
-            System.out.println("Hersteller added");
-            // Example: Remove this Hersteller if its name matches the data received
-            if (data instanceof String) {
-                String herstellerName = (String) data;
-                if (herstellerName.equals(name)) {
-                    // Remove this Hersteller
-                    // Example: HerstellerList.removeHersteller(this);
-                }
+            if (data instanceof HerstellerImpl) {
+                HerstellerImpl hersteller = (HerstellerImpl) data;
+                addHersteller(hersteller);
             }
         }
+        if (eventType == EventType.DISPLAY_HERSTELLER) {
+            // Display all Hersteller from herstellerList
+            getAllHersteller();
+            for (Hersteller hersteller : herstellerList) {
+                System.out.println("Hersteller Name: " + hersteller.getName());
+            }
+        }
+        // Other event handling logic can be added here
     }
 }

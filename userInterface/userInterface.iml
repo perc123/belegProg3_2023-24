@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="events" />
+    <orderEntry type="module" module-name="domainLogic" />
   </component>
 </module>

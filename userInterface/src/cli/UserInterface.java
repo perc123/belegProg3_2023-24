@@ -1,5 +1,6 @@
 package cli;
 
+import administration.HerstellerImpl;
 import commands.CommandType;
 import eventSystem.EventSystem;
 import eventSystem.EventType;
@@ -12,9 +13,11 @@ public class UserInterface {
     private EventSystem eventSystem;
     private boolean isRunning;
 
+
     public UserInterface(EventSystem eventSystem) {
         this.eventSystem = eventSystem;
         this.isRunning = true;
+
     }
 
     public void start() {
@@ -54,25 +57,21 @@ public class UserInterface {
     private void handleBuiltInCommand(String userInput) {
         // Handle built-in commands
         switch (userInput) {
-            case ":c":
+            case ":c" -> {
                 switchToMode(CommandType.SWITCH_INSERT_MODE);
-
-                insertHersteller(userInput);
-                break;
-            case ":d":
-                switchToMode(CommandType.SWITCH_DELETE_MODE);
-                break;
-            case ":r":
+                Scanner scanner = new Scanner(System.in);
+                String herstellerName = scanner.nextLine();
+                HerstellerImpl hersteller = new HerstellerImpl(herstellerName);
+                eventSystem.triggerEvent(EventType.INSERT_HERSTELLER, hersteller);
+            }
+            case ":d" -> switchToMode(CommandType.SWITCH_DELETE_MODE);
+            case ":r" -> {
                 switchToMode(CommandType.SWITCH_DISPLAY_MODE);
-                break;
-            case ":u":
-                switchToMode(CommandType.SWITCH_UPDATE_MODE);
-                break;
-            case ":p":
-                switchToMode(CommandType.SWITCH_PERSISTENCE_MODE);
-                break;
-            default:
-                System.out.println("Invalid command. Type 'exit' to exit the application.");
+                eventSystem.triggerEvent(EventType.DISPLAY_HERSTELLER, userInput);
+            }
+            case ":u" -> switchToMode(CommandType.SWITCH_UPDATE_MODE);
+            case ":p" -> switchToMode(CommandType.SWITCH_PERSISTENCE_MODE);
+            default -> System.out.println("Invalid command. Type 'exit' to exit the application.");
         }
     }
 
