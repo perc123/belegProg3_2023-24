@@ -3,6 +3,8 @@ import administration.HerstellerList;
 import cakes.KremkuchenImpl;
 import cakes.KuchenImpl;
 import administration.VendingMachine;
+import cli.UserInterface;
+import eventSystem.EventSystem;
 import kuchen.Allergen;
 import verwaltung.Hersteller;
 
@@ -11,7 +13,7 @@ import java.time.Duration;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         VendingMachine vendingMachine = new VendingMachine(10);
         HerstellerList herstellerList = new HerstellerList();
 
@@ -51,5 +53,21 @@ public class Main {
 
         // Update inspection date for all items in the vending machine
         vendingMachine.updateInspectionDate();
+    }*/
+
+    public static void main(String[] args) {
+        EventSystem eventSystem = new EventSystem();
+        VendingMachine vendingMachine = new VendingMachine(10);
+        HerstellerList herstellerList = new HerstellerList();
+
+        // Register domain logic as event listeners
+        //eventSystem.subscribe(vendingMachine);
+        eventSystem.subscribe(herstellerList);
+
+        UserInterface userInterface = new UserInterface(eventSystem);
+
+        // Start the user interface
+        userInterface.start();
     }
+
 }
