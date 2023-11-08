@@ -15,16 +15,17 @@ public class ObsttorteImpl extends ObstkuchenImpl implements Obsttorte {
     private String kremsorte;
 
     public ObsttorteImpl(
+            String kuchenTyp,
             HerstellerImpl hersteller,
             Collection<Allergen> allergene,
             int naehrwert,
             Duration haltbarkeit,
             String obstsorte,
             String kremsorte,
-            BigDecimal preis,
-            Date inspektionsdatum
+            BigDecimal preis
+            //Date inspektionsdatum
     ) {
-        super(hersteller, allergene, naehrwert, haltbarkeit, obstsorte, preis, inspektionsdatum);
+        super(kuchenTyp,hersteller, allergene, naehrwert, haltbarkeit, preis, obstsorte);
         this.kremsorte = kremsorte;
     }
 

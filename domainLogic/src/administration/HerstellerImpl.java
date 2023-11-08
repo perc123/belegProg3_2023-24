@@ -4,7 +4,7 @@ import verwaltung.Hersteller;
 import eventSystem.EventListener;
 import eventSystem.EventType;
 
-public class HerstellerImpl implements Hersteller, EventListener {
+public class HerstellerImpl implements Hersteller {
     private String name;
 
     public HerstellerImpl(String name) {
@@ -15,7 +15,7 @@ public class HerstellerImpl implements Hersteller, EventListener {
     public String getName() {
         return name;
     }
-
+/*
     @Override
     public void onEvent(EventType eventType, Object data) {
         // Handle events specific to Hersteller
@@ -54,5 +54,5 @@ public class HerstellerImpl implements Hersteller, EventListener {
                 }
             }
         }
-    }
+    }*/
 }

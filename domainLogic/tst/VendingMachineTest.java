@@ -21,8 +21,9 @@ class VendingMachineTest {
     @BeforeEach
     void setUp() {
         vendingMachine = new VendingMachine(2); // Set capacity to 2
-        kuchen1 = new KuchenImpl(hersteller1, Set.of(Allergen.Gluten),200, Duration.ofDays(7), BigDecimal.valueOf(5.0), new Date());
-        kuchen2 = new KuchenImpl(hersteller1, Set.of(Allergen.Erdnuss), 300, Duration.ofDays(10), BigDecimal.valueOf(7.0), new Date());
+        kuchen1 = new KuchenImpl("Obstkuchen", hersteller1, Set.of(Allergen.Sesamsamen),200,Duration.ofDays(6), BigDecimal.valueOf(20));
+        //kuchen1 = new KuchenImpl(hersteller1, Set.of(Allergen.Gluten),200, Duration.ofDays(7), BigDecimal.valueOf(5.0), new Date());
+        kuchen2 = new KuchenImpl("Obstkuchen", hersteller1, Set.of(Allergen.Haselnuss),100,Duration.ofDays(6), BigDecimal.valueOf(30));
     }
 
     @Test

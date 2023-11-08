@@ -1,13 +1,17 @@
 package cli;
 
 import administration.HerstellerImpl;
+import cakes.KuchenImpl;
 import commands.CommandType;
 import eventSystem.EventSystem;
 import eventSystem.EventType;
+import kuchen.Allergen;
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
+
 
 public class UserInterface {
     private EventSystem eventSystem;
@@ -49,8 +53,7 @@ public class UserInterface {
             // Handle built-in commands
             handleBuiltInCommand(userInput);
         } else {
-            // Handle other user-defined commands
-            // You can implement logic for user-defined commands here
+            System.out.println("Please enter a correct command");
         }
     }
 
@@ -60,9 +63,41 @@ public class UserInterface {
             case ":c" -> {
                 switchToMode(CommandType.SWITCH_INSERT_MODE);
                 Scanner scanner = new Scanner(System.in);
+                String inputLine = scanner.nextLine();
+                String[] values = inputLine.split(" ");
+                if (values.length == 1) {
+                    insertHersteller(inputLine);
+                }
+                else if (values.length == 6) {
+                    System.out.println("Kuchen:");
+                    //insert Kuchen
+                }
+                else if (values.length > 6) {
+                    //insert Obstkuchen Kremkuchen
+                    String kuchenType = values[0];
+                    String herstellerName = values[1];
+                    BigDecimal price = new BigDecimal(values[2]);
+                    int nutritionValue = Integer.parseInt(values[3]);
+                    Duration durability = Duration.ofDays(Long.parseLong(values[4]));
+                    String allergens = values[5];
+                    String obstsorte = values[6];
+                    String kremsorte = values[7];
+                    insertKuchen(kuchenType,herstellerName,price,nutritionValue,durability,allergens,obstsorte,kremsorte);
+                }
+                /*else if (values.length == 8) {
+                    //insert Obsttorte
+                }*/
+                else {
+                    System.out.println("Invalid input. Please provide all required values.");
+                }/*
+
+
+                insertKuchen(kuchenType, herstellerName, price, nutritionValue, durability, allergens, obstsorte, kremsorte);
+
+                switchToMode(CommandType.SWITCH_INSERT_MODE);
+                Scanner scanner = new Scanner(System.in);
                 String herstellerName = scanner.nextLine();
-                HerstellerImpl hersteller = new HerstellerImpl(herstellerName);
-                eventSystem.triggerEvent(EventType.INSERT_HERSTELLER, hersteller);
+                insertHersteller(herstellerName);*/
             }
             case ":d" -> switchToMode(CommandType.SWITCH_DELETE_MODE);
             case ":r" -> {
@@ -83,13 +118,24 @@ public class UserInterface {
 
     // Command to insert a Hersteller
     private void insertHersteller(String name) {
-        ;
+        HerstellerImpl hersteller = new HerstellerImpl(name);
+        eventSystem.triggerEvent(EventType.INSERT_HERSTELLER, hersteller);
     }
 
     // Command to insert a Kuchen
     private void insertKuchen(String type, String herstellerName, BigDecimal price, int nutritionValue, Duration durability, String allergens, String obstsorte, String kremsorte) {
-        // Implement the logic to insert a Kuchen
+        HerstellerImpl hersteller = new HerstellerImpl(herstellerName);
+
+        // Parse allergens from the comma-separated string
+        Set<Allergen> allergenSet = Arrays.stream(allergens.split(","))
+                .map(Allergen::valueOf)
+                .collect(Collectors.toSet());
+
+        // Create and insert the Kuchen
+        KuchenImpl kuchen = new KuchenImpl(type, hersteller, allergenSet, nutritionValue, durability, price);
+        eventSystem.triggerEvent(EventType.INSERT_KUCHEN, kuchen);
     }
+
 
     // Command to display Hersteller with the count of Kuchen
     private void displayHersteller() {

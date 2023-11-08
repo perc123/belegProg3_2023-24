@@ -33,6 +33,7 @@ public class HerstellerList implements EventListener {
             if (data instanceof HerstellerImpl) {
                 HerstellerImpl hersteller = (HerstellerImpl) data;
                 addHersteller(hersteller);
+                System.out.println("Hersteller added");
             }
         }
         if (eventType == EventType.DISPLAY_HERSTELLER) {

@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Date;
 
 public class KuchenImpl implements Kuchen, Verkaufsobjekt {
+    private String kuchenTyp;
     private HerstellerImpl hersteller;
     private Collection<Allergen> allergene;
     private int naehrwert;
@@ -21,21 +22,25 @@ public class KuchenImpl implements Kuchen, Verkaufsobjekt {
     private int fachnummer;
 
     public KuchenImpl(
+            String kuchenTyp,
             HerstellerImpl hersteller,
             Collection<Allergen> allergene,
             int naehrwert,
             Duration haltbarkeit,
-            BigDecimal preis,
-            Date inspektionsdatum
+            BigDecimal preis
+            //Date inspektionsdatum
     ) {
         this.hersteller = hersteller;
         this.allergene = allergene;
         this.naehrwert = naehrwert;
         this.haltbarkeit = haltbarkeit;
         this.preis = preis;
-        this.inspektionsdatum = inspektionsdatum;
+        //this.inspektionsdatum = inspektionsdatum;
     }
 
+    public String getKuchenTyp() {
+        return kuchenTyp;
+    }
     @Override
     public Hersteller getHersteller() {
         return hersteller;

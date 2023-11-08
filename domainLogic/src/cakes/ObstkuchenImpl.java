@@ -10,19 +10,27 @@ import java.util.Collection;
 import java.util.Date;
 
 public class ObstkuchenImpl extends KuchenImpl implements Obstkuchen {
+    private String kuchenTyp;
     private String obstsorte;
 
     public ObstkuchenImpl(
+            String kuchenTyp,
             HerstellerImpl hersteller,
             Collection<Allergen> allergene,
             int naehrwert,
             Duration haltbarkeit,
-            String obstsorte,
             BigDecimal preis,
-            Date inspektionsdatum
+            String obstsorte
+            //Date inspektionsdatum
     ) {
-        super(hersteller, allergene, naehrwert, haltbarkeit, preis, inspektionsdatum);
+        super(kuchenTyp,hersteller, allergene, naehrwert, haltbarkeit, preis);
         this.obstsorte = obstsorte;
+    }
+
+    @Override
+    public String getKuchenTyp() {
+        kuchenTyp = "Obstkuchen";
+        return kuchenTyp;
     }
 
     @Override

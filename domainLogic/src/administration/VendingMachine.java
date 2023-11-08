@@ -1,6 +1,7 @@
 package administration;
 
 import cakes.KuchenImpl;
+import cakes.ObstkuchenImpl;
 import kuchen.Kuchen;
 import verwaltung.Hersteller;
 
@@ -17,12 +18,20 @@ public class VendingMachine {
 
     public boolean addItem(Kuchen kuchen, Hersteller hersteller) {
         if (inventory.size() < capacity && kuchen instanceof KuchenImpl) {
+            //KuchenImpl kuchenImpl = (KuchenImpl) kuchen;
             KuchenImpl kuchenImpl = (KuchenImpl) kuchen;
             // Check if Hersteller exists
             if (kuchenImpl.getHersteller() == hersteller) {
+                if (kuchenImpl.getKuchenTyp() == "Obstkuchen")
+                    kuchenImpl = (ObstkuchenImpl) kuchen;
+                    System.out.println("Obstkuchen added");
                 kuchenImpl.setFachnummer(inventory.size() + 1);
                 inventory.add(kuchenImpl);
                 return true;
+            }
+            else {
+                System.out.println("The provided Hersteller does not exist!");
+                return false;
             }
         }
         return false; // Vending machine is full, kuchen is not an instance of KuchenImpl, or wrong Hersteller
