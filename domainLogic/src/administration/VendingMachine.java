@@ -2,12 +2,14 @@ package administration;
 
 import cakes.KuchenImpl;
 import cakes.ObstkuchenImpl;
+import eventSystem.EventListener;
+import eventSystem.EventType;
 import kuchen.Kuchen;
 import verwaltung.Hersteller;
 
 import java.util.*;
 
-public class VendingMachine {
+public class VendingMachine implements EventListener {
     private List<KuchenImpl> inventory;
     private int capacity;
 
@@ -18,11 +20,10 @@ public class VendingMachine {
 
     public boolean addItem(Kuchen kuchen, Hersteller hersteller) {
         if (inventory.size() < capacity && kuchen instanceof KuchenImpl) {
-            //KuchenImpl kuchenImpl = (KuchenImpl) kuchen;
             KuchenImpl kuchenImpl = (KuchenImpl) kuchen;
             // Check if Hersteller exists
             if (kuchenImpl.getHersteller() == hersteller) {
-                if (kuchenImpl.getKuchenTyp() == "Obstkuchen")
+                if (kuchenImpl.getKuchenTyp().equals("Obstkuchen"))
                     kuchenImpl = (ObstkuchenImpl) kuchen;
                     System.out.println("Obstkuchen added");
                 kuchenImpl.setFachnummer(inventory.size() + 1);
@@ -43,8 +44,7 @@ public class VendingMachine {
     }
 
     public List<KuchenImpl> listItems() {
-        // The list is made unmodifiable to prevent external code from modifying the vending machine's inventory directly
-        return Collections.unmodifiableList(inventory);
+        return inventory;
     }
 
     public void updateInspectionDate() {
@@ -56,4 +56,48 @@ public class VendingMachine {
 
         Collections.sort(inventory, Comparator.comparing(KuchenImpl::getInspektionsdatum));
     }
+
+    @Override
+    public void onEvent(EventType eventType, Object data) {
+        if (eventType == EventType.INSERT_KUCHEN) {
+            if (data instanceof KuchenImpl) {
+                KuchenImpl kuchen = (KuchenImpl) data;
+                addItem(kuchen, kuchen.getHersteller());
+                System.out.println("Item added to VendingMachine");
+            }
+        }
+        if (eventType == EventType.DISPLAY_KUCHEN) {
+            if (data instanceof KuchenImpl) {
+                listItems();
+                for (KuchenImpl kuchen : inventory) {
+                    System.out.println("Fachnummer: " + kuchen.getFachnummer() + "\n"
+                            + "Inspektionsdatum" + kuchen.getInspektionsdatum() + "\n"
+                            + "Verbleibender Haltbarkeit: " + kuchen.getHaltbarkeit());
+                }
+            }
+        }
+    }
+/*
+    public void triggerAddItemEvent(Kuchen kuchen, Hersteller hersteller) {
+        EventManager.triggerEvent(EventType.ADD_ITEM, new ItemEvent(kuchen, hersteller));
+    }*/
+
+    private static class ItemEvent {
+        private final Kuchen kuchen;
+        private final Hersteller hersteller;
+
+        public ItemEvent(Kuchen kuchen, Hersteller hersteller) {
+            this.kuchen = kuchen;
+            this.hersteller = hersteller;
+        }
+
+        public Kuchen getKuchen() {
+            return kuchen;
+        }
+
+        public Hersteller getHersteller() {
+            return hersteller;
+        }
+    }
+
 }

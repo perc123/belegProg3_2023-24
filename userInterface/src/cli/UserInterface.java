@@ -89,20 +89,17 @@ public class UserInterface {
                 }*/
                 else {
                     System.out.println("Invalid input. Please provide all required values.");
-                }/*
-
-
-                insertKuchen(kuchenType, herstellerName, price, nutritionValue, durability, allergens, obstsorte, kremsorte);
-
-                switchToMode(CommandType.SWITCH_INSERT_MODE);
-                Scanner scanner = new Scanner(System.in);
-                String herstellerName = scanner.nextLine();
-                insertHersteller(herstellerName);*/
+                }
             }
             case ":d" -> switchToMode(CommandType.SWITCH_DELETE_MODE);
             case ":r" -> {
                 switchToMode(CommandType.SWITCH_DISPLAY_MODE);
                 eventSystem.triggerEvent(EventType.DISPLAY_HERSTELLER, userInput);
+                /*
+                noch zu implementieren
+                switchToMode(CommandType.SWITCH_DISPLAY_MODE);
+                eventSystem.triggerEvent(EventType.DISPLAY_KUCHEN, userInput);
+                */
             }
             case ":u" -> switchToMode(CommandType.SWITCH_UPDATE_MODE);
             case ":p" -> switchToMode(CommandType.SWITCH_PERSISTENCE_MODE);
@@ -111,80 +108,65 @@ public class UserInterface {
     }
 
     private void switchToMode(CommandType commandType) {
-        // Implement the logic to switch to the specified mode
         System.out.println("Switching to " + commandType + " mode.");
     }
 
 
-    // Command to insert a Hersteller
     private void insertHersteller(String name) {
         HerstellerImpl hersteller = new HerstellerImpl(name);
         eventSystem.triggerEvent(EventType.INSERT_HERSTELLER, hersteller);
     }
 
-    // Command to insert a Kuchen
     private void insertKuchen(String type, String herstellerName, BigDecimal price, int nutritionValue, Duration durability, String allergens, String obstsorte, String kremsorte) {
         HerstellerImpl hersteller = new HerstellerImpl(herstellerName);
 
-        // Parse allergens from the comma-separated string
         Set<Allergen> allergenSet = Arrays.stream(allergens.split(","))
                 .map(Allergen::valueOf)
                 .collect(Collectors.toSet());
-
-        // Create and insert the Kuchen
+        
         KuchenImpl kuchen = new KuchenImpl(type, hersteller, allergenSet, nutritionValue, durability, price);
         eventSystem.triggerEvent(EventType.INSERT_KUCHEN, kuchen);
     }
 
 
-    // Command to display Hersteller with the count of Kuchen
     private void displayHersteller() {
-        // Implement the logic to display Hersteller
+        // noch zu implementieren
     }
 
-    // Command to display Kuchen filtered by type
     private void displayKuchen(String type) {
-        // Implement the logic to display Kuchen
+        // noch zu implementieren
     }
 
-    // Command to display allergene
     private void displayAllergene(String filter) {
-        // Implement the logic to display allergene (filtered)
+        // noch zu implementieren
     }
 
-    // Command to delete a Hersteller
     private void deleteHersteller(String name) {
-        // Implement the logic to delete a Hersteller
+        // noch zu implementieren
     }
 
-    // Command to remove Kuchen from a specific Fachnummer
     private void removeKuchen(int fachnummer) {
-        // Implement the logic to remove Kuchen
+        // noch zu implementieren
     }
 
-    // Command to update the inspection date of a Kuchen
     private void updateInspectionDate(int fachnummer) {
-        // Implement the logic to update the inspection date
+        // noch zu implementieren
     }
 
-    // Command to save data using JOS
     private void saveDataJOS() {
-        // Implement the logic to save data using JOS
+        // noch zu implementieren
     }
 
-    // Command to load data using JOS
     private void loadDataJOS() {
-        // Implement the logic to load data using JOS
+        // noch zu implementieren
     }
 
-    // Command to save data using JBP
     private void saveDataJBP() {
-        // Implement the logic to save data using JBP
+        // noch zu implementieren
     }
 
-    // Command to load data using JBP
     private void loadDataJBP() {
-        // Implement the logic to load data using JBP
+        // noch zu implementieren
     }
 }
 

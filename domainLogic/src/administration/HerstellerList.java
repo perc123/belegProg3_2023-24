@@ -28,7 +28,6 @@ public class HerstellerList implements EventListener {
 
     @Override
     public void onEvent(EventType eventType, Object data) {
-        // Handle events related to HerstellerList
         if (eventType == EventType.INSERT_HERSTELLER) {
             if (data instanceof HerstellerImpl) {
                 HerstellerImpl hersteller = (HerstellerImpl) data;
@@ -43,6 +42,5 @@ public class HerstellerList implements EventListener {
                 System.out.println("Hersteller Name: " + hersteller.getName());
             }
         }
-        // Other event handling logic can be added here
     }
 }

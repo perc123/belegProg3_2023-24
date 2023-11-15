@@ -52,6 +52,8 @@ class VendingMachineTest {
 
     @Test
     void testUpdateInspectionDate() {
+        // noch zu implementieren
+
         vendingMachine.addItem(kuchen1, hersteller1);
         vendingMachine.addItem(kuchen2, hersteller1);
         vendingMachine.updateInspectionDate();
