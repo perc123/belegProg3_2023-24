@@ -1,15 +1,18 @@
-import administration.HerstellerImpl;
-import administration.VendingMachine;
-import cakes.KuchenImpl;
-import kuchen.Allergen;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import administration.HerstellerImpl;
+import administration.VendingMachine;
+import cakes.KuchenImpl;
+import cakes.ObstkuchenImpl;
+import kuchen.Allergen;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class VendingMachineTest {
 
@@ -21,9 +24,11 @@ class VendingMachineTest {
     @BeforeEach
     void setUp() {
         vendingMachine = new VendingMachine(2); // Set capacity to 2
-        kuchen1 = new KuchenImpl("Obstkuchen", hersteller1, Set.of(Allergen.Sesamsamen),200,Duration.ofDays(6), BigDecimal.valueOf(20));
-        //kuchen1 = new KuchenImpl(hersteller1, Set.of(Allergen.Gluten),200, Duration.ofDays(7), BigDecimal.valueOf(5.0), new Date());
-        kuchen2 = new KuchenImpl("Obstkuchen", hersteller1, Set.of(Allergen.Haselnuss),100,Duration.ofDays(6), BigDecimal.valueOf(30));
+        hersteller1 = new HerstellerImpl("Hersteller1");
+        kuchen1 = new ObstkuchenImpl("Obstkuchen", hersteller1, Set.of(Allergen.Sesamsamen), 200, Duration.ofDays(6),
+                BigDecimal.valueOf(20), "Apfel");
+        kuchen2 = new ObstkuchenImpl("Obstkuchen", hersteller1, Set.of(Allergen.Haselnuss), 100, Duration.ofDays(6),
+                BigDecimal.valueOf(30), "Birne");
     }
 
     @Test
@@ -52,20 +57,14 @@ class VendingMachineTest {
 
     @Test
     void testUpdateInspectionDate() {
-        // noch zu implementieren
-
         vendingMachine.addItem(kuchen1, hersteller1);
         vendingMachine.addItem(kuchen2, hersteller1);
         vendingMachine.updateInspectionDate();
 
         Date currentDate = new java.sql.Date(System.currentTimeMillis());
         for (KuchenImpl kuchen : vendingMachine.listItems()) {
+            assertNotNull(kuchen.getInspektionsdatum());
             assertEquals(currentDate, kuchen.getInspektionsdatum());
         }
     }
 }
-
-
-
-
-

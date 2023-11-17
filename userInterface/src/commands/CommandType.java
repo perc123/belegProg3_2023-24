@@ -1,11 +1,11 @@
 package commands;
 
 public enum CommandType {
-    SWITCH_INSERT_MODE(":c"),
-    SWITCH_DELETE_MODE(":d"),
-    SWITCH_DISPLAY_MODE(":r"),
-    SWITCH_UPDATE_MODE(":u"),
-    SWITCH_PERSISTENCE_MODE(":p"),
+    INSERT_MODE(":c"),
+    DELETE_MODE(":d"),
+    DISPLAY_MODE(":r"),
+    UPDATE_MODE(":u"),
+    PERSISTENCE_MODE(":p"),
     SAVE_JOS("saveJOS"),
     LOAD_JOS("loadJOS"),
     SAVE_JBP("saveJBP"),

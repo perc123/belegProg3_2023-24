@@ -7,6 +7,8 @@ import eventSystem.EventType;
 import kuchen.Kuchen;
 import verwaltung.Hersteller;
 
+import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.*;
 
 public class VendingMachine implements EventListener {
@@ -21,21 +23,32 @@ public class VendingMachine implements EventListener {
     public boolean addItem(Kuchen kuchen, Hersteller hersteller) {
         if (inventory.size() < capacity && kuchen instanceof KuchenImpl) {
             KuchenImpl kuchenImpl = (KuchenImpl) kuchen;
-            // Check if Hersteller exists
+
             if (kuchenImpl.getHersteller() == hersteller) {
-                if (kuchenImpl.getKuchenTyp().equals("Obstkuchen"))
-                    kuchenImpl = (ObstkuchenImpl) kuchen;
-                    System.out.println("Obstkuchen added");
-                kuchenImpl.setFachnummer(inventory.size() + 1);
-                inventory.add(kuchenImpl);
-                return true;
-            }
-            else {
+                if (kuchenImpl.getKuchenTyp().equals("Obstkuchen")) {
+                    if (kuchenImpl instanceof ObstkuchenImpl) {
+                        ObstkuchenImpl obstkuchen = (ObstkuchenImpl) kuchenImpl;
+                        System.out.println("Obstkuchen added");
+
+                        // Set the Inspektionsdatum
+                        obstkuchen.setInspektionsdatum(new Date(System.currentTimeMillis()));
+
+                        obstkuchen.setFachnummer(inventory.size() + 1);
+                        inventory.add(obstkuchen);
+                        return true;
+                    } else {
+                        System.out.println("Provided Kuchen does not exist!");
+                    }
+                } else {
+                    System.out.println("Not supporting other Kuchen types yet");
+                }
+            } else {
                 System.out.println("The provided Hersteller does not exist!");
-                return false;
             }
+        } else {
+            System.out.println("Vending machine is full, or provided Kuchen is not an instance of KuchenImpl");
         }
-        return false; // Vending machine is full, kuchen is not an instance of KuchenImpl, or wrong Hersteller
+        return false;
     }
 
     public boolean removeItem(Kuchen kuchen) {
@@ -57,27 +70,42 @@ public class VendingMachine implements EventListener {
         Collections.sort(inventory, Comparator.comparing(KuchenImpl::getInspektionsdatum));
     }
 
+    private String formatHaltbarkeit(Duration duration) {
+        long hours = duration.toHours();
+        long days = hours / 24;
+        long remainingHours = hours % 24;
+        return String.format("%dd %dh", days, remainingHours);
+    }
+
+    private String formatInspektionsdatum(Date date) {
+        if (date != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            return sdf.format(date);
+        } else {
+            return "Not inspected";
+        }
+    }
+
     @Override
     public void onEvent(EventType eventType, Object data) {
         if (eventType == EventType.INSERT_KUCHEN) {
-            if (data instanceof KuchenImpl) {
-                KuchenImpl kuchen = (KuchenImpl) data;
+            if (data instanceof ObstkuchenImpl) {
+                KuchenImpl kuchen = (ObstkuchenImpl) data;
                 addItem(kuchen, kuchen.getHersteller());
                 System.out.println("Item added to VendingMachine");
             }
         }
         if (eventType == EventType.DISPLAY_KUCHEN) {
-            if (data instanceof KuchenImpl) {
-                listItems();
-                for (KuchenImpl kuchen : inventory) {
-                    System.out.println("Fachnummer: " + kuchen.getFachnummer() + "\n"
-                            + "Inspektionsdatum" + kuchen.getInspektionsdatum() + "\n"
-                            + "Verbleibender Haltbarkeit: " + kuchen.getHaltbarkeit());
-                }
+            listItems();
+            for (KuchenImpl kuchen : inventory) {
+                System.out.println("Fachnummer: " + kuchen.getFachnummer() + "\n"
+                        + "Inspektionsdatum: " + formatInspektionsdatum(kuchen.getInspektionsdatum()) + "\n"
+                        + "Verbleibender Haltbarkeit: " + formatHaltbarkeit(kuchen.getHaltbarkeit()));
             }
         }
+
     }
-/*
+    /*
     public void triggerAddItemEvent(Kuchen kuchen, Hersteller hersteller) {
         EventManager.triggerEvent(EventType.ADD_ITEM, new ItemEvent(kuchen, hersteller));
     }*/

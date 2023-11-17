@@ -1,6 +1,5 @@
 package cakes;
 
-import administration.HerstellerImpl;
 import kuchen.Allergen;
 import kuchen.Kuchen;
 import verwaltung.Hersteller;
@@ -13,7 +12,7 @@ import java.util.Date;
 
 public class KuchenImpl implements Kuchen, Verkaufsobjekt {
     private String kuchenTyp;
-    private HerstellerImpl hersteller;
+    private Hersteller hersteller;
     private Collection<Allergen> allergene;
     private int naehrwert;
     private Duration haltbarkeit;
@@ -23,7 +22,7 @@ public class KuchenImpl implements Kuchen, Verkaufsobjekt {
 
     public KuchenImpl(
             String kuchenTyp,
-            HerstellerImpl hersteller,
+            Hersteller hersteller,
             Collection<Allergen> allergene,
             int naehrwert,
             Duration haltbarkeit,

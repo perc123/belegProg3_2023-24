@@ -3,93 +3,93 @@ package mockito;
 import administration.HerstellerImpl;
 import administration.VendingMachine;
 import cakes.KuchenImpl;
+import cakes.ObstkuchenImpl;
+import kuchen.Allergen;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
+
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.matches;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class VendingMachineTestMockito {
 
     private VendingMachine vendingMachine;
-    private HerstellerImpl hersteller1;
 
     @Mock
-    private KuchenImpl mockKuchenWithLowNaehrwert;
+    private HerstellerImpl mockHersteller;
 
     @Mock
-    private KuchenImpl mockKuchenWithHighNaehrwert;
+    private ObstkuchenImpl mockObstkuchen1;
+
+    @Mock
+    private ObstkuchenImpl mockObstkuchen2;
+
+    @Captor
+    private ArgumentCaptor<Date> dateCaptor;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-
         vendingMachine = new VendingMachine(2);
+
+        when(mockHersteller.getName()).thenReturn("Hersteller1");
+
+        when(mockObstkuchen1.getHersteller()).thenReturn(mockHersteller);
+        when(mockObstkuchen1.getKuchenTyp()).thenReturn("Obstkuchen");
+        when(mockObstkuchen1 instanceof ObstkuchenImpl).thenReturn(true);
+        when(mockObstkuchen1.getAllergene()).thenReturn(Set.of(Allergen.Sesamsamen));
+        when(mockObstkuchen1.getNaehrwert()).thenReturn(200);
+        when(mockObstkuchen1.getHaltbarkeit()).thenReturn(Duration.ofDays(6));
+        when(mockObstkuchen1.getPreis()).thenReturn(BigDecimal.valueOf(20));
+        when(mockObstkuchen1.getObstsorte()).thenReturn("Apfel");
+
+        when(mockObstkuchen2.getHersteller()).thenReturn(mockHersteller);
+        when(mockObstkuchen2.getKuchenTyp()).thenReturn("Obstkuchen");
+        when(mockObstkuchen2 instanceof ObstkuchenImpl).thenReturn(true);
+        when(mockObstkuchen2.getAllergene()).thenReturn(Set.of(Allergen.Haselnuss));
+        when(mockObstkuchen2.getNaehrwert()).thenReturn(100);
+        when(mockObstkuchen2.getHaltbarkeit()).thenReturn(Duration.ofDays(6));
+        when(mockObstkuchen2.getPreis()).thenReturn(BigDecimal.valueOf(30));
+        when(mockObstkuchen2.getObstsorte()).thenReturn("Birne");
     }
 
     @Test
-    void testAddItem_WhenVendingMachineIsNotFull() {
-        when(mockKuchenWithLowNaehrwert.getNaehrwert()).thenReturn(200);
-        when(mockKuchenWithHighNaehrwert.getNaehrwert()).thenReturn(300);
-
-        assertTrue(vendingMachine.addItem(mockKuchenWithLowNaehrwert, hersteller1));
-        assertTrue(vendingMachine.addItem(mockKuchenWithHighNaehrwert, hersteller1));
-    }
-
-    @Test
-    void testAddItem_WhenVendingMachineIsFull() {
-        when(mockKuchenWithLowNaehrwert.getNaehrwert()).thenReturn(200);
-        when(mockKuchenWithHighNaehrwert.getNaehrwert()).thenReturn(300);
-
-        assertTrue(vendingMachine.addItem(mockKuchenWithLowNaehrwert,hersteller1));
-        assertTrue(vendingMachine.addItem(mockKuchenWithHighNaehrwert,hersteller1));
-        assertFalse(vendingMachine.addItem(mockKuchenWithLowNaehrwert,hersteller1)); // Vending machine is full
+    void testAddItem() {
+        assertTrue(vendingMachine.addItem(mockObstkuchen1, mockHersteller));
+        assertTrue(vendingMachine.addItem(mockObstkuchen2, mockHersteller));
+        assertFalse(vendingMachine.addItem(mockObstkuchen1, mockHersteller)); // Vending machine is full
     }
 
     @Test
     void testRemoveItem() {
-        when(mockKuchenWithLowNaehrwert.getNaehrwert()).thenReturn(200);
-
-        vendingMachine.addItem(mockKuchenWithLowNaehrwert,hersteller1);
-        assertTrue(vendingMachine.removeItem(mockKuchenWithLowNaehrwert));
-        assertFalse(vendingMachine.removeItem(mockKuchenWithLowNaehrwert)); // Not in vending machine
+        vendingMachine.addItem(mockObstkuchen1, mockHersteller);
+        assertTrue(vendingMachine.removeItem(mockObstkuchen1));
+        assertFalse(vendingMachine.removeItem(mockObstkuchen1)); // Not in vending machine
     }
 
     @Test
     void testListItems() {
-        when(mockKuchenWithLowNaehrwert.getNaehrwert()).thenReturn(200);
-        when(mockKuchenWithHighNaehrwert.getNaehrwert()).thenReturn(300);
-
-        vendingMachine.addItem(mockKuchenWithLowNaehrwert,hersteller1);
-        vendingMachine.addItem(mockKuchenWithHighNaehrwert,hersteller1);
-
-        List<KuchenImpl> items = vendingMachine.listItems();
-        assertEquals(2, items.size());
-        assertTrue(items.contains(mockKuchenWithLowNaehrwert));
-        assertTrue(items.contains(mockKuchenWithHighNaehrwert));
+        vendingMachine.addItem(mockObstkuchen1, mockHersteller);
+        vendingMachine.addItem(mockObstkuchen2, mockHersteller);
+        assertEquals(2, vendingMachine.listItems().size());
     }
 
     @Test
     void testUpdateInspectionDate() {
-        Date currentDate = new java.sql.Date(System.currentTimeMillis());
-        when(mockKuchenWithLowNaehrwert.getInspektionsdatum()).thenReturn(currentDate);
-        when(mockKuchenWithHighNaehrwert.getInspektionsdatum()).thenReturn(currentDate);
-
-        vendingMachine.addItem(mockKuchenWithLowNaehrwert,hersteller1);
-        vendingMachine.addItem(mockKuchenWithHighNaehrwert,hersteller1);
+        vendingMachine.addItem(mockObstkuchen1, mockHersteller);
+        vendingMachine.addItem(mockObstkuchen2, mockHersteller);
         vendingMachine.updateInspectionDate();
 
+        Date currentDate = new Date(System.currentTimeMillis());
         for (KuchenImpl kuchen : vendingMachine.listItems()) {
-            verify(kuchen).setInspektionsdatum(currentDate);
+            assertNotNull(kuchen.getInspektionsdatum());
+            assertEquals(currentDate, kuchen.getInspektionsdatum());
         }
     }
 }

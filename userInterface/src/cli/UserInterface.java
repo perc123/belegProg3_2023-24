@@ -1,11 +1,14 @@
 package cli;
 
 import administration.HerstellerImpl;
+import administration.HerstellerList;
 import cakes.KuchenImpl;
+import cakes.ObstkuchenImpl;
 import commands.CommandType;
 import eventSystem.EventSystem;
 import eventSystem.EventType;
 import kuchen.Allergen;
+import verwaltung.Hersteller;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -61,7 +64,7 @@ public class UserInterface {
         // Handle built-in commands
         switch (userInput) {
             case ":c" -> {
-                switchToMode(CommandType.SWITCH_INSERT_MODE);
+                switchToMode(CommandType.INSERT_MODE);
                 Scanner scanner = new Scanner(System.in);
                 String inputLine = scanner.nextLine();
                 String[] values = inputLine.split(" ");
@@ -72,17 +75,17 @@ public class UserInterface {
                     System.out.println("Kuchen:");
                     //insert Kuchen
                 }
-                else if (values.length > 6) {
-                    //insert Obstkuchen Kremkuchen
+                else if (values.length == 7) {
+                    //insert Obstkuchen
                     String kuchenType = values[0];
-                    String herstellerName = values[1];
+                    Hersteller herstellerName = new HerstellerImpl(values[1]);
                     BigDecimal price = new BigDecimal(values[2]);
                     int nutritionValue = Integer.parseInt(values[3]);
                     Duration durability = Duration.ofDays(Long.parseLong(values[4]));
                     String allergens = values[5];
                     String obstsorte = values[6];
-                    String kremsorte = values[7];
-                    insertKuchen(kuchenType,herstellerName,price,nutritionValue,durability,allergens,obstsorte,kremsorte);
+                    //String kremsorte = values[7];
+                    insertKuchen(kuchenType,herstellerName,price,nutritionValue,durability,allergens,obstsorte);
                 }
                 /*else if (values.length == 8) {
                     //insert Obsttorte
@@ -91,24 +94,31 @@ public class UserInterface {
                     System.out.println("Invalid input. Please provide all required values.");
                 }
             }
-            case ":d" -> switchToMode(CommandType.SWITCH_DELETE_MODE);
+            case ":d" -> switchToMode(CommandType.DELETE_MODE);
             case ":r" -> {
-                switchToMode(CommandType.SWITCH_DISPLAY_MODE);
-                eventSystem.triggerEvent(EventType.DISPLAY_HERSTELLER, userInput);
-                /*
-                noch zu implementieren
-                switchToMode(CommandType.SWITCH_DISPLAY_MODE);
-                eventSystem.triggerEvent(EventType.DISPLAY_KUCHEN, userInput);
-                */
+                System.out.println("For Hersteller Display, give :h. For Kuchen Display, give :k");
+                Scanner scanner = new Scanner(System.in);
+                String displayInput = scanner.nextLine();
+                switch (displayInput) {
+                    case ":h" -> {
+                        switchToMode(CommandType.DISPLAY_MODE);
+                        eventSystem.triggerEvent(EventType.DISPLAY_HERSTELLER, userInput);
+                    }
+                    case ":k" -> {
+                        switchToMode(CommandType.DISPLAY_MODE);
+                        eventSystem.triggerEvent(EventType.DISPLAY_KUCHEN, userInput);
+                    }
+                    default -> System.out.println("Invalid input for display. Please enter :h or :k.");
+                }
             }
-            case ":u" -> switchToMode(CommandType.SWITCH_UPDATE_MODE);
-            case ":p" -> switchToMode(CommandType.SWITCH_PERSISTENCE_MODE);
+            case ":u" -> switchToMode(CommandType.UPDATE_MODE);
+            case ":p" -> switchToMode(CommandType.PERSISTENCE_MODE);
             default -> System.out.println("Invalid command. Type 'exit' to exit the application.");
         }
     }
 
     private void switchToMode(CommandType commandType) {
-        System.out.println("Switching to " + commandType + " mode.");
+        System.out.println("Switching to " + commandType);
     }
 
 
@@ -117,14 +127,14 @@ public class UserInterface {
         eventSystem.triggerEvent(EventType.INSERT_HERSTELLER, hersteller);
     }
 
-    private void insertKuchen(String type, String herstellerName, BigDecimal price, int nutritionValue, Duration durability, String allergens, String obstsorte, String kremsorte) {
-        HerstellerImpl hersteller = new HerstellerImpl(herstellerName);
+    private void insertKuchen(String type, Hersteller herstellerName, BigDecimal price, int nutritionValue, Duration durability, String allergens, String obstsorte) {
+        //HerstellerImpl hersteller = new HerstellerImpl(herstellerName);
 
         Set<Allergen> allergenSet = Arrays.stream(allergens.split(","))
                 .map(Allergen::valueOf)
                 .collect(Collectors.toSet());
         
-        KuchenImpl kuchen = new KuchenImpl(type, hersteller, allergenSet, nutritionValue, durability, price);
+        KuchenImpl kuchen = new ObstkuchenImpl(type, herstellerName, allergenSet, nutritionValue, durability, price, obstsorte);
         eventSystem.triggerEvent(EventType.INSERT_KUCHEN, kuchen);
     }
 

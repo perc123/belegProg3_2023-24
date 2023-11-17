@@ -3,6 +3,7 @@ package cakes;
 import administration.HerstellerImpl;
 import kuchen.Allergen;
 import kuchen.Obstkuchen;
+import verwaltung.Hersteller;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -15,7 +16,7 @@ public class ObstkuchenImpl extends KuchenImpl implements Obstkuchen {
 
     public ObstkuchenImpl(
             String kuchenTyp,
-            HerstellerImpl hersteller,
+            Hersteller hersteller,
             Collection<Allergen> allergene,
             int naehrwert,
             Duration haltbarkeit,
