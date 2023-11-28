@@ -13,7 +13,7 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        VendingMachine vendingMachine = new VendingMachine(10);
+     /*   VendingMachine vendingMachine = new VendingMachine(10);
         HerstellerList herstellerList = new HerstellerList();
 
         HerstellerImpl hersteller1 = new HerstellerImpl("Twix");
@@ -89,6 +89,6 @@ public class Main {
                 System.out.println("Kremsorte: " + kremkuchen.getKremsorte());
             }
             System.out.println("---------------------------------------");
-        }
+        }*/
     }
 }

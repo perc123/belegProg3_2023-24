@@ -16,12 +16,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-public class UserInterface {
+public class Console {
     private EventSystem eventSystem;
     private boolean isRunning;
 
 
-    public UserInterface(EventSystem eventSystem) {
+    public Console(EventSystem eventSystem) {
         this.eventSystem = eventSystem;
         this.isRunning = true;
 
