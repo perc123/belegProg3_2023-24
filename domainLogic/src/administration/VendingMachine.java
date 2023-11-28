@@ -20,7 +20,8 @@ public class VendingMachine {
             KuchenImpl kuchenImpl = (KuchenImpl) kuchen;
             // Check if Hersteller exists
             if (kuchenImpl.getHersteller() == hersteller) {
-                kuchenImpl.setFachnummer(inventory.size() + 1);
+                int newFachnummer = findFirstAvailableFachnummer();
+                kuchenImpl.setFachnummer(newFachnummer);
                 inventory.add(kuchenImpl);
                 return true;
             }
@@ -28,14 +29,37 @@ public class VendingMachine {
         return false; // Vending machine is full, kuchen is not an instance of KuchenImpl, or wrong Hersteller
     }
 
+    private int findFirstAvailableFachnummer() {
+        int newFachnummer = 1;
+        for (KuchenImpl kuchen : inventory) {
+            if (kuchen.getFachnummer() == newFachnummer) {
+                newFachnummer++;
+            } else {
+                break;
+            }
+        }
+        return newFachnummer;
+    }
+
     public boolean removeItem(Kuchen kuchen) {
         boolean removed = inventory.remove(kuchen);
+        if (removed) {
+            // Reassign correct Fachnummer values after removal
+            reassignFachnummer();
+        }
         return removed;
     }
 
+    private void reassignFachnummer() {
+        int newFachnummer = 1;
+        for (KuchenImpl kuchen : inventory) {
+            kuchen.setFachnummer(newFachnummer);
+            newFachnummer++;
+        }
+    }
+
     public List<KuchenImpl> listItems() {
-        // The list is made unmodifiable to prevent external code from modifying the vending machine's inventory directly
-        return Collections.unmodifiableList(inventory);
+        return inventory;
     }
 
     public void updateInspectionDate() {

@@ -3,6 +3,7 @@ import administration.HerstellerList;
 import cakes.KremkuchenImpl;
 import cakes.KuchenImpl;
 import administration.VendingMachine;
+import cakes.ObsttorteImpl;
 import kuchen.Allergen;
 import verwaltung.Hersteller;
 
@@ -23,7 +24,7 @@ public class Main {
 
         KuchenImpl cake1 = new KuchenImpl(hersteller1, Set.of(Allergen.Gluten, Allergen.Erdnuss), 400, Duration.ofDays(8), BigDecimal.valueOf(5.0), new Date());
         KuchenImpl cake2 = new KremkuchenImpl(hersteller2, Set.of(Allergen.Haselnuss), 300, Duration.ofDays(10), "Schokolade", BigDecimal.valueOf(7.0), new Date());
-        KuchenImpl cake3 = new KuchenImpl(hersteller1, Set.of(Allergen.Sesamsamen), 400, Duration.ofDays(8),BigDecimal.valueOf(5.0),new Date());
+        KuchenImpl cake3 = new KuchenImpl(hersteller1, Set.of(Allergen.Sesamsamen), 400, Duration.ofDays(8), BigDecimal.valueOf(5.0), new Date());
 
         // Add the cakes to the vending machine
         vendingMachine.addItem(cake1, hersteller1);
@@ -51,5 +52,43 @@ public class Main {
 
         // Update inspection date for all items in the vending machine
         vendingMachine.updateInspectionDate();
+
+        // Remove an item from the vending machine
+        System.out.println("\nRemoving item with Fachnummer 2");
+        vendingMachine.removeItem(cake2);
+        vendingMachine.removeItem(cake1);
+
+
+        KuchenImpl cake4 = new KuchenImpl(hersteller1, Set.of(Allergen.Gluten, Allergen.Erdnuss), 400, Duration.ofDays(8), BigDecimal.valueOf(5.0), new Date());
+        KuchenImpl cake5 = new KremkuchenImpl(hersteller2, Set.of(Allergen.Haselnuss), 300, Duration.ofDays(10), "Schokolade", BigDecimal.valueOf(7.0), new Date());
+        KuchenImpl cake6 = new KuchenImpl(hersteller1, Set.of(Allergen.Sesamsamen), 400, Duration.ofDays(8), BigDecimal.valueOf(5.0), new Date());
+        KuchenImpl cake7 = new KuchenImpl(hersteller1, Set.of(Allergen.Sesamsamen), 400, Duration.ofDays(8), BigDecimal.valueOf(5.0), new Date());
+
+
+        // Add the cakes to the vending machine
+        vendingMachine.addItem(cake4, hersteller1);
+        vendingMachine.addItem(cake5, hersteller2);
+        vendingMachine.addItem(cake6, hersteller1);
+        vendingMachine.addItem(cake7, hersteller1);
+
+        System.out.println("\nList of items after removal:");
+
+        // List the items in the vending machine
+        List<KuchenImpl> cakes = new ArrayList<>(vendingMachine.listItems());
+        for (KuchenImpl item : cakes) {
+            System.out.println("Hersteller: " + item.getHersteller().getName());
+            System.out.println("Naehrwert: " + item.getNaehrwert());
+            System.out.println("Haltbarkeit: " + item.getHaltbarkeit());
+            System.out.println("Price: " + item.getPreis());
+            System.out.println("Allergen: " + item.getAllergene());
+            System.out.println("Inspektionsdatum: " + item.getInspektionsdatum());
+            System.out.println("Fachnummer: " + item.getFachnummer());
+
+            if (item instanceof KremkuchenImpl) {
+                KremkuchenImpl kremkuchen = (KremkuchenImpl) item;
+                System.out.println("Kremsorte: " + kremkuchen.getKremsorte());
+            }
+            System.out.println("---------------------------------------");
+        }
     }
 }
