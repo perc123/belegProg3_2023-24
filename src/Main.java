@@ -13,7 +13,7 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-     /*   VendingMachine vendingMachine = new VendingMachine(10);
+       VendingMachine vendingMachine = new VendingMachine(10);
         HerstellerList herstellerList = new HerstellerList();
 
         HerstellerImpl hersteller1 = new HerstellerImpl("Twix");
@@ -22,9 +22,9 @@ public class Main {
         herstellerList.addHersteller(hersteller2);
         herstellerList.addHersteller(hersteller1);
 
-        KuchenImpl cake1 = new KuchenImpl(hersteller1, Set.of(Allergen.Gluten, Allergen.Erdnuss), 400, Duration.ofDays(8), BigDecimal.valueOf(5.0), new Date());
-        KuchenImpl cake2 = new KremkuchenImpl(hersteller2, Set.of(Allergen.Haselnuss), 300, Duration.ofDays(10), "Schokolade", BigDecimal.valueOf(7.0), new Date());
-        KuchenImpl cake3 = new KuchenImpl(hersteller1, Set.of(Allergen.Sesamsamen), 400, Duration.ofDays(8), BigDecimal.valueOf(5.0), new Date());
+        KuchenImpl cake1 = new KuchenImpl("Kremkuchen",hersteller1, Set.of(Allergen.Gluten, Allergen.Erdnuss), 400, Duration.ofDays(8), BigDecimal.valueOf(5.0));
+        KuchenImpl cake2 = new KremkuchenImpl("Kremkuchen", hersteller2, Set.of(Allergen.Haselnuss), 300, Duration.ofDays(10), "Schokolade", BigDecimal.valueOf(7.0));
+        KuchenImpl cake3 = new KuchenImpl("Kremkuchen",hersteller1, Set.of(Allergen.Sesamsamen), 400, Duration.ofDays(8), BigDecimal.valueOf(5.0));
 
         // Add the cakes to the vending machine
         vendingMachine.addItem(cake1, hersteller1);
@@ -51,18 +51,18 @@ public class Main {
         }
 
         // Update inspection date for all items in the vending machine
-        vendingMachine.updateInspectionDate();
+        vendingMachine.updateInspectionDate(2);
 
         // Remove an item from the vending machine
         System.out.println("\nRemoving item with Fachnummer 2");
-        vendingMachine.removeItem(cake2);
-        vendingMachine.removeItem(cake1);
+        vendingMachine.removeItem(1);
+        vendingMachine.removeItem(2);
 
 
-        KuchenImpl cake4 = new KuchenImpl(hersteller1, Set.of(Allergen.Gluten, Allergen.Erdnuss), 400, Duration.ofDays(8), BigDecimal.valueOf(5.0), new Date());
-        KuchenImpl cake5 = new KremkuchenImpl(hersteller2, Set.of(Allergen.Haselnuss), 300, Duration.ofDays(10), "Schokolade", BigDecimal.valueOf(7.0), new Date());
-        KuchenImpl cake6 = new KuchenImpl(hersteller1, Set.of(Allergen.Sesamsamen), 400, Duration.ofDays(8), BigDecimal.valueOf(5.0), new Date());
-        KuchenImpl cake7 = new KuchenImpl(hersteller1, Set.of(Allergen.Sesamsamen), 400, Duration.ofDays(8), BigDecimal.valueOf(5.0), new Date());
+        KuchenImpl cake4 = new KuchenImpl("Kremkuchen",hersteller1, Set.of(Allergen.Gluten, Allergen.Erdnuss), 400, Duration.ofDays(8), BigDecimal.valueOf(5.0));
+        KuchenImpl cake5 = new KremkuchenImpl("Kremkuchen",hersteller2, Set.of(Allergen.Haselnuss), 300, Duration.ofDays(10), "Schokolade", BigDecimal.valueOf(7.0));
+        KuchenImpl cake6 = new KuchenImpl("Kremkuchen",hersteller1, Set.of(Allergen.Sesamsamen), 400, Duration.ofDays(8), BigDecimal.valueOf(5.0));
+        KuchenImpl cake7 = new KuchenImpl("Kremkuchen",hersteller1, Set.of(Allergen.Sesamsamen), 400, Duration.ofDays(8), BigDecimal.valueOf(5.0));
 
 
         // Add the cakes to the vending machine
@@ -89,6 +89,6 @@ public class Main {
                 System.out.println("Kremsorte: " + kremkuchen.getKremsorte());
             }
             System.out.println("---------------------------------------");
-        }*/
+        }
     }
 }

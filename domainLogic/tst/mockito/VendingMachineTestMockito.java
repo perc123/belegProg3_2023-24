@@ -69,8 +69,8 @@ class VendingMachineTestMockito {
     @Test
     void testRemoveItem() {
         vendingMachine.addItem(mockObstkuchen1, mockHersteller);
-        assertTrue(vendingMachine.removeItem(mockObstkuchen1));
-        assertFalse(vendingMachine.removeItem(mockObstkuchen1)); // Not in vending machine
+        assertTrue(vendingMachine.removeItem(1));
+        assertFalse(vendingMachine.removeItem(1)); // Not in vending machine
     }
 
     @Test
@@ -84,7 +84,7 @@ class VendingMachineTestMockito {
     void testUpdateInspectionDate() {
         vendingMachine.addItem(mockObstkuchen1, mockHersteller);
         vendingMachine.addItem(mockObstkuchen2, mockHersteller);
-        vendingMachine.updateInspectionDate();
+        vendingMachine.updateInspectionDate(1);
 
         Date currentDate = new Date(System.currentTimeMillis());
         for (KuchenImpl kuchen : vendingMachine.listItems()) {

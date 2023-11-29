@@ -25,6 +25,20 @@ public class HerstellerList implements EventListener {
     public List<Hersteller> getAllHersteller() {
         return herstellerList;
     }
+    public void displayHersteller(){
+        for (Hersteller hersteller : herstellerList) {
+            System.out.println("Hersteller Name: " + hersteller.getName());
+        }
+    }
+
+    public Hersteller findHerstellerByName(String name) {
+        for (Hersteller hersteller : herstellerList) {
+            if (hersteller.getName().equalsIgnoreCase(name)) {
+                return hersteller;
+            }
+        }
+        return null;  // Return null if no matching Hersteller is found
+    }
 
     @Override
     public void onEvent(EventType eventType, Object data) {

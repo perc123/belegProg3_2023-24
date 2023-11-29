@@ -41,8 +41,8 @@ class VendingMachineTest {
     @Test
     void testRemoveItem() {
         vendingMachine.addItem(kuchen1, hersteller1);
-        assertTrue(vendingMachine.removeItem(kuchen1));
-        assertFalse(vendingMachine.removeItem(kuchen1)); // Not in vending machine
+        assertTrue(vendingMachine.removeItem(1));
+        assertFalse(vendingMachine.removeItem(2)); // Not in vending machine
     }
 
     @Test
@@ -59,7 +59,7 @@ class VendingMachineTest {
     void testUpdateInspectionDate() {
         vendingMachine.addItem(kuchen1, hersteller1);
         vendingMachine.addItem(kuchen2, hersteller1);
-        vendingMachine.updateInspectionDate();
+        vendingMachine.updateInspectionDate(2);
 
         Date currentDate = new java.sql.Date(System.currentTimeMillis());
         for (KuchenImpl kuchen : vendingMachine.listItems()) {

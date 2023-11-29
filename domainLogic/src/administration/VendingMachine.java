@@ -41,14 +41,30 @@ public class VendingMachine {
         return newFachnummer;
     }
 
-    public boolean removeItem(Kuchen kuchen) {
-        boolean removed = inventory.remove(kuchen);
-        if (removed) {
-            // Reassign correct Fachnummer values after removal
-            reassignFachnummer();
+    public boolean removeItem(int trayNumber) {
+        // Find the cake with the specified tray number
+        KuchenImpl cakeToRemove = null;
+        for (KuchenImpl kuchen : inventory) {
+            if (kuchen.getFachnummer() == trayNumber) {
+                cakeToRemove = kuchen;
+                break;
+            }
         }
-        return removed;
+        // If the cake is found, remove it
+        if (cakeToRemove != null) {
+            boolean removed = inventory.remove(cakeToRemove);
+
+            // Reassign correct Fachnummer values after removal
+            if (removed) {
+                reassignFachnummer();
+            }
+            return removed;
+        }
+
+        // If no cake is found with the specified tray number, return false
+        return false;
     }
+
 
     private void reassignFachnummer() {
         int newFachnummer = 1;
@@ -62,13 +78,16 @@ public class VendingMachine {
         return inventory;
     }
 
-    public void updateInspectionDate() {
+    public void updateInspectionDate(int fachnummer) {
         Date currentDate = new java.sql.Date(System.currentTimeMillis());
 
         for (KuchenImpl kuchen : inventory) {
-            kuchen.setInspektionsdatum(currentDate);
+            if (kuchen.getFachnummer() == fachnummer) {
+                kuchen.setInspektionsdatum(currentDate);
+                break;  // cake is found and updated
+            }
         }
-
         Collections.sort(inventory, Comparator.comparing(KuchenImpl::getInspektionsdatum));
     }
+
 }

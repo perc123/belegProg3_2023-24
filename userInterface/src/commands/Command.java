@@ -1,6 +1,9 @@
 package commands;
 
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Command {
     public enum Operator {
         INSERT_MODE(":c"),
@@ -27,9 +30,13 @@ public class Command {
     }
 
     private final Operator operator;
+    private final List<String> arguments;
 
     public Command(String text) {
-        String op = text.trim().toUpperCase(); // Convert to uppercase for case-insensitive comparison
+        String[] parts = text.trim().split("\\s+");
+        String op = parts[0].toUpperCase();
+        this.arguments = Arrays.asList(parts).subList(1, parts.length);
+
         for (Operator value : Operator.values()) {
             if (op.equals(value.getValue().toUpperCase())) {
                 this.operator = value;
@@ -41,5 +48,9 @@ public class Command {
 
     public Operator getOperator() {
         return operator;
+    }
+
+    public List<String> getArguments() {
+        return arguments;
     }
 }
