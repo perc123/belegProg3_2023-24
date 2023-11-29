@@ -4,7 +4,7 @@ import administration.HerstellerImpl;
 import administration.HerstellerList;
 import cakes.KuchenImpl;
 import cakes.ObstkuchenImpl;
-import commands.CommandType;
+import commands.Command;
 import eventSystem.EventSystem;
 import eventSystem.EventType;
 import kuchen.Allergen;
@@ -16,15 +16,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
+import java.util.Scanner;
+
 public class Console {
-    private EventSystem eventSystem;
     private boolean isRunning;
 
-
-    public Console(EventSystem eventSystem) {
-        this.eventSystem = eventSystem;
+    public Console() {
         this.isRunning = true;
-
     }
 
     public void start() {
@@ -33,7 +31,8 @@ public class Console {
 
         while (isRunning) {
             String userInput = scanner.nextLine();
-            executeCommand(userInput);
+            Command command = new Command(userInput);
+            executeCommand(command);
         }
 
         scanner.close();
@@ -41,142 +40,30 @@ public class Console {
 
     private void printCommands() {
         System.out.println("Available commands:");
-        System.out.println(":c - Switch to insert mode");
-        System.out.println(":d - Switch to delete mode");
-        System.out.println(":r - Switch to display mode");
-        System.out.println(":u - Switch to update mode");
-        System.out.println(":p - Switch to persistence mode");
+        for (Command.Operator operator : Command.Operator.values()) {
+            System.out.println(operator.getValue());
+        }
         System.out.println("exit - Exit the application");
     }
 
-    private void executeCommand(String userInput) {
-        if (userInput.equals("exit")) {
-            isRunning = false;
-        } else if (userInput.startsWith(":")) {
-            // Handle built-in commands
-            handleBuiltInCommand(userInput);
-        } else {
-            System.out.println("Please enter a correct command");
+    private void executeCommand(Command command) {
+        switch (command.getOperator()) {
+            case EXIT:
+                isRunning = false;
+                break;
+            case ERROR:
+                System.out.println("Invalid command. Type 'exit' to exit the application.");
+                break;
+            default:
+                switchToMode(command.getOperator());
+                // Perform operations based on the command type
+                // You can call other methods or perform operations specific to each command type here
+                break;
         }
     }
 
-    private void handleBuiltInCommand(String userInput) {
-        // Handle built-in commands
-        switch (userInput) {
-            case ":c" -> {
-                switchToMode(CommandType.INSERT_MODE);
-                Scanner scanner = new Scanner(System.in);
-                String inputLine = scanner.nextLine();
-                String[] values = inputLine.split(" ");
-                if (values.length == 1) {
-                    insertHersteller(inputLine);
-                }
-                else if (values.length == 6) {
-                    System.out.println("Kuchen:");
-                    //insert Kuchen
-                }
-                else if (values.length == 7) {
-                    //insert Obstkuchen
-                    String kuchenType = values[0];
-                    Hersteller herstellerName = new HerstellerImpl(values[1]);
-                    BigDecimal price = new BigDecimal(values[2]);
-                    int nutritionValue = Integer.parseInt(values[3]);
-                    Duration durability = Duration.ofDays(Long.parseLong(values[4]));
-                    String allergens = values[5];
-                    String obstsorte = values[6];
-                    //String kremsorte = values[7];
-                    insertKuchen(kuchenType,herstellerName,price,nutritionValue,durability,allergens,obstsorte);
-                }
-                /*else if (values.length == 8) {
-                    //insert Obsttorte
-                }*/
-                else {
-                    System.out.println("Invalid input. Please provide all required values.");
-                }
-            }
-            case ":d" -> switchToMode(CommandType.DELETE_MODE);
-            case ":r" -> {
-                System.out.println("For Hersteller Display, give :h. For Kuchen Display, give :k");
-                Scanner scanner = new Scanner(System.in);
-                String displayInput = scanner.nextLine();
-                switch (displayInput) {
-                    case ":h" -> {
-                        switchToMode(CommandType.DISPLAY_MODE);
-                        eventSystem.triggerEvent(EventType.DISPLAY_HERSTELLER, userInput);
-                    }
-                    case ":k" -> {
-                        switchToMode(CommandType.DISPLAY_MODE);
-                        eventSystem.triggerEvent(EventType.DISPLAY_KUCHEN, userInput);
-                    }
-                    default -> System.out.println("Invalid input for display. Please enter :h or :k.");
-                }
-            }
-            case ":u" -> switchToMode(CommandType.UPDATE_MODE);
-            case ":p" -> switchToMode(CommandType.PERSISTENCE_MODE);
-            default -> System.out.println("Invalid command. Type 'exit' to exit the application.");
-        }
+    private void switchToMode(Command.Operator operator) {
+        System.out.println("Switching to " + operator);
     }
 
-    private void switchToMode(CommandType commandType) {
-        System.out.println("Switching to " + commandType);
-    }
-
-
-    private void insertHersteller(String name) {
-        HerstellerImpl hersteller = new HerstellerImpl(name);
-        eventSystem.triggerEvent(EventType.INSERT_HERSTELLER, hersteller);
-    }
-
-    private void insertKuchen(String type, Hersteller herstellerName, BigDecimal price, int nutritionValue, Duration durability, String allergens, String obstsorte) {
-        //HerstellerImpl hersteller = new HerstellerImpl(herstellerName);
-
-        Set<Allergen> allergenSet = Arrays.stream(allergens.split(","))
-                .map(Allergen::valueOf)
-                .collect(Collectors.toSet());
-        
-        KuchenImpl kuchen = new ObstkuchenImpl(type, herstellerName, allergenSet, nutritionValue, durability, price, obstsorte);
-        eventSystem.triggerEvent(EventType.INSERT_KUCHEN, kuchen);
-    }
-
-
-    private void displayHersteller() {
-        // noch zu implementieren
-    }
-
-    private void displayKuchen(String type) {
-        // noch zu implementieren
-    }
-
-    private void displayAllergene(String filter) {
-        // noch zu implementieren
-    }
-
-    private void deleteHersteller(String name) {
-        // noch zu implementieren
-    }
-
-    private void removeKuchen(int fachnummer) {
-        // noch zu implementieren
-    }
-
-    private void updateInspectionDate(int fachnummer) {
-        // noch zu implementieren
-    }
-
-    private void saveDataJOS() {
-        // noch zu implementieren
-    }
-
-    private void loadDataJOS() {
-        // noch zu implementieren
-    }
-
-    private void saveDataJBP() {
-        // noch zu implementieren
-    }
-
-    private void loadDataJBP() {
-        // noch zu implementieren
-    }
 }
-
