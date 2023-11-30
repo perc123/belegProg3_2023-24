@@ -5,6 +5,7 @@ import administration.HerstellerList;
 import administration.VendingMachine;
 import cakes.KremkuchenImpl;
 import cakes.KuchenImpl;
+import cakes.ObstkuchenImpl;
 import commands.Command;
 import kuchen.Allergen;
 import verwaltung.Hersteller;
@@ -92,7 +93,7 @@ public class Console {
             List<Allergen> allergens = convertToAllergenList(arguments.get(5));
             String fruitVariety = (arguments.size() > 6) ? arguments.get(6) : null;
             String creamType = (arguments.size() > 7) ? arguments.get(7) : null;
-            KuchenImpl cake = new KremkuchenImpl("Kremkuchen",manufacturerName,allergens, nutritionalValue, Duration.ofDays(shelfLife), creamType, BigDecimal.valueOf(price));
+            KuchenImpl cake = new ObstkuchenImpl("Kremkuchen",manufacturerName,allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price),creamType);
 
             vendingMachine.addItem(cake, manufacturerName);
             System.out.println("Inserted a " + cakeType);

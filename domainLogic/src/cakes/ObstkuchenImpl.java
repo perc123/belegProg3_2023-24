@@ -26,6 +26,7 @@ public class ObstkuchenImpl extends KuchenImpl implements Obstkuchen {
     ) {
         super(kuchenTyp,hersteller, allergene, naehrwert, haltbarkeit, preis);
         this.obstsorte = obstsorte;
+        this.getInspektionsdatum();
     }
 
     @Override

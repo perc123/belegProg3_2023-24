@@ -3,14 +3,12 @@ import administration.VendingMachine;
 import cakes.KremkuchenImpl;
 import cakes.KuchenImpl;
 import kuchen.Allergen;
-import kuchen.Kuchen;
 
 import java.util.List;
 import java.util.Random;
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.util.Random;
 import java.util.Set;
 
 public class CakeSimulation implements Runnable {
@@ -40,23 +38,14 @@ public class CakeSimulation implements Runnable {
                 String[] randomCakeInfo = createRandomCakeInfo();
                 KuchenImpl randomCake = createRandomCake(randomCakeInfo);
 
-                // Add the cake to the vending machine
                 vendingMachine.addItem(randomCake, randomCake.getHersteller());
 
-                // Print statement for cake added
                 System.out.println("Thread " + Thread.currentThread().getId() +
                         ", Cake added, cake" + randomCake.getFachnummer());
 
                 // Notify waiting threads that the vending machine has been modified
                 vendingMachine.notifyAll();
             }
-
-/*
-            try {
-                Thread.sleep(500); // 1-second delay (adjust as needed)
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }*/
         }
     }
 
@@ -100,14 +89,11 @@ public class CakeSimulation implements Runnable {
 
                 List<KuchenImpl> items = vendingMachine.listItems();
                 if (!items.isEmpty()) {
-                    // Retrieve a random cake index for deletion
                     int randomIndex = random.nextInt(items.size());
                     KuchenImpl cakeToDelete = items.get(randomIndex);
 
-                    // Delete the cake from the vending machine
                     vendingMachine.removeItem(cakeToDelete.getFachnummer());
 
-                    // Print statement for cake deletion
                     System.out.println("Thread " + Thread.currentThread().getId() +
                             ", Cake deleted, cake" + cakeToDelete.getFachnummer());
 
@@ -115,13 +101,6 @@ public class CakeSimulation implements Runnable {
                     vendingMachine.notifyAll();
                 }
             }
-
-/*
-            try {
-                Thread.sleep(1000); // 1-second delay (adjust as needed)
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }*/
         }
     }
 }
