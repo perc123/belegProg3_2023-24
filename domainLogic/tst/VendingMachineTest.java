@@ -61,7 +61,7 @@ class VendingMachineTest {
         vendingMachine.addItem(kuchen2, hersteller1);
         vendingMachine.updateInspectionDate(2);
 
-        Date currentDate = new java.sql.Date(System.currentTimeMillis());
+        Date currentDate = new Date(System.currentTimeMillis());
         for (KuchenImpl kuchen : vendingMachine.listItems()) {
             assertNotNull(kuchen.getInspektionsdatum());
             assertEquals(currentDate, kuchen.getInspektionsdatum());

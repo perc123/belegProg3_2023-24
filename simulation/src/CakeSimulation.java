@@ -51,12 +51,12 @@ public class CakeSimulation implements Runnable {
                 vendingMachine.notifyAll();
             }
 
-            // Introduce a delay between insertions for better simulation
+/*
             try {
                 Thread.sleep(500); // 1-second delay (adjust as needed)
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
     }
 
@@ -116,12 +116,12 @@ public class CakeSimulation implements Runnable {
                 }
             }
 
-            // Introduce a delay between retrieval and deletion for better simulation
+/*
             try {
                 Thread.sleep(1000); // 1-second delay (adjust as needed)
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
     }
 }

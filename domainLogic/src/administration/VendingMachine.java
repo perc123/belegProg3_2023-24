@@ -43,6 +43,7 @@ public class VendingMachine {
 
     public boolean removeItem(int trayNumber) {
         KuchenImpl cakeToRemove = null;
+        boolean removed = false;
         for (KuchenImpl kuchen : inventory) {
             if (kuchen.getFachnummer() == trayNumber) {
                 cakeToRemove = kuchen;
@@ -50,7 +51,7 @@ public class VendingMachine {
             }
         }
         if (cakeToRemove != null) {
-            boolean removed = inventory.remove(cakeToRemove);
+            removed = inventory.remove(cakeToRemove);
 
             // Reassign correct Fachnummer values after removal
             if (removed) {
@@ -59,14 +60,12 @@ public class VendingMachine {
             return removed;
         }
 
-        return false;
+        return removed;
     }
 
     public boolean isFull() {
         return inventory.size() >= capacity;
     }
-
-
     private void reassignFachnummer() {
         int newFachnummer = 1;
         for (KuchenImpl kuchen : inventory) {
@@ -88,13 +87,7 @@ public class VendingMachine {
                 break;  // cake is found and updated
             }
         }
-
-        // Remove null values from the list before sorting
         inventory.removeIf(kuchen -> kuchen.getInspektionsdatum() == null);
-
-        // Add a null check before sorting
         inventory.sort(Comparator.comparing(KuchenImpl::getInspektionsdatum, Comparator.nullsLast(Comparator.naturalOrder())));
     }
-
-
 }
