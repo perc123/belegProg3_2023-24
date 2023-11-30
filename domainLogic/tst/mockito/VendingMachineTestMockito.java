@@ -25,10 +25,10 @@ class VendingMachineTestMockito {
     private HerstellerImpl mockHersteller;
 
     @Mock
-    private ObstkuchenImpl mockObstkuchen1;
+    private KuchenImpl mockObstkuchen1;
 
     @Mock
-    private ObstkuchenImpl mockObstkuchen2;
+    private KuchenImpl mockObstkuchen2;
 
     @Captor
     private ArgumentCaptor<Date> dateCaptor;
@@ -42,21 +42,19 @@ class VendingMachineTestMockito {
 
         when(mockObstkuchen1.getHersteller()).thenReturn(mockHersteller);
         when(mockObstkuchen1.getKuchenTyp()).thenReturn("Obstkuchen");
-        when(mockObstkuchen1 instanceof ObstkuchenImpl).thenReturn(true);
         when(mockObstkuchen1.getAllergene()).thenReturn(Set.of(Allergen.Sesamsamen));
         when(mockObstkuchen1.getNaehrwert()).thenReturn(200);
         when(mockObstkuchen1.getHaltbarkeit()).thenReturn(Duration.ofDays(6));
         when(mockObstkuchen1.getPreis()).thenReturn(BigDecimal.valueOf(20));
-        when(mockObstkuchen1.getObstsorte()).thenReturn("Apfel");
+        //when(mockObstkuchen1.getObstsorte()).thenReturn("Apfel");
 
         when(mockObstkuchen2.getHersteller()).thenReturn(mockHersteller);
         when(mockObstkuchen2.getKuchenTyp()).thenReturn("Obstkuchen");
-        when(mockObstkuchen2 instanceof ObstkuchenImpl).thenReturn(true);
         when(mockObstkuchen2.getAllergene()).thenReturn(Set.of(Allergen.Haselnuss));
         when(mockObstkuchen2.getNaehrwert()).thenReturn(100);
         when(mockObstkuchen2.getHaltbarkeit()).thenReturn(Duration.ofDays(6));
         when(mockObstkuchen2.getPreis()).thenReturn(BigDecimal.valueOf(30));
-        when(mockObstkuchen2.getObstsorte()).thenReturn("Birne");
+        //when(mockObstkuchen2.getObstsorte()).thenReturn("Birne");
     }
 
     @Test

@@ -25,8 +25,9 @@ public class Console {
     private VendingMachine vendingMachine;
     private boolean isRunning;
 
-    public Console() {
+    public Console(VendingMachine vendingMachine) {
         this.isRunning = true;
+        this.vendingMachine = vendingMachine;  // Initialize the vendingMachine variable
     }
 
     public void start() {
@@ -194,25 +195,42 @@ public class Console {
         for (String allergen : allergenArray) {
             try {
                 // Convert the trimmed allergen to Allergen enum
-                allergens.add(Allergen.valueOf(allergen.trim().toUpperCase()));
+                Allergen allergenEnum = Allergen.valueOf(allergen.trim().toUpperCase());
+
+                // Check if the allergen is already in the list
+                if (!allergens.contains(allergenEnum)) {
+                    allergens.add(allergenEnum);
+                } else {
+                    System.out.println("Duplicate allergen: " + allergen.trim());
+                }
             } catch (IllegalArgumentException e) {
                 // Handle invalid allergen input
                 System.out.println("Invalid allergen: " + allergen.trim());
                 return null;
             }
         }
+
         return allergens;
     }
 
     private long calculateRemainingShelfLife(KuchenImpl cake) {
         Instant currentDate = Instant.now();
-        Instant inspectionInstant = cake.getInspektionsdatum().toInstant();
-        LocalDate inspectionDate = inspectionInstant.atZone(ZoneId.systemDefault()).toLocalDate();
-        long shelfLifeDays = cake.getHaltbarkeit().toDays();
-        long daysElapsed = ChronoUnit.DAYS.between(inspectionDate, currentDate);
+        Date inspectionDate = cake.getInspektionsdatum();
 
-        return Math.max(0, shelfLifeDays - daysElapsed);
+        if (inspectionDate != null) {
+            Instant inspectionInstant = inspectionDate.toInstant();
+            LocalDate inspectionLocalDate = inspectionInstant.atZone(ZoneId.systemDefault()).toLocalDate();
+            long shelfLifeDays = cake.getHaltbarkeit().toDays();
+            long daysElapsed = ChronoUnit.DAYS.between(inspectionLocalDate, currentDate);
+            return Math.max(0, shelfLifeDays - daysElapsed);
+        } else {
+            // Handle the case where inspection date is null
+            return 0;
+        }
     }
+
+
+
     private void handleDeleteMode(List<String> arguments) {
         if (arguments.isEmpty()) {
             System.out.println("Invalid arguments for delete mode.");
