@@ -1,5 +1,6 @@
 package administration;
 
+import cakes.KremkuchenImpl;
 import cakes.KuchenImpl;
 import kuchen.Kuchen;
 import verwaltung.Hersteller;
@@ -15,19 +16,19 @@ public class VendingMachine {
         this.inventory = new ArrayList<>();
     }
 
-    public boolean addItem(Kuchen kuchen, Hersteller hersteller) {
-        if (inventory.size() < capacity && kuchen instanceof KuchenImpl) {
+    public boolean addItem(Kuchen kuchen, HerstellerImpl hersteller) {
+        System.out.println("cake added");
+
+        if (inventory.size() < capacity && kuchen instanceof KremkuchenImpl) {
             KuchenImpl kuchenImpl = (KuchenImpl) kuchen;
-            // Check if Hersteller exists
-            if (kuchenImpl.getHersteller() == hersteller) {
-                int newFachnummer = findFirstAvailableFachnummer();
-                kuchenImpl.setFachnummer(newFachnummer);
-                inventory.add(kuchenImpl);
-                return true;
-            }
+            int newFachnummer = findFirstAvailableFachnummer();
+            kuchenImpl.setFachnummer(newFachnummer);
+            inventory.add(kuchenImpl);
+            return true;
         }
-        return false; // Vending machine is full, kuchen is not an instance of KuchenImpl, or wrong Hersteller
+        return false; // Vending machine is full or kuchen is not an instance of KuchenImpl
     }
+
 
     private int findFirstAvailableFachnummer() {
         int newFachnummer = 1;

@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Date;
 
 public class KremkuchenImpl extends KuchenImpl implements Kremkuchen, Verkaufsobjekt {
+    private String kuchenTyp;
     private String kremsorte;
 
     public KremkuchenImpl(
@@ -20,14 +21,18 @@ public class KremkuchenImpl extends KuchenImpl implements Kremkuchen, Verkaufsob
             Collection<Allergen> allergene,
             int naehrwert,
             Duration haltbarkeit,
-            String kremsorte,
-            BigDecimal preis
+            BigDecimal preis,
+            String kremsorte
             //Date inspektionsdatum
     ) {
         super(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis);
         this.kremsorte = kremsorte;
     }
-
+    @Override
+    public String getKuchenTyp() {
+        kuchenTyp = "Kremkuchen";
+        return kuchenTyp;
+    }
     @Override
     public String getKremsorte() {
         return kremsorte;

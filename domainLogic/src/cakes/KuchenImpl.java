@@ -1,5 +1,6 @@
 package cakes;
 
+import administration.HerstellerImpl;
 import kuchen.Allergen;
 import kuchen.Kuchen;
 import verwaltung.Hersteller;
@@ -12,7 +13,7 @@ import java.util.Date;
 
 public class KuchenImpl implements Kuchen, Verkaufsobjekt {
     private String kuchenTyp;
-    private Hersteller hersteller;
+    private HerstellerImpl hersteller;
     private Collection<Allergen> allergene;
     private int naehrwert;
     private Duration haltbarkeit;
@@ -29,7 +30,7 @@ public class KuchenImpl implements Kuchen, Verkaufsobjekt {
             BigDecimal preis
             //Date inspektionsdatum
     ) {
-        this.hersteller = hersteller;
+        this.hersteller = (HerstellerImpl) hersteller;
         this.allergene = allergene;
         this.naehrwert = naehrwert;
         this.haltbarkeit = haltbarkeit;
@@ -41,7 +42,7 @@ public class KuchenImpl implements Kuchen, Verkaufsobjekt {
         return kuchenTyp;
     }
     @Override
-    public Hersteller getHersteller() {
+    public HerstellerImpl getHersteller() {
         return hersteller;
     }
 

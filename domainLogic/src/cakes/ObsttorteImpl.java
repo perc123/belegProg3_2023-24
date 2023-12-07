@@ -20,9 +20,9 @@ public class ObsttorteImpl extends ObstkuchenImpl implements Obsttorte {
             Collection<Allergen> allergene,
             int naehrwert,
             Duration haltbarkeit,
-            String obstsorte,
+            BigDecimal preis,
             String kremsorte,
-            BigDecimal preis
+            String obstsorte
             //Date inspektionsdatum
     ) {
         super(kuchenTyp,hersteller, allergene, naehrwert, haltbarkeit, preis, obstsorte);

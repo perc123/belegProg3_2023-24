@@ -69,7 +69,7 @@ public class CakeSimulation implements Runnable {
         String kremsorte = randomCakeInfo[4];
         BigDecimal preis = BigDecimal.valueOf(Double.parseDouble(randomCakeInfo[5]));
 
-        return new KremkuchenImpl(kuchenTyp, hersteller, allergy, naehwert, duration, kremsorte, preis);
+        return new KremkuchenImpl(kuchenTyp, hersteller, allergy, naehwert, duration, preis, kremsorte);
     }
 
     public void retrieveAndDeleteCakes() {

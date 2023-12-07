@@ -6,6 +6,7 @@ import administration.VendingMachine;
 import cakes.KremkuchenImpl;
 import cakes.KuchenImpl;
 import cakes.ObstkuchenImpl;
+import cakes.ObsttorteImpl;
 import commands.Command;
 import kuchen.Allergen;
 import verwaltung.Hersteller;
@@ -53,27 +54,13 @@ public class Console {
 
     private void executeCommand(Command command) {
         switch (command.getOperator()) {
-            case EXIT:
-                isRunning = false;
-                break;
-            case ERROR:
-                System.out.println("Invalid command. Type 'exit' to exit the application.");
-                break;
-            case INSERT_MODE:
-                handleInsertMode(command.getArguments());
-                break;
-            case DELETE_MODE:
-                handleDeleteMode(command.getArguments());
-                break;
-            case DISPLAY_MODE:
-                handleDisplayMode(command.getArguments());
-                break;
-            case UPDATE_MODE:
-                handleUpdateMode(command.getArguments());
-                break;
-            default:
-                switchToMode(command.getOperator());
-                break;
+            case EXIT -> isRunning = false;
+            case ERROR -> System.out.println("Invalid command. Type 'exit' to exit the application.");
+            case INSERT_MODE -> handleInsertMode(command.getArguments());
+            case DELETE_MODE -> handleDeleteMode(command.getArguments());
+            case DISPLAY_MODE -> handleDisplayMode(command.getArguments());
+            case UPDATE_MODE -> handleUpdateMode(command.getArguments());
+            default -> switchToMode(command.getOperator());
         }
     }
     private void switchToMode(Command.Operator operator) {
@@ -84,19 +71,40 @@ public class Console {
         if (arguments.size() ==1 ){
             insertHersteller(arguments.get(0));
         }
-        else if (arguments.size() == 8){
+
+        else if (arguments.size() == 7 || arguments.size() == 8){
             String cakeType = arguments.get(0);
-            HerstellerImpl manufacturerName = new HerstellerImpl(arguments.get(1));
-            double price = Double.parseDouble(arguments.get(2));
+            //HerstellerImpl manufacturerName = new HerstellerImpl(arguments.get(1));
+            HerstellerImpl manufacturerName = (HerstellerImpl) herstellerList.findHerstellerByName(arguments.get(1));
+            List<Allergen> allergens = convertToAllergenList(arguments.get(2));
             int nutritionalValue = Integer.parseInt(arguments.get(3));
             int shelfLife = Integer.parseInt(arguments.get(4));
-            List<Allergen> allergens = convertToAllergenList(arguments.get(5));
+            double price = Double.parseDouble(arguments.get(5));
             String fruitVariety = (arguments.size() > 6) ? arguments.get(6) : null;
             String creamType = (arguments.size() > 7) ? arguments.get(7) : null;
-            KuchenImpl cake = new ObstkuchenImpl("Kremkuchen",manufacturerName,allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price),creamType);
+            if (herstellerList.getAllHersteller().contains(manufacturerName)){
+                if (cakeType.equals("Kremkuchen")){
+                    KuchenImpl cake = new KremkuchenImpl(cakeType,manufacturerName,allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price),creamType);
+                    vendingMachine.addItem(cake, manufacturerName);
+                    System.out.println("Inserted a " + cakeType);
 
-            vendingMachine.addItem(cake, manufacturerName);
-            System.out.println("Inserted a " + cakeType);
+                }
+                else if(cakeType.equals("Obstkuchen")){
+                    KuchenImpl cake = new ObstkuchenImpl(cakeType,manufacturerName,allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price),creamType);
+                    vendingMachine.addItem(cake, manufacturerName);
+                    System.out.println("Inserted a " + cakeType);
+                }
+                else if(cakeType.equals("Obsttorte")){
+                    KuchenImpl cake = new ObsttorteImpl(cakeType,manufacturerName,allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price),creamType, fruitVariety);
+                    vendingMachine.addItem(cake, manufacturerName);
+                    System.out.println("Inserted a " + cakeType);
+                }
+                else
+                    System.out.println("Not a valid cake type" + cakeType);
+
+            }
+            else
+                System.out.println("Cake manufacturer not in the list.");
         }
         else
             System.out.println("Invalid arguments for insert mode.");
@@ -114,12 +122,7 @@ public class Console {
                 displayManufacturers();
                 break;
             case "cake":
-                if (arguments.size() > 1) {
-                    String cakeType = arguments.get(1);
-                    displayCakes(cakeType);
-                } else {
-                    displayCakes(null);
-                }
+                displayCakes();
                 break;
             case "allergies":
                 if (arguments.size() > 1) {
@@ -138,17 +141,17 @@ public class Console {
         herstellerList.displayHersteller();
     }
 
-    private void displayCakes(String cakeType) {
+    private void displayCakes() {
         System.out.println("Cake Display:");
 
         for (KuchenImpl cake : vendingMachine.listItems()) {
-            if (cakeType == null || cake.getKuchenTyp().equalsIgnoreCase(cakeType)) {
+
                 System.out.println("Cake Type: " + cake.getKuchenTyp());
                 System.out.println("Tray Number: " + cake.getFachnummer());
                 System.out.println("Inspection Date: " + cake.getInspektionsdatum());
                 System.out.println("Remaining Shelf Life: " + calculateRemainingShelfLife(cake) + " days");
                 System.out.println();
-            }
+
         }
     }
 
@@ -174,9 +177,8 @@ public class Console {
 
     private void displayAllergensMatchingFilter(Collection<Allergen> allergens, boolean contains) {
         for (Allergen allergen : allergens) {
-            boolean matchesFilter = contains ? true : false;
 
-            if (matchesFilter) {
+            if (contains) {
                 System.out.println(allergen);
             }
         }
@@ -188,6 +190,21 @@ public class Console {
         herstellerList.addHersteller(hersteller);
     }
 
+    public static List<Allergen> convertToAllergenList(String... allergies) {
+        List<Allergen> allergenList = new ArrayList<>();
+
+        for (String allergy : allergies) {
+            try {
+                Allergen allergen = Allergen.valueOf(allergy.trim());
+                allergenList.add(allergen);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid allergen: " + allergy);
+                // Handle invalid allergen (not present in the enum)
+            }
+        }
+
+        return allergenList;
+    }
     private List<Allergen> convertToAllergenList(String allergenInput) {
         List<Allergen> allergens = new ArrayList<>();
 
@@ -196,7 +213,7 @@ public class Console {
         for (String allergen : allergenArray) {
             try {
                 // Convert the trimmed allergen to Allergen enum
-                Allergen allergenEnum = Allergen.valueOf(allergen.trim().toUpperCase());
+                Allergen allergenEnum = Allergen.valueOf(allergen.trim());
 
                 // Check if the allergen is already in the list
                 if (!allergens.contains(allergenEnum)) {

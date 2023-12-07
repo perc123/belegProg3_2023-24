@@ -23,7 +23,7 @@ public class Main {
         herstellerList.addHersteller(hersteller1);
 
         KuchenImpl cake1 = new KuchenImpl("Kremkuchen",hersteller1, Set.of(Allergen.Gluten, Allergen.Erdnuss), 400, Duration.ofDays(8), BigDecimal.valueOf(5.0));
-        KuchenImpl cake2 = new KremkuchenImpl("Kremkuchen", hersteller2, Set.of(Allergen.Haselnuss), 300, Duration.ofDays(10), "Schokolade", BigDecimal.valueOf(7.0));
+        KuchenImpl cake2 = new KremkuchenImpl("Kremkuchen", hersteller2, Set.of(Allergen.Haselnuss), 300, Duration.ofDays(10), BigDecimal.valueOf(7.0), "Schokolade");
         KuchenImpl cake3 = new KuchenImpl("Kremkuchen",hersteller1, Set.of(Allergen.Sesamsamen), 400, Duration.ofDays(8), BigDecimal.valueOf(5.0));
 
         // Add the cakes to the vending machine
@@ -60,7 +60,7 @@ public class Main {
 
 
         KuchenImpl cake4 = new KuchenImpl("Kremkuchen",hersteller1, Set.of(Allergen.Gluten, Allergen.Erdnuss), 400, Duration.ofDays(8), BigDecimal.valueOf(5.0));
-        KuchenImpl cake5 = new KremkuchenImpl("Kremkuchen",hersteller2, Set.of(Allergen.Haselnuss), 300, Duration.ofDays(10), "Schokolade", BigDecimal.valueOf(7.0));
+        KuchenImpl cake5 = new KremkuchenImpl("Kremkuchen",hersteller2, Set.of(Allergen.Haselnuss), 300, Duration.ofDays(10), BigDecimal.valueOf(7.0), "Schokolade");
         KuchenImpl cake6 = new KuchenImpl("Kremkuchen",hersteller1, Set.of(Allergen.Sesamsamen), 400, Duration.ofDays(8), BigDecimal.valueOf(5.0));
         KuchenImpl cake7 = new KuchenImpl("Kremkuchen",hersteller1, Set.of(Allergen.Sesamsamen), 400, Duration.ofDays(8), BigDecimal.valueOf(5.0));
 
