@@ -33,76 +33,86 @@ public class Console {
 
         while (isRunning) {
             String userInput = scanner.nextLine();
-            Command command = new Command(userInput);
-            executeCommand(command);
+            executeCommand(userInput);
         }
         scanner.close();
     }
 
     private void printCommands() {
         System.out.println("Available commands:");
-        for (Command.Operator operator : Command.Operator.values()) {
-            System.out.println(operator.getValue());
-        }
+        System.out.println(":c - Switch to insert mode");
+        System.out.println(":d - Switch to delete mode");
+        System.out.println(":r - Switch to display mode");
+        System.out.println(":u - Switch to update mode");
+        System.out.println(":p - Switch to persistence mode");
         System.out.println("exit - Exit the application");
     }
 
-    private void executeCommand(Command command) {
-        switch (command.getOperator()) {
-            case EXIT -> isRunning = false;
-            case ERROR -> System.out.println("Invalid command. Type 'exit' to exit the application.");
-            case INSERT_MODE -> handleInsertMode(command.getArguments());
-            case DELETE_MODE -> handleDeleteMode(command.getArguments());
-            case DISPLAY_MODE -> handleDisplayMode(command.getArguments());
-            case UPDATE_MODE -> handleUpdateMode(command.getArguments());
-            default -> switchToMode(command.getOperator());
+    private void executeCommand(String userInput) {
+        if (userInput.equals("exit")) {
+            isRunning = false;
+        } else if (userInput.startsWith(":")) {
+            // Handle built-in commands
+            handleBuiltInCommand(userInput);
+        } else {
+            System.out.println("Please enter a correct command");
         }
     }
-    private void switchToMode(Command.Operator operator) {
-        System.out.println("Switching to " + operator);
+    private void switchToMode(Command.Operator commandType) {
+        System.out.println("Switching to " + commandType + " mode.");
     }
-
-    private void handleInsertMode(List<String> arguments) {
-        if (arguments.size() ==1 ){
-            insertHersteller(arguments.get(0));
-        }
-
-        else if (arguments.size() == 7 || arguments.size() == 8){
-            String cakeType = arguments.get(0);
-            HerstellerImpl manufacturerName = (HerstellerImpl) herstellerList.findHerstellerByName(arguments.get(1));
-            List<Allergen> allergens = convertToAllergenList(arguments.get(2));
-            int nutritionalValue = Integer.parseInt(arguments.get(3));
-            int shelfLife = Integer.parseInt(arguments.get(4));
-            double price = Double.parseDouble(arguments.get(5));
-            String fruitVariety = (arguments.size() > 6) ? arguments.get(6) : null;
-            String creamType = (arguments.size() > 7) ? arguments.get(7) : null;
-            if (herstellerList.getAllHersteller().contains(manufacturerName)){
-
-                switch (cakeType) {
-                    case "Kremkuchen" -> {
-                        KuchenImpl cake = new KremkuchenImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType);
-                        vendingMachine.addItem(cake, manufacturerName);
-                        System.out.println("Inserted a " + cakeType);
-                    }
-                    case "Obstkuchen" -> {
-                        KuchenImpl cake = new ObstkuchenImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType);
-                        vendingMachine.addItem(cake, manufacturerName);
-                        System.out.println("Inserted a " + cakeType);
-                    }
-                    case "Obsttorte" -> {
-                        KuchenImpl cake = new ObsttorteImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType, fruitVariety);
-                        vendingMachine.addItem(cake, manufacturerName);
-                        System.out.println("Inserted a " + cakeType);
-                    }
-                    default -> System.out.println("Not a valid cake type" + cakeType);
-                }
+    private void handleBuiltInCommand(String userInput) {
+        // Handle built-in commands
+        switch (userInput) {
+            case ":c" -> {
+                switchToMode(Command.Operator.SWITCH_INSERT_MODE);
+                Scanner scanner = new Scanner(System.in);
+                String inputLine = scanner.nextLine();
+                String[] values = inputLine.split(" ");
+                if (values.length == 1) {
+                    insertHersteller(inputLine);
+                } else if (values.length == 6 || values.length == 8) {
+                    String cakeType = values[0];
+                    HerstellerImpl manufacturerName = (HerstellerImpl) herstellerList.findHerstellerByName(values[1]);
+                    List<Allergen> allergens = convertToAllergenList(values[2]);
+                    int nutritionalValue = Integer.parseInt(values[3]);
+                    int shelfLife = Integer.parseInt(values[4]);
+                    double price = Double.parseDouble(values[5]);
+                    String fruitVariety = (values.length > 6) ? values[6] : null;
+                    String creamType = (values.length > 7) ? values[7] : null;
+                    if (herstellerList.getAllHersteller().contains(manufacturerName)) {
+                        switch (cakeType) {
+                            case "Kremkuchen" -> {
+                                KuchenImpl cake = new KremkuchenImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType);
+                                vendingMachine.addItem(cake, manufacturerName);
+                                System.out.println("Inserted a " + cakeType);
+                            }
+                            case "Obstkuchen" -> {
+                                KuchenImpl cake = new ObstkuchenImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType);
+                                vendingMachine.addItem(cake, manufacturerName);
+                                System.out.println("Inserted a " + cakeType);
+                            }
+                            case "Obsttorte" -> {
+                                KuchenImpl cake = new ObsttorteImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType, fruitVariety);
+                                vendingMachine.addItem(cake, manufacturerName);
+                                System.out.println("Inserted a " + cakeType);
+                            }
+                            default -> System.out.println("Not a valid cake type" + cakeType);
+                        }
+                    } else
+                        System.out.println("Cake manufacturer not in the list.");
+                } else
+                    System.out.println("Invalid arguments for insert mode.");
+            }
+            case ":d" -> switchToMode(Command.Operator.SWITCH_DELETE_MODE);
+            case ":r" -> {
+                switchToMode(Command.Operator.SWITCH_DISPLAY_MODE);
 
             }
-            else
-                System.out.println("Cake manufacturer not in the list.");
+            case ":u" -> switchToMode(Command.Operator.SWITCH_UPDATE_MODE);
+            case ":p" -> switchToMode(Command.Operator.SWITCH_PERSISTENCE_MODE);
+            default -> System.out.println("Invalid command. Type 'exit' to exit the application.");
         }
-        else
-            System.out.println("Invalid arguments for insert mode.");
     }
     private void handleDisplayMode(List<String> arguments) {
         if (arguments.isEmpty()) {
