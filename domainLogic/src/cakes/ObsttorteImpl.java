@@ -23,7 +23,6 @@ public class ObsttorteImpl extends ObstkuchenImpl implements Obsttorte {
             BigDecimal preis,
             String kremsorte,
             String obstsorte
-            //Date inspektionsdatum
     ) {
         super(kuchenTyp,hersteller, allergene, naehrwert, haltbarkeit, preis, obstsorte);
         this.kremsorte = kremsorte;

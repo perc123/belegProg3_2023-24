@@ -3,9 +3,10 @@ package administration;
 import cakes.KremkuchenImpl;
 import cakes.KuchenImpl;
 import kuchen.Kuchen;
-import verwaltung.Hersteller;
-
 import java.util.*;
+import java.util.Date;
+
+
 
 public class VendingMachine {
     private List<KuchenImpl> inventory;
@@ -18,11 +19,13 @@ public class VendingMachine {
 
     public boolean addItem(Kuchen kuchen, HerstellerImpl hersteller) {
         System.out.println("cake added");
+        Date currentDate = new Date();
 
         if (inventory.size() < capacity && kuchen instanceof KremkuchenImpl) {
             KuchenImpl kuchenImpl = (KuchenImpl) kuchen;
             int newFachnummer = findFirstAvailableFachnummer();
             kuchenImpl.setFachnummer(newFachnummer);
+            kuchenImpl.setInspektionsdatum(currentDate);
             inventory.add(kuchenImpl);
             return true;
         }
@@ -91,4 +94,5 @@ public class VendingMachine {
         inventory.removeIf(kuchen -> kuchen.getInspektionsdatum() == null);
         inventory.sort(Comparator.comparing(KuchenImpl::getInspektionsdatum, Comparator.nullsLast(Comparator.naturalOrder())));
     }
+
 }

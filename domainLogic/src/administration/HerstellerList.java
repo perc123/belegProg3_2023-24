@@ -50,7 +50,6 @@ public class HerstellerList implements EventListener {
             }
         }
         if (eventType == EventType.DISPLAY_HERSTELLER) {
-            //getAllHersteller();
             for (Hersteller hersteller : herstellerList) {
                 System.out.println("Hersteller Name: " + hersteller.getName());
             }

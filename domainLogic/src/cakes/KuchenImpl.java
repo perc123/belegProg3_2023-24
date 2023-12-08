@@ -8,6 +8,7 @@ import verwaltung.Verkaufsobjekt;
 
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.Date;
 
@@ -28,14 +29,12 @@ public class KuchenImpl implements Kuchen, Verkaufsobjekt {
             int naehrwert,
             Duration haltbarkeit,
             BigDecimal preis
-            //Date inspektionsdatum
     ) {
         this.hersteller = (HerstellerImpl) hersteller;
         this.allergene = allergene;
         this.naehrwert = naehrwert;
         this.haltbarkeit = haltbarkeit;
         this.preis = preis;
-        //this.inspektionsdatum = inspektionsdatum;
     }
 
     public String getKuchenTyp() {
@@ -82,5 +81,19 @@ public class KuchenImpl implements Kuchen, Verkaufsobjekt {
 
     public void setInspektionsdatum(Date currentDate) {
         this.inspektionsdatum = currentDate;
+    }
+
+    public String calculateRemainingShelfLife() {
+        Instant currentDate = Instant.now();
+        Instant expirationDate = currentDate.plus(getHaltbarkeit());
+
+        long remainingDays = Duration.between(currentDate, expirationDate).toDays();
+
+
+        if (remainingDays >= 0) {
+            return remainingDays + " days";
+        } else {
+            return"Be careful, cake past expiration date!";
+        }
     }
 }

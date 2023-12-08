@@ -10,13 +10,8 @@ import cakes.ObsttorteImpl;
 import commands.Command;
 import kuchen.Allergen;
 import verwaltung.Hersteller;
-
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 
@@ -74,7 +69,6 @@ public class Console {
 
         else if (arguments.size() == 7 || arguments.size() == 8){
             String cakeType = arguments.get(0);
-            //HerstellerImpl manufacturerName = new HerstellerImpl(arguments.get(1));
             HerstellerImpl manufacturerName = (HerstellerImpl) herstellerList.findHerstellerByName(arguments.get(1));
             List<Allergen> allergens = convertToAllergenList(arguments.get(2));
             int nutritionalValue = Integer.parseInt(arguments.get(3));
@@ -83,24 +77,25 @@ public class Console {
             String fruitVariety = (arguments.size() > 6) ? arguments.get(6) : null;
             String creamType = (arguments.size() > 7) ? arguments.get(7) : null;
             if (herstellerList.getAllHersteller().contains(manufacturerName)){
-                if (cakeType.equals("Kremkuchen")){
-                    KuchenImpl cake = new KremkuchenImpl(cakeType,manufacturerName,allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price),creamType);
-                    vendingMachine.addItem(cake, manufacturerName);
-                    System.out.println("Inserted a " + cakeType);
 
+                switch (cakeType) {
+                    case "Kremkuchen" -> {
+                        KuchenImpl cake = new KremkuchenImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType);
+                        vendingMachine.addItem(cake, manufacturerName);
+                        System.out.println("Inserted a " + cakeType);
+                    }
+                    case "Obstkuchen" -> {
+                        KuchenImpl cake = new ObstkuchenImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType);
+                        vendingMachine.addItem(cake, manufacturerName);
+                        System.out.println("Inserted a " + cakeType);
+                    }
+                    case "Obsttorte" -> {
+                        KuchenImpl cake = new ObsttorteImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType, fruitVariety);
+                        vendingMachine.addItem(cake, manufacturerName);
+                        System.out.println("Inserted a " + cakeType);
+                    }
+                    default -> System.out.println("Not a valid cake type" + cakeType);
                 }
-                else if(cakeType.equals("Obstkuchen")){
-                    KuchenImpl cake = new ObstkuchenImpl(cakeType,manufacturerName,allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price),creamType);
-                    vendingMachine.addItem(cake, manufacturerName);
-                    System.out.println("Inserted a " + cakeType);
-                }
-                else if(cakeType.equals("Obsttorte")){
-                    KuchenImpl cake = new ObsttorteImpl(cakeType,manufacturerName,allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price),creamType, fruitVariety);
-                    vendingMachine.addItem(cake, manufacturerName);
-                    System.out.println("Inserted a " + cakeType);
-                }
-                else
-                    System.out.println("Not a valid cake type" + cakeType);
 
             }
             else
@@ -149,7 +144,7 @@ public class Console {
                 System.out.println("Cake Type: " + cake.getKuchenTyp());
                 System.out.println("Tray Number: " + cake.getFachnummer());
                 System.out.println("Inspection Date: " + cake.getInspektionsdatum());
-                System.out.println("Remaining Shelf Life: " + calculateRemainingShelfLife(cake) + " days");
+                System.out.println("Remaining Shelf Life: " + cake.calculateRemainingShelfLife());
                 System.out.println();
 
         }
@@ -190,21 +185,7 @@ public class Console {
         herstellerList.addHersteller(hersteller);
     }
 
-    public static List<Allergen> convertToAllergenList(String... allergies) {
-        List<Allergen> allergenList = new ArrayList<>();
 
-        for (String allergy : allergies) {
-            try {
-                Allergen allergen = Allergen.valueOf(allergy.trim());
-                allergenList.add(allergen);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Invalid allergen: " + allergy);
-                // Handle invalid allergen (not present in the enum)
-            }
-        }
-
-        return allergenList;
-    }
     private List<Allergen> convertToAllergenList(String allergenInput) {
         List<Allergen> allergens = new ArrayList<>();
 
@@ -230,23 +211,6 @@ public class Console {
 
         return allergens;
     }
-
-    private long calculateRemainingShelfLife(KuchenImpl cake) {
-        Instant currentDate = Instant.now();
-        Date inspectionDate = cake.getInspektionsdatum();
-
-        if (inspectionDate != null) {
-            Instant inspectionInstant = inspectionDate.toInstant();
-            LocalDate inspectionLocalDate = inspectionInstant.atZone(ZoneId.systemDefault()).toLocalDate();
-            long shelfLifeDays = cake.getHaltbarkeit().toDays();
-            long daysElapsed = ChronoUnit.DAYS.between(inspectionLocalDate, currentDate);
-            return Math.max(0, shelfLifeDays - daysElapsed);
-        } else {
-            // Handle the case where inspection date is null
-            return 0;
-        }
-    }
-
 
 
     private void handleDeleteMode(List<String> arguments) {

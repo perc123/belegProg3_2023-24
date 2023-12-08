@@ -4,38 +4,29 @@ import cakes.KremkuchenImpl;
 import cakes.KuchenImpl;
 import kuchen.Allergen;
 
-import java.util.List;
-import java.util.Random;
-
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.Random;
 import java.util.Set;
 
-public class CakeSimulation implements Runnable {
+public class AddCakeSim {
     private final VendingMachine vendingMachine;
     private final Random random = new Random();
 
-    public CakeSimulation(VendingMachine vendingMachine) {
+    public AddCakeSim(VendingMachine vendingMachine) {
         this.vendingMachine = vendingMachine;
     }
 
+    public void addRandomCake() {
+        // Synchronize critical section for accessing and modifying the vending machine
+        synchronized (vendingMachine) {
+            String[] randomCakeInfo = createRandomCakeInfo();
+            KuchenImpl randomCake = createRandomCake(randomCakeInfo);
 
+            vendingMachine.addItem(randomCake, randomCake.getHersteller());
 
-   @Override
-    public void run() {
-        while (true) {
-            // Synchronize critical section for accessing and modifying the vending machine
-            synchronized (vendingMachine) {
-
-                String[] randomCakeInfo = createRandomCakeInfo();
-                KuchenImpl randomCake = createRandomCake(randomCakeInfo);
-
-                vendingMachine.addItem(randomCake, randomCake.getHersteller());
-
-                System.out.println("Thread " + Thread.currentThread().getId() +
-                        ", Cake added, cake" + randomCake.getFachnummer());
-
-            }
+            System.out.println("Thread " + Thread.currentThread().getId() +
+                    ", Cake added, cake" + randomCake.getFachnummer());
         }
     }
 
@@ -61,26 +52,4 @@ public class CakeSimulation implements Runnable {
 
         return new KremkuchenImpl(kuchenTyp, hersteller, allergy, naehwert, duration, preis, kremsorte);
     }
-
-    public void retrieveAndDeleteCakes() {
-        while (true) {
-            // Synchronize critical section for accessing and modifying the vending machine
-            synchronized (vendingMachine) {
-
-
-                List<KuchenImpl> items = vendingMachine.listItems();
-                if (!items.isEmpty()) {
-                    int randomIndex = random.nextInt(items.size());
-                    KuchenImpl cakeToDelete = items.get(randomIndex);
-
-                    vendingMachine.removeItem(cakeToDelete.getFachnummer());
-
-                    System.out.println("Thread " + Thread.currentThread().getId() +
-                            ", Cake deleted, cake" + cakeToDelete.getFachnummer());
-
-                }
-            }
-        }
-    }
 }
-

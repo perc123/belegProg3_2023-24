@@ -23,7 +23,6 @@ public class KremkuchenImpl extends KuchenImpl implements Kremkuchen, Verkaufsob
             Duration haltbarkeit,
             BigDecimal preis,
             String kremsorte
-            //Date inspektionsdatum
     ) {
         super(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis);
         this.kremsorte = kremsorte;
