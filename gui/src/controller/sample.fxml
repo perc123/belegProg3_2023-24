@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
+    <children>
+        <VBox alignment="CENTER" spacing="10">
+            <Button fx:id="switchInsertModeButton" text="Switch to Insert Mode" onAction="#handleSwitchInsertMode"/>
+            <Button fx:id="switchDeleteModeButton" text="Switch to Delete Mode" onAction="#handleSwitchDeleteMode"/>
+            <Button fx:id="switchDisplayModeButton" text="Switch to Display Mode" onAction="#handleSwitchDisplayMode"/>
+            <Button fx:id="switchUpdateModeButton" text="Switch to Update Mode" onAction="#handleSwitchUpdateMode"/>
+            <Button fx:id="switchPersistenceModeButton" text="Switch to Persistence Mode" onAction="#handleSwitchPersistenceMode"/>
+            <TextField fx:id="userInputField" promptText="Enter your input" onAction="#handleUserInput"/>
+            <TextArea fx:id="outputTextArea" prefHeight="200" prefWidth="400" editable="false"/>
+        </VBox>
+    </children>
+</AnchorPane>

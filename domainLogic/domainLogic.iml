@@ -6,7 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tst" isTestSource="true" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="corretto-18" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="contract" />
     <orderEntry type="module-library" scope="TEST">
@@ -37,5 +37,6 @@
     </orderEntry>
     <orderEntry type="library" scope="TEST" name="mockito.core" level="project" />
     <orderEntry type="module" module-name="events" />
+    <orderEntry type="library" name="lib" level="application" />
   </component>
 </module>
