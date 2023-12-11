@@ -104,9 +104,19 @@ public class Console {
                 } else
                     System.out.println("Invalid arguments for insert mode.");
             }
-            case ":d" -> switchToMode(Command.Operator.SWITCH_DELETE_MODE);
+            case ":d" -> {
+                switchToMode(Command.Operator.SWITCH_DELETE_MODE);
+                Scanner scanner = new Scanner(System.in);
+                System.out.print("Enter the delete target (tray number or manufacturer name): ");
+                String deleteTarget = scanner.nextLine();
+                handleDeleteMode(List.of(deleteTarget));
+            }
             case ":r" -> {
                 switchToMode(Command.Operator.SWITCH_DISPLAY_MODE);
+                Scanner scanner = new Scanner(System.in);
+                System.out.print("Enter the display type (manufacturer/cake/allergies): ");
+                String displayType = scanner.nextLine().toLowerCase();
+                handleDisplayMode(List.of(displayType));
 
             }
             case ":u" -> switchToMode(Command.Operator.SWITCH_UPDATE_MODE);

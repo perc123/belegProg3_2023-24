@@ -18,14 +18,15 @@ public class Command {
 
         private final String value;
 
-        CommandType(String value) {
+        Operator(String value) {
             this.value = value;
-    }
+        }
 
-    public String getValue() {
-        return value;
+        public String getValue() {
+            return value;
+        }
     }
-
+}
 
 
 /*    public enum Operator {
@@ -76,4 +77,3 @@ public class Command {
     public List<String> getArguments() {
         return arguments;
     }*/
-}

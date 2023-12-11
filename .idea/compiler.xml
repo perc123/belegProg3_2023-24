@@ -9,7 +9,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="gui" target="17" />
+      <module name="gui" target="18" />
     </bytecodeTargetLevel>
   </component>
 </project>
