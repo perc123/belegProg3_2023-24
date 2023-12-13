@@ -201,8 +201,13 @@ public class Console {
 
 
     private void insertHersteller(String name) {
-        HerstellerImpl hersteller = new HerstellerImpl(name);
-        herstellerList.addHersteller(hersteller);
+        if (herstellerList.findHerstellerByName(name) != null){
+            System.out.println("Manufacturer already in the list.");
+        } else {
+            HerstellerImpl hersteller = new HerstellerImpl(name);
+            herstellerList.addHersteller(hersteller);
+        }
+
     }
 
 

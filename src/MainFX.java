@@ -1,5 +1,4 @@
-package controller;
-
+import controller.Controller;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import administration.VendingMachine;
@@ -18,7 +17,7 @@ public class MainFX extends Application {
         vendingMachine = new VendingMachine(10); // Initialize your vending machine
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("controller/sample.fxml"));
             Parent root = loader.load();
 
             // Set the controller with the vending machine instance
@@ -28,7 +27,7 @@ public class MainFX extends Application {
 
 
             primaryStage.setTitle("Vending Machine GUI");
-            primaryStage.setScene(new Scene(root, 600, 400));
+            primaryStage.setScene(new Scene(root, 752, 600));
             primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();
