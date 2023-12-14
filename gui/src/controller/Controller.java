@@ -240,17 +240,20 @@ public class Controller {
 
 
     private void handleDisplayCake() {
-        outputTextArea.setText("Display cakes by:");
+        updateCakesListViewTrayNumber();
+        outputTextArea.setText("Displaying cakes by tray number");
 
-        userInputField.setOnAction(event -> {
+       /* userInputField.setOnAction(event -> {
             String displayType = userInputField.getText().toLowerCase();
 
             switch (displayType) {
                 case "cake by tray number":
                     updateCakesListViewTrayNumber();
+                    outputTextArea.setText("Displaying cakes by tray number");
                     break;
                 case "manufacturer":
                     updateCakesListViewByManufacturer();
+                    outputTextArea.setText("Displaying cakes by manufacturer");
                     break;
                 case "allergies":
                     updateCakesListViewByAllergies();
@@ -259,8 +262,14 @@ public class Controller {
                     outputTextArea.setText("Invalid display type. Supported types: 'cake by tray number', 'manufacturer', 'allergies'");
             }
 
-            userInputField.clear();
-        });
+        });*/
+        userInputField.clear();
+    }
+
+    private void handleDisplayManufacturer() {
+        updateCakesListViewByManufacturer();
+        outputTextArea.setText("Displaying cakes by manufacturer");
+        userInputField.clear();
     }
 
     private void updateCakesListViewByManufacturer() {
@@ -270,28 +279,11 @@ public class Controller {
 
         // Sort the cakes by manufacturer's name
         cakes.sort(Comparator.comparing(cake -> cake.getHersteller().getName()));
+        outputTextArea.setText("It's called");
 
         for (KuchenImpl cake : cakes) {
             cakesListView.getItems().add(printCake(cake));
         }
-    }
-
-    private void updateCakesListViewByAllergies() {
-        cakesListView.getItems().clear();
-
-        List<KuchenImpl> cakes = vendingMachine.listItems();
-
-        //TODO: Still to implement
-        cakes.sort(Comparator.comparing(cake -> cake.getAllergene().stream().map(Allergen::name).collect(Collectors.joining(", "))));
-
-        for (KuchenImpl cake : cakes) {
-            cakesListView.getItems().add(printCake(cake));
-        }
-    }
-
-
-    private void handleDisplayManufacturer() {
-        // Handle display manufacturer logic here
     }
 
     private void handleDisplayAllergies() {
@@ -299,30 +291,29 @@ public class Controller {
     }
 
     private void handleInspectCake() {
-        outputTextArea.setText("Change inspections date. GIve tray number:");
+        outputTextArea.setText("Change inspections date. Give tray number:");
         userInputField.clear();
 
         userInputField.setOnAction(event -> {
             String inputLine = userInputField.getText();
+            int trayNumber = Integer.parseInt(inputLine);
 
-                for (KuchenImpl cake : vendingMachine.listItems()){
-                    int trayNumber = Integer.parseInt(inputLine);
-                    if (cake.getFachnummer() == trayNumber) {
-                        vendingMachine.updateInspectionDate(trayNumber);
-                        outputTextArea.setText("Cake " + cake.getKuchenTyp() + " updated.");
-                        updateCakesListViewTrayNumber();
-                        } else {
-                            outputTextArea.setText("Cake " + cake.getKuchenTyp() + " not found.");
-                        }
+            Iterator<KuchenImpl> iterator = vendingMachine.listItems().iterator();
+            while (iterator.hasNext()) {
+                KuchenImpl cake = iterator.next();
+                if (cake.getFachnummer() == trayNumber) {
+                    vendingMachine.updateInspectionDate(trayNumber);
+                    outputTextArea.setText("Cake " + cake.getKuchenTyp() + " updated.");
+                    updateCakesListViewTrayNumber();
+                    return;
                 }
-                //TODO:
-             /*catch (Exception e) {
-                // Handle other unexpected input
-                outputTextArea.setText("Invalid input for update mode. Please enter a tray number.");
-            }*/
+            }
+
+            outputTextArea.setText("Cake not found at tray number " + trayNumber);
             userInputField.clear();
         });
-        userInputField.clear();    }
+    }
+
 
     private List<Allergen> convertToAllergenList(String allergenInput) {
         List<Allergen> allergens = new ArrayList<>();
@@ -385,5 +376,17 @@ public class Controller {
             }
         }
         updateCakesListViewTrayNumber();
+    }
+
+    private void updateCakesListViewByAllergies() {
+        cakesListView.getItems().clear();
+
+        List<KuchenImpl> cakes = vendingMachine.listItems();
+
+        cakes.sort(Comparator.comparing(cake -> cake.getAllergene().stream().map(Allergen::name).collect(Collectors.joining(", "))));
+
+        for (KuchenImpl cake : cakes) {
+            cakesListView.getItems().add(printCake(cake));
+        }
     }*/
 }
