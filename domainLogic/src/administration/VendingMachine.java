@@ -58,9 +58,9 @@ public class VendingMachine {
             removed = inventory.remove(cakeToRemove);
 
             // Reassign correct Fachnummer values after removal
-            if (removed) {
+/*            if (removed) {
                 reassignFachnummer();
-            }
+            }*/
             return removed;
         }
 
@@ -70,13 +70,14 @@ public class VendingMachine {
     public boolean isFull() {
         return inventory.size() >= capacity;
     }
-    private void reassignFachnummer() {
+
+/*    private void reassignFachnummer() {
         int newFachnummer = 1;
         for (KuchenImpl kuchen : inventory) {
             kuchen.setFachnummer(newFachnummer);
             newFachnummer++;
         }
-    }
+    }*/
 
     public List<KuchenImpl> listItems() {
         return inventory;

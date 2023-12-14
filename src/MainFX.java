@@ -27,7 +27,7 @@ public class MainFX extends Application {
 
 
             primaryStage.setTitle("Vending Machine GUI");
-            primaryStage.setScene(new Scene(root, 752, 600));
+            primaryStage.setScene(new Scene(root, 900, 600));
             primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();

@@ -18,7 +18,7 @@
 <AnchorPane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
     <children>
 
-        <MenuBar prefHeight="22.0" prefWidth="752.0">
+        <MenuBar prefHeight="22.0" prefWidth="900.0">
             <menus>
                 <Menu mnemonicParsing="false" text="Insert">
                     <items>
@@ -48,18 +48,18 @@
         </MenuBar>
 
         <!-- Welcome Message -->
-        <Text layoutX="176.0" layoutY="62.0" text="Welcome to Fanis' Vending Machine!" textAlignment="CENTER" wrappingWidth="400.0" AnchorPane.leftAnchor="176.0" AnchorPane.rightAnchor="176.0">
+        <Text layoutX="176.0" layoutY="62.0" text="Welcome to Fanis' Vending Machine!" textAlignment="CENTER" wrappingWidth="400.0" AnchorPane.leftAnchor="82.0" AnchorPane.rightAnchor="176.0">
             <font>
                 <Font name="Georgia" size="16.0" />
             </font>
         </Text>
 
         <!-- Main Body -->
-        <GridPane layoutY="100.0" prefHeight="500.0" prefWidth="752.0">
+        <GridPane layoutY="100.0" prefHeight="500.0" prefWidth="900.0">
             <columnConstraints>
-                <ColumnConstraints percentWidth="33" />
+                <ColumnConstraints percentWidth="17" />
                 <ColumnConstraints percentWidth="34" />
-                <ColumnConstraints percentWidth="33" />
+                <ColumnConstraints percentWidth="60" />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints vgrow="ALWAYS" />
