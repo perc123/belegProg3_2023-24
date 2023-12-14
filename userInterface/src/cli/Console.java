@@ -80,7 +80,7 @@ public class Console {
                     double price = Double.parseDouble(values[5]);
                     String fruitVariety = (values.length > 6) ? values[6] : null;
                     String creamType = (values.length > 7) ? values[7] : null;
-                    if (herstellerList.getAllHersteller().contains(manufacturerName)) {
+                    if (herstellerList.getAllHersteller().contains(manufacturerName) && !vendingMachine.isFull()) {
                         switch (cakeType) {
                             case "Kremkuchen" -> {
                                 KuchenImpl cake = new KremkuchenImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType);
@@ -99,7 +99,10 @@ public class Console {
                             }
                             default -> System.out.println("Not a valid cake type" + cakeType);
                         }
-                    } else
+                    }else if(vendingMachine.isFull()){
+                        System.out.println("Vending Machine is Full.");
+                    }
+                    else
                         System.out.println("Cake manufacturer not in the list.");
                 } else
                     System.out.println("Invalid arguments for insert mode.");

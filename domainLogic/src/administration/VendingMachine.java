@@ -18,15 +18,15 @@ public class VendingMachine {
     }
 
     public boolean addItem(Kuchen kuchen, HerstellerImpl hersteller) {
-        System.out.println("cake added");
         Date currentDate = new Date();
 
-        if (inventory.size() < capacity && kuchen instanceof KremkuchenImpl) {
+        if (inventory.size() < capacity && kuchen instanceof KuchenImpl) {
             KuchenImpl kuchenImpl = (KuchenImpl) kuchen;
             int newFachnummer = findFirstAvailableFachnummer();
             kuchenImpl.setFachnummer(newFachnummer);
             kuchenImpl.setInspektionsdatum(currentDate);
             inventory.add(kuchenImpl);
+            System.out.println("cake added");
             return true;
         }
         return false; // Vending machine is full or kuchen is not an instance of KuchenImpl

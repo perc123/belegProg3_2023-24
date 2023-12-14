@@ -20,9 +20,7 @@ import verwaltung.Hersteller;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Controller {
@@ -133,7 +131,7 @@ public class Controller {
                 double price = Double.parseDouble(values[5]);
                 String fruitVariety = (values.length > 6) ? values[6] : null;
                 String creamType = (values.length > 7) ? values[7] : null;
-                if (herstellerList.getAllHersteller().contains(manufacturerName)) {
+                if (herstellerList.getAllHersteller().contains(manufacturerName) && !vendingMachine.isFull()) {
                     switch (cakeType) {
                         case "Kremkuchen" -> {
                             KuchenImpl cake = new KremkuchenImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType);
@@ -159,7 +157,10 @@ public class Controller {
                         }
                         default -> outputTextArea.setText("Not a valid cake type" + cakeType);
                     }
-                } else
+                } else if(vendingMachine.isFull()){
+                    outputTextArea.setText("Vending Machine is Full.");
+                }
+                else
                     outputTextArea.setText("Cake manufacturer not in the list.");
             } else
                 outputTextArea.setText("Invalid arguments for insert mode.");
@@ -200,10 +201,10 @@ public class Controller {
         userInputField.clear();
         userInputField.setOnAction(event -> {
 //TODO: Still not working
-                String inputLine = userInputField.getText();
-            try {
-                Hersteller hersteller = herstellerList.findHerstellerByName(inputLine);
-                if (hersteller != null) {
+            String inputLine = userInputField.getText();
+            Hersteller hersteller = herstellerList.findHerstellerByName(inputLine);
+
+                if (hersteller != null)  {
                     herstellerList.removeHersteller(hersteller);
                     outputTextArea.setText("Manufacturer '" + inputLine + "' deleted.");
                     updateManufacturersListView();
@@ -212,11 +213,11 @@ public class Controller {
                 } else {
                     outputTextArea.setText("Manufacturer '" + inputLine + "' not found.");
                 }
-            } catch (Exception e) {
-                // Handle other unexpected input
-                outputTextArea.setText("Invalid input for delete mode. Please enter a manufacturer name.");
-            }
             userInputField.clear();
+
+            // Handle other unexpected input
+                //outputTextArea.setText("Invalid input for delete mode. Please enter a manufacturer name.");
+
         });
     }
     private void updateManufacturersListView() {
@@ -337,11 +338,11 @@ public class Controller {
                 if (!allergens.contains(allergenEnum)) {
                     allergens.add(allergenEnum);
                 } else {
-                    System.out.println("Duplicate allergen: " + allergen.trim());
+                    outputTextArea.setText("Duplicate allergen: " + allergen.trim());
                 }
             } catch (IllegalArgumentException e) {
                 // Handle invalid allergen input
-                System.out.println("Invalid allergen: " + allergen.trim());
+                outputTextArea.setText("Invalid allergen: " + allergen.trim());
                 return null;
             }
         }
@@ -357,6 +358,19 @@ public class Controller {
     }
 
 
+    private void deleteCakeByManufacturer(String manufacturer) {
+        ListIterator<KuchenImpl> iterator = vendingMachine.listItems().listIterator();
+        while (iterator.hasNext()) {
+            KuchenImpl cake = iterator.next();
+            if (cake.getHersteller().getName().equalsIgnoreCase(manufacturer)) {
+                iterator.remove();
+            }
+        }
+        updateCakesListViewTrayNumber();
+        outputTextArea.setText("All cakes from " + manufacturer + " removed.");
+    }
+
+/*
     private void deleteCakeByManufacturer(String manufacturer){
         for (KuchenImpl cake : vendingMachine.listItems()){
             if (cake.getHersteller().getName() == manufacturer) {
@@ -371,5 +385,5 @@ public class Controller {
             }
         }
         updateCakesListViewTrayNumber();
-    }
+    }*/
 }

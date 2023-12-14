@@ -1,6 +1,5 @@
 package cakes;
 
-import administration.HerstellerImpl;
 import kuchen.Allergen;
 import kuchen.Obstkuchen;
 import verwaltung.Hersteller;
@@ -8,7 +7,6 @@ import verwaltung.Hersteller;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Collection;
-import java.util.Date;
 
 public class ObstkuchenImpl extends KuchenImpl implements Obstkuchen {
     private String kuchenTyp;
@@ -26,7 +24,6 @@ public class ObstkuchenImpl extends KuchenImpl implements Obstkuchen {
     ) {
         super(kuchenTyp,hersteller, allergene, naehrwert, haltbarkeit, preis);
         this.obstsorte = obstsorte;
-        this.getInspektionsdatum();
     }
 
     @Override
