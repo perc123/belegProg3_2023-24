@@ -122,7 +122,13 @@ public class Console {
                 handleDisplayMode(List.of(displayType));
 
             }
-            case ":u" -> switchToMode(Command.Operator.SWITCH_UPDATE_MODE);
+            case ":u" -> {
+                switchToMode(Command.Operator.SWITCH_UPDATE_MODE);
+                Scanner scanner = new Scanner(System.in);
+                System.out.print("Enter the tray number of cake: ");
+                String trayNumber = scanner.nextLine();
+                handleUpdateMode(List.of(trayNumber));
+            }
             case ":p" -> switchToMode(Command.Operator.SWITCH_PERSISTENCE_MODE);
             default -> System.out.println("Invalid command. Type 'exit' to exit the application.");
         }
@@ -209,8 +215,8 @@ public class Console {
         } else {
             HerstellerImpl hersteller = new HerstellerImpl(name);
             herstellerList.addHersteller(hersteller);
+            System.out.println("Manufacturer " + hersteller.getName() + " added.");
         }
-
     }
 
 
@@ -266,6 +272,7 @@ public class Console {
 
         if (hersteller != null) {
             herstellerList.removeHersteller(hersteller);
+            deleteCakeByManufacturer(hersteller.getName());
             System.out.println("Manufacturer '" + manufacturerName + "' deleted.");
         } else {
             System.out.println("Manufacturer '" + manufacturerName + "' not found.");
@@ -280,6 +287,17 @@ public class Console {
         } else {
             System.out.println("No cake found at tray number " + trayNumber + ".");
         }
+    }
+    private void deleteCakeByManufacturer(String manufacturer) {
+        ListIterator<KuchenImpl> iterator = vendingMachine.listItems().listIterator();
+        while (iterator.hasNext()) {
+            KuchenImpl cake = iterator.next();
+            if (cake.getHersteller().getName().equalsIgnoreCase(manufacturer)) {
+                iterator.remove();
+            }
+        }
+
+        System.out.println("All cakes from " + manufacturer + " removed.");
     }
 
     private void handleUpdateMode(List<String> arguments) {

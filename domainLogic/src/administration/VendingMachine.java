@@ -89,11 +89,12 @@ public class VendingMachine {
         for (KuchenImpl kuchen : inventory) {
             if (kuchen.getFachnummer() == fachnummer) {
                 kuchen.setInspektionsdatum(currentDate);
+                // Debug Command System.out.println("Cake: " + kuchen.getKuchenTyp() + " updated.");
                 break;  // cake is found and updated
             }
         }
-        inventory.removeIf(kuchen -> kuchen.getInspektionsdatum() == null);
-        inventory.sort(Comparator.comparing(KuchenImpl::getInspektionsdatum, Comparator.nullsLast(Comparator.naturalOrder())));
+        //inventory.removeIf(kuchen -> kuchen.getInspektionsdatum() == null);
+        //inventory.sort(Comparator.comparing(KuchenImpl::getInspektionsdatum, Comparator.nullsLast(Comparator.naturalOrder())));
     }
 
 }

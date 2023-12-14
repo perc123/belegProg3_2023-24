@@ -20,8 +20,6 @@ public class MainFX extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("controller/sample.fxml"));
             Parent root = loader.load();
 
-            // Set the controller with the vending machine instance
-            //Controller controller = new Controller(vendingMachine);
             Controller controller = loader.getController();
             controller.setVendingMachine(vendingMachine);
 

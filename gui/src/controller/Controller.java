@@ -200,7 +200,6 @@ public class Controller {
         outputTextArea.setText("Delete a manufacturer:");
         userInputField.clear();
         userInputField.setOnAction(event -> {
-//TODO: Still not working
             String inputLine = userInputField.getText();
             Hersteller hersteller = herstellerList.findHerstellerByName(inputLine);
 
@@ -215,7 +214,7 @@ public class Controller {
                 }
             userInputField.clear();
 
-            // Handle other unexpected input
+            //TODO: Handle other unexpected input, but probably not needed
                 //outputTextArea.setText("Invalid input for delete mode. Please enter a manufacturer name.");
 
         });
@@ -316,6 +315,7 @@ public class Controller {
                             outputTextArea.setText("Cake " + cake.getKuchenTyp() + " not found.");
                         }
                 }
+                //TODO:
              /*catch (Exception e) {
                 // Handle other unexpected input
                 outputTextArea.setText("Invalid input for update mode. Please enter a tray number.");
