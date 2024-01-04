@@ -16,7 +16,7 @@ public class VendingMachine implements Serializable {
 
   // Default constructor
     public VendingMachine() {
-        this.inventory = new ArrayList<>();
+        this.inventory = new LinkedList<>();
         this.capacity = 0;
     }
 

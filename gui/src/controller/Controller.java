@@ -65,7 +65,7 @@ public class Controller {
     public void setVendingMachine(VendingMachine vendingMachine, HerstellerStorage herstellerStorage) {
         this.vendingMachine = vendingMachine;
         this.herstellerStorage = herstellerStorage;
-        this.jbp = new JBP(vendingMachine,herstellerStorage);
+        this.jbp = new JBP(vendingMachine);
     }
 
     @FXML
@@ -340,8 +340,8 @@ public class Controller {
 
         if (file != null) {
             // save the vending machine data
-            JBP jbp = new JBP(vendingMachine, herstellerStorage);
-            jbp.serializeData();
+            JBP jbp = new JBP(vendingMachine);
+            jbp.serialisierenJBP();
             outputTextArea.setText("Vending Machine data saved to: " + file.getAbsolutePath());
         } else {
             outputTextArea.setText("Save operation cancelled.");
@@ -356,8 +356,8 @@ public class Controller {
 
         if (file != null) {
             // load the vending machine data
-            JBP jbp = new JBP(vendingMachine, herstellerStorage);
-            VendingMachine loadedVendingMachine = jbp.deserializeData();
+            JBP jbp = new JBP(vendingMachine);
+            VendingMachine loadedVendingMachine = jbp.deserialisierenJBP();
 
             if (loadedVendingMachine != null) {
                 vendingMachine.setModel(loadedVendingMachine);
@@ -370,5 +370,4 @@ public class Controller {
             outputTextArea.setText("Load operation cancelled.");
         }
     }
-
 }
