@@ -4,7 +4,9 @@ import verwaltung.Hersteller;
 import eventSystem.EventListener;
 import eventSystem.EventType;
 
-public class HerstellerImpl implements Hersteller {
+import java.io.Serializable;
+
+public class HerstellerImpl implements Hersteller, Serializable {
     private String name;
 
     public HerstellerImpl(String name) {

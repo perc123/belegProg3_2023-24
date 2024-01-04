@@ -6,12 +6,13 @@ import kuchen.Kremkuchen;
 import verwaltung.Hersteller;
 import verwaltung.Verkaufsobjekt;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
 
-public class KremkuchenImpl extends KuchenImpl implements Kremkuchen, Verkaufsobjekt {
+public class KremkuchenImpl extends KuchenImpl implements Kremkuchen, Verkaufsobjekt, Serializable {
     private String kuchenTyp;
     private String kremsorte;
 

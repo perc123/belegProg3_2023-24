@@ -4,14 +4,16 @@ import verwaltung.Hersteller;
 import eventSystem.EventListener;
 import eventSystem.EventType;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
-public class HerstellerStorage {
+public class HerstellerStorage implements Serializable {
     private List<Hersteller> herstellerList;
 
     public HerstellerStorage() {
-        this.herstellerList = new ArrayList<>();
+        this.herstellerList = new LinkedList<>();
     }
 
     public void addHersteller(HerstellerImpl hersteller) {

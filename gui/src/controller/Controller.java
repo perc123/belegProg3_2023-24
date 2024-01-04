@@ -13,9 +13,13 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import kuchen.Allergen;
+import saveJBP.JBP;
 import verwaltung.Hersteller;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.*;
@@ -24,6 +28,7 @@ public class Controller {
 
     private VendingMachine vendingMachine;
     private HerstellerStorage herstellerStorage;
+    private JBP jbp;
 
     @FXML
     private MenuItem insertManufacturerMenuItem;
@@ -51,11 +56,16 @@ public class Controller {
     private TextArea outputTextArea;
     @FXML
     private ListView<String> cakesListView;
+    @FXML
+    private MenuItem saveMenuItem;
+    @FXML
+    private MenuItem loadMenuItem;
 
     public Controller() {}
     public void setVendingMachine(VendingMachine vendingMachine, HerstellerStorage herstellerStorage) {
         this.vendingMachine = vendingMachine;
         this.herstellerStorage = herstellerStorage;
+        this.jbp = new JBP(vendingMachine,herstellerStorage);
     }
 
     @FXML
@@ -72,6 +82,8 @@ public class Controller {
         displayManufacturerMenuItem.setOnAction(event -> handleDisplayManufacturer());
         displayAllergiesMenuItem.setOnAction(event -> handleDisplayAllergies());
         inspectCakeMenuItem.setOnAction(event -> handleInspectCake());
+        saveMenuItem.setOnAction(event -> handleSave());
+        loadMenuItem.setOnAction(event -> handleLoad());
     }
 
     @FXML
@@ -309,7 +321,6 @@ public class Controller {
                 ", Remaining Shelf Life: " + cake.calculateRemainingShelfLife());
     }
 
-
     private void deleteCakeByManufacturer(String manufacturer) {
         ListIterator<KuchenImpl> iterator = vendingMachine.listItems().listIterator();
         while (iterator.hasNext()) {
@@ -320,6 +331,44 @@ public class Controller {
         }
         updateCakesListViewTrayNumber();
         outputTextArea.setText("All cakes from " + manufacturer + " removed.");
+    }
+    @FXML
+    private void handleSave() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Vending Machine Data");
+        File file = fileChooser.showSaveDialog(new Stage());
+
+        if (file != null) {
+            // save the vending machine data
+            JBP jbp = new JBP(vendingMachine, herstellerStorage);
+            jbp.serializeData();
+            outputTextArea.setText("Vending Machine data saved to: " + file.getAbsolutePath());
+        } else {
+            outputTextArea.setText("Save operation cancelled.");
+        }
+    }
+
+    @FXML
+    private void handleLoad() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Load Vending Machine Data");
+        File file = fileChooser.showOpenDialog(new Stage());
+
+        if (file != null) {
+            // load the vending machine data
+            JBP jbp = new JBP(vendingMachine, herstellerStorage);
+            VendingMachine loadedVendingMachine = jbp.deserializeData();
+
+            if (loadedVendingMachine != null) {
+                vendingMachine.setModel(loadedVendingMachine);
+                outputTextArea.setText("Vending Machine data loaded from: " + file.getAbsolutePath());
+                updateCakesListViewTrayNumber();
+            } else {
+                outputTextArea.setText("Error loading Vending Machine data.");
+            }
+        } else {
+            outputTextArea.setText("Load operation cancelled.");
+        }
     }
 
 }

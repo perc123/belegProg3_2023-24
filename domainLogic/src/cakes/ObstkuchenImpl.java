@@ -5,12 +5,13 @@ import kuchen.Allergen;
 import kuchen.Obstkuchen;
 import verwaltung.Hersteller;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
 
-public class ObstkuchenImpl extends KuchenImpl implements Obstkuchen {
+public class ObstkuchenImpl extends KuchenImpl implements Obstkuchen, Serializable {
     private String kuchenTyp;
     private String obstsorte;
 

@@ -6,6 +6,7 @@ import kuchen.Kuchen;
 import verwaltung.Hersteller;
 import verwaltung.Verkaufsobjekt;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -13,7 +14,7 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Date;
 
-public class KuchenImpl implements Kuchen, Verkaufsobjekt {
+public class KuchenImpl implements Kuchen, Verkaufsobjekt, Serializable {
     private String kuchenTyp;
     private HerstellerImpl hersteller;
     private Collection<Allergen> allergene;

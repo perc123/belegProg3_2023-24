@@ -6,12 +6,13 @@ import kuchen.Obstkuchen;
 import kuchen.Obsttorte;
 import verwaltung.Verkaufsobjekt;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
 
-public class ObsttorteImpl extends ObstkuchenImpl implements Obsttorte {
+public class ObsttorteImpl extends ObstkuchenImpl implements Obsttorte, Serializable {
     private String kremsorte;
 
     public ObsttorteImpl(

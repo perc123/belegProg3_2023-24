@@ -3,18 +3,26 @@ package administration;
 import cakes.KremkuchenImpl;
 import cakes.KuchenImpl;
 import kuchen.Kuchen;
+
+import java.io.Serializable;
 import java.util.*;
 import java.util.Date;
 
 
 
-public class VendingMachine {
+public class VendingMachine implements Serializable {
     private List<KuchenImpl> inventory;
     private int capacity;
 
+  // Default constructor
+    public VendingMachine() {
+        this.inventory = new ArrayList<>();
+        this.capacity = 0;
+    }
+
     public VendingMachine(int capacity) {
         this.capacity = capacity;
-        this.inventory = new ArrayList<>();
+        this.inventory = new LinkedList<>();
     }
 
     public boolean addItem(Kuchen kuchen, HerstellerImpl hersteller) {
@@ -81,6 +89,24 @@ public class VendingMachine {
     public List<KuchenImpl> listItems() {
         return inventory;
     }
+    // Getter method for the inventory property
+    public List<KuchenImpl> getInventory() {
+        return inventory;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    // Setter method for the inventory property (if needed)
+    public void setInventory(List<KuchenImpl> inventory) {
+        this.inventory = inventory;
+    }
+
+    // Setter method for the capacity property (if needed)
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
 
     public void updateInspectionDate(int fachnummer) {
         Date currentDate = new java.sql.Date(System.currentTimeMillis());
@@ -93,6 +119,16 @@ public class VendingMachine {
         }
         inventory.removeIf(kuchen -> kuchen.getInspektionsdatum() == null);
         inventory.sort(Comparator.comparing(KuchenImpl::getInspektionsdatum, Comparator.nullsLast(Comparator.naturalOrder())));
+    }
+
+    public void setModel(VendingMachine other) {
+        this.capacity = other.capacity;
+
+        // Clear existing inventory and add all items from the other machine
+        this.inventory.clear();
+        for (KuchenImpl kuchen : other.inventory) {
+            this.inventory.add(kuchen);
+        }
     }
 
 }
