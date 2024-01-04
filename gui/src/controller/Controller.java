@@ -194,15 +194,15 @@ public class Controller {
             String inputLine = userInputField.getText();
             Hersteller hersteller = herstellerStorage.findHerstellerByName(inputLine);
 
-                if (hersteller != null)  {
-                    herstellerStorage.removeHersteller(hersteller);
-                    outputTextArea.setText("Manufacturer '" + inputLine + "' deleted.");
-                    updateManufacturersListView();
-                    deleteCakeByManufacturer(hersteller.getName());
-                    updateCakesListViewTrayNumber();
-                } else {
-                    outputTextArea.setText("Manufacturer '" + inputLine + "' not found.");
-                }
+            if (hersteller != null)  {
+                herstellerStorage.removeHersteller(hersteller);
+                outputTextArea.setText("Manufacturer '" + inputLine + "' deleted.");
+                updateManufacturersListView();
+                deleteCakeByManufacturer(hersteller.getName());
+                updateCakesListViewTrayNumber();
+            } else {
+                outputTextArea.setText("Manufacturer '" + inputLine + "' not found.");
+            }
             userInputField.clear();
         });
     }

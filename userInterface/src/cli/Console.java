@@ -1,7 +1,7 @@
 package cli;
 
 import administration.HerstellerImpl;
-import administration.HerstellerList;
+import administration.HerstellerStorage;
 import administration.VendingMachine;
 import cakes.KremkuchenImpl;
 import cakes.KuchenImpl;
@@ -18,7 +18,7 @@ import java.util.*;
 import java.util.Scanner;
 
 public class Console {
-    HerstellerList herstellerList = new HerstellerList();
+    HerstellerStorage herstellerList = new HerstellerStorage();
     private VendingMachine vendingMachine;
     private boolean isRunning;
 

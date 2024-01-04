@@ -7,6 +7,7 @@ import verwaltung.Hersteller;
 import verwaltung.Verkaufsobjekt;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
@@ -81,6 +82,12 @@ public class KuchenImpl implements Kuchen, Verkaufsobjekt {
 
     public void setInspektionsdatum(Date currentDate) {
         this.inspektionsdatum = currentDate;
+    }
+
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    public String getFormattedInspectionDate() {
+        return DATE_FORMAT.format(inspektionsdatum);
     }
 
     public String calculateRemainingShelfLife() {
