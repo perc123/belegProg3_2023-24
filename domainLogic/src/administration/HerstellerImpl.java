@@ -9,6 +9,8 @@ import java.io.Serializable;
 public class HerstellerImpl implements Hersteller, Serializable {
     private String name;
 
+    public HerstellerImpl() {
+    }
     public HerstellerImpl(String name) {
         this.name = name;
     }

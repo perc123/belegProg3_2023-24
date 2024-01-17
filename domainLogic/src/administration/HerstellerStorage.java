@@ -1,13 +1,10 @@
 package administration;
 
 import verwaltung.Hersteller;
-import eventSystem.EventListener;
-import eventSystem.EventType;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
 
 public class HerstellerStorage implements Serializable {
     private List<Hersteller> herstellerList;
@@ -16,8 +13,10 @@ public class HerstellerStorage implements Serializable {
         this.herstellerList = new LinkedList<>();
     }
 
-    public void addHersteller(HerstellerImpl hersteller) {
-        herstellerList.add(hersteller);
+    public void addHersteller(Hersteller hersteller) {
+        if (!herstellerList.contains(hersteller))
+            herstellerList.add(hersteller);
+        System.out.println(hersteller.getName());
     }
 
     public void removeHersteller(Hersteller hersteller) {
@@ -27,7 +26,8 @@ public class HerstellerStorage implements Serializable {
     public List<Hersteller> getAllHersteller() {
         return herstellerList;
     }
-    public void displayHersteller(){
+
+    public void displayHersteller() {
         for (Hersteller hersteller : herstellerList) {
             System.out.println("Hersteller Name: " + hersteller.getName());
         }
@@ -42,4 +42,35 @@ public class HerstellerStorage implements Serializable {
         return null;  // Return null if no matching Hersteller is found
     }
 
+    // Standard JavaBeans getter and setter for herstellerList
+   public List<Hersteller> getHerstellerList() {
+        return herstellerList;
+    }
+
+    public void setHerstellerList(List<Hersteller> herstellerList) {
+        this.herstellerList = herstellerList;
+    }
+    public void addAllHersteller(List<Hersteller> herstellerList) {
+        this.herstellerList.addAll(herstellerList);
+    }
+
+
+    public void setManufacturerList(HerstellerStorage other) {
+        //this.herstellerList = other.herstellerList;
+        // Clear existing
+        this.herstellerList.clear();
+
+        // Copy from other
+        // Copy from other, avoiding duplicates
+        for (Hersteller hersteller : other.herstellerList) {
+            if (!this.herstellerList.contains(hersteller)) {
+                this.herstellerList.add(hersteller);
+            }
+        }
+        //this.herstellerList.addAll(other.herstellerList);
+/*         for (Hersteller hersteller : other.herstellerList){
+            this.herstellerList.add(hersteller);
+
+        }*/
+    }
 }

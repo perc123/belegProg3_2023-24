@@ -80,7 +80,7 @@ public class Console {
                     double price = Double.parseDouble(values[5]);
                     String fruitVariety = (values.length > 6) ? values[6] : null;
                     String creamType = (values.length > 7) ? values[7] : null;
-                    if (herstellerList.getAllHersteller().contains(manufacturerName)) {
+                    if (herstellerList.getHerstellerList().contains(manufacturerName)) {
                         switch (cakeType) {
                             case "Kremkuchen" -> {
                                 KuchenImpl cake = new KremkuchenImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType);

@@ -220,7 +220,7 @@ public class Controller {
     }
     private void updateManufacturersListView() {
         manufacturersListView.getItems().clear();
-        for (Hersteller hersteller : herstellerStorage.getAllHersteller()){
+        for (Hersteller hersteller : herstellerStorage.getHerstellerList()){
             manufacturersListView.getItems().add(hersteller.getName());
         }
     }
@@ -332,42 +332,48 @@ public class Controller {
         updateCakesListViewTrayNumber();
         outputTextArea.setText("All cakes from " + manufacturer + " removed.");
     }
+
     @FXML
     private void handleSave() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save Vending Machine Data");
-        File file = fileChooser.showSaveDialog(new Stage());
+        // Specify the path for saving
+        //String savePath = "src/saveModeJBP/saveModelJBP.xml";
 
-        if (file != null) {
-            // save the vending machine data
-            JBP jbp = new JBP(vendingMachine);
-            jbp.serialisierenJBP();
-            outputTextArea.setText("Vending Machine data saved to: " + file.getAbsolutePath());
-        } else {
-            outputTextArea.setText("Save operation cancelled.");
-        }
+        // Save the vending machine data
+        JBP jbpVending = new JBP(vendingMachine);
+        JBP jbpHersteller = new JBP(herstellerStorage);
+        jbpVending.serialisierenJBP();
+        jbpHersteller.serialHerstellerJBP();
+
+        outputTextArea.setText("Vending Machine and Manufacturer data saved");
+        System.out.println(herstellerStorage.getHerstellerList().toString());
+
     }
 
     @FXML
     private void handleLoad() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Load Vending Machine Data");
-        File file = fileChooser.showOpenDialog(new Stage());
+        // Specify the path for loading
+        //String loadPath = "src/saveModeJBP/saveModelJBP.xml";
 
-        if (file != null) {
-            // load the vending machine data
-            JBP jbp = new JBP(vendingMachine);
-            VendingMachine loadedVendingMachine = jbp.deserialisierenJBP();
+        // Load the vending machine data
+        JBP jbpVending = new JBP(vendingMachine);
+        JBP jbpHesteller = new JBP(herstellerStorage);
+        VendingMachine loadedVendingMachine = jbpVending.deserialisierenJBP();
+        HerstellerStorage loadedherstellerStorage = jbpHesteller.desirialHerstellerJBP();
 
-            if (loadedVendingMachine != null) {
-                vendingMachine.setModel(loadedVendingMachine);
-                outputTextArea.setText("Vending Machine data loaded from: " + file.getAbsolutePath());
-                updateCakesListViewTrayNumber();
-            } else {
-                outputTextArea.setText("Error loading Vending Machine data.");
-            }
+        if (loadedVendingMachine != null) {
+            vendingMachine.setModel(loadedVendingMachine);
+            outputTextArea.setText("Vending Machine data loaded");
+            updateCakesListViewTrayNumber();
         } else {
-            outputTextArea.setText("Load operation cancelled.");
+            outputTextArea.setText("Error loading Vending Machine data.");
         }
+        if (loadedherstellerStorage != null) {
+            herstellerStorage.setManufacturerList(loadedherstellerStorage);
+            outputTextArea.setText("Manufacturer data loaded");
+            updateManufacturersListView();
+        } else {
+            outputTextArea.setText("Error loading Vending Machine data.");
+        }
+        //System.out.println(loadedherstellerStorage.getHerstellerList().toString());
     }
 }

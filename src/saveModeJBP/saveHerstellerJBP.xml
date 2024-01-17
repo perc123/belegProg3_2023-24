@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="18.0.2" class="java.beans.XMLDecoder">
+ <object class="administration.HerstellerStorage" id="HerstellerStorage0">
+  <void id="LinkedList0" property="herstellerList">
+   <void method="add">
+    <object class="administration.HerstellerImpl">
+     <string>fanis</string>
+    </object>
+   </void>
+   <void method="add">
+    <object class="administration.HerstellerImpl">
+     <string>chris</string>
+    </object>
+   </void>
+   <void method="add">
+    <object class="administration.HerstellerImpl">
+     <string>john</string>
+    </object>
+   </void>
+   <void method="add">
+    <object class="administration.HerstellerImpl">
+     <string>james</string>
+    </object>
+   </void>
+  </void>
+  <void method="addAllHersteller">
+   <object idref="LinkedList0"/>
+  </void>
+ </object>
+</java>
