@@ -13,10 +13,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 
-
 public class ServerTCP {
     private VendingMachine vendingMachine;
-    private String nachrichtAnClient = "";
+    private static String nachrichtAnClient = "";
 
     public ServerTCP(VendingMachine vendingMachine) {
         this.vendingMachine = vendingMachine;
@@ -32,6 +31,9 @@ public class ServerTCP {
 
                 try (BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                      PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
+
+                    // Send the capacity to the client
+                    out.println("CAPACITY:" + vendingMachine.getCapacity());
 
                     String inputLine;
                     while ((inputLine = in.readLine()) != null) {
@@ -51,34 +53,4 @@ public class ServerTCP {
             System.err.println("Fehler aufgetreten: " + e.getMessage());
         }
     }
-
-    public void sendHerstellerListToServer(List<HerstellerStorage> output) {
-        StringBuilder result = new StringBuilder();
-        for (HerstellerStorage h : output) {
-            result.append("[").append(h).append("] [Anzahl Kuchen: ").append(h).append("] || ");
-        }
-        this.nachrichtAnClient = result.toString();
-
-    }
-
-    public void sendKuchenListToServer(List<VendingMachine> output){
-        StringBuilder result = new StringBuilder();
-        for(VendingMachine k : output){
-            result.append(k).append(" || ");
-        }
-        this.nachrichtAnClient = result.toString();
-    }
-
-    public void sendAllergenListToServer(List<Allergen> output){
-        StringBuilder result = new StringBuilder();
-        for(Allergen a : output){
-            result.append(a.toString()).append(" || ");
-        }
-        this.nachrichtAnClient = result.toString();
-    }
-
-    public void sendInfoToServer(String output) {
-        this.nachrichtAnClient = output;
-    }
-
 }

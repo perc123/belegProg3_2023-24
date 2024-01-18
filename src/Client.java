@@ -10,7 +10,8 @@ public class Client {
 
     public static void main(String[] args) {
         try (Socket socket = new Socket("localhost", 5000)){
-            Console console = new Console(socket);
+            VendingMachine vendingMachine = new VendingMachine();
+            Console console = new Console(vendingMachine);
             ClientTCP clientTCP = new ClientTCP(console);
             clientTCP.start();
         } catch (IOException | ClassNotFoundException e) {
