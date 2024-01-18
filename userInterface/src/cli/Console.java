@@ -48,7 +48,7 @@ public class Console {
         System.out.println("exit - Exit the application");
     }
 
-    private void executeCommand(String userInput) {
+    public void executeCommand(String userInput) {
         if (userInput.equals("exit")) {
             isRunning = false;
         } else if (userInput.startsWith(":")) {
@@ -61,7 +61,7 @@ public class Console {
     private void switchToMode(Command.Operator commandType) {
         System.out.println("Switching to " + commandType + " mode.");
     }
-    private void handleBuiltInCommand(String userInput) {
+    public void handleBuiltInCommand(String userInput) {
         // Handle built-in commands
         switch (userInput) {
             case ":c" -> {
