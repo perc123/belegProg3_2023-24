@@ -28,7 +28,7 @@ public class JBP {
 
     //Serialize Vending Machine
     public void serialisierenJBP() {
-        File folder = new File("src/saveModeJBP/");
+        File folder = new File("/serialization/src/saveModeJBP/");
         if (!folder.exists()) {
             if (!folder.mkdirs()) {
                 System.out.println("Could not create folder: " + folder);
@@ -45,7 +45,7 @@ public class JBP {
     }
     // Serialize Manufacturers
     public void serialHerstellerJBP(){
-        File folder = new File("src/saveModeJBP/");
+        File folder = new File("/serialization/src/saveModeJBP/");
         if (!folder.exists()) {
             if (!folder.mkdirs()) {
                 System.out.println("Could not create folder: " + folder);
@@ -63,7 +63,7 @@ public class JBP {
 
     public VendingMachine deserialisierenJBP() {
         VendingMachine vendingMachine = null;
-        File file = new File("src/saveModeJBP/saveModelJBP.xml");
+        File file = new File("/serialization/src/saveModeJBP/saveModelJBP.xml");
 
         try (XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(file)))) {
             vendingMachine = (VendingMachine) decoder.readObject();
@@ -77,7 +77,7 @@ public class JBP {
 
     public HerstellerStorage desirialHerstellerJBP(){
         HerstellerStorage herstellerStorage = null;
-        File file = new File("src/saveModeJBP/saveHerstellerJBP.xml");
+        File file = new File("/serialization/src/saveModeJBP/saveHerstellerJBP.xml");
 
         try (XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(file)))) {
             herstellerStorage = (HerstellerStorage) decoder.readObject();
