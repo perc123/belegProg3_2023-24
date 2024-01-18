@@ -3,9 +3,9 @@ package TCP;
 
 import administration.HerstellerStorage;
 import administration.VendingMachine;
-import commands.Command;
-import cli.Console;
+import cakes.KuchenImpl;
 import kuchen.Allergen;
+import verwaltung.Hersteller;
 
 
 import java.io.*;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ServerTCP {
     private VendingMachine vendingMachine;
-    private String nachrichtAnClient = "";
+    private static String nachrichtAnClient = "";
 
     public ServerTCP(VendingMachine vendingMachine) {
         this.vendingMachine = vendingMachine;
@@ -32,6 +32,8 @@ public class ServerTCP {
 
                 try (BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                      PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
+                    System.out.println("Hallo");
+                    out.println("CAPACITY:" + vendingMachine.getCapacity());
 
                     String inputLine;
                     while ((inputLine = in.readLine()) != null) {
@@ -52,18 +54,17 @@ public class ServerTCP {
         }
     }
 
-    public void sendHerstellerListToServer(List<HerstellerStorage> output) {
+    public static void sendHerstellerListToServer(List<Hersteller> output) {
         StringBuilder result = new StringBuilder();
-        for (HerstellerStorage h : output) {
+        for (Hersteller h : output) {
             result.append("[").append(h).append("] [Anzahl Kuchen: ").append(h).append("] || ");
         }
-        this.nachrichtAnClient = result.toString();
-
+        nachrichtAnClient = result.toString();
     }
 
-    public void sendKuchenListToServer(List<VendingMachine> output){
+    public void sendKuchenListToServer(List<KuchenImpl> res){
         StringBuilder result = new StringBuilder();
-        for(VendingMachine k : output){
+        for(KuchenImpl k : res){
             result.append(k).append(" || ");
         }
         this.nachrichtAnClient = result.toString();
