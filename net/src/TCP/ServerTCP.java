@@ -13,32 +13,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 
+
 public class ServerTCP {
-    private Console console;
-
-    public ServerTCP(Console console) {
-        this.console = console;
-    }
-
-    private Command.Operator aktuellerModus;
+    private VendingMachine vendingMachine;
     private String nachrichtAnClient = "";
 
-
-/*
-
-    private SerialisierungsModus serialisierungsModus;
-
-    public void setSerialisierungsModus(SerialisierungsModus serialisierungsModus) {
-        this.serialisierungsModus = serialisierungsModus;
-    }
-*/
-
-    public void handleInput(String input) {
-        if (input.startsWith(":")) {
-            console.handleBuiltInCommand(input);
-        } else {
-            console.executeCommand(input);
-        }
+    public ServerTCP(VendingMachine vendingMachine) {
+        this.vendingMachine = vendingMachine;
     }
 
     public void start() {
@@ -54,8 +35,12 @@ public class ServerTCP {
 
                     String inputLine;
                     while ((inputLine = in.readLine()) != null) {
-                        handleInput(inputLine);
-                        out.println(nachrichtAnClient);
+                        // Do not handle input on the server side
+                        // Send the output to the client
+                        if (!nachrichtAnClient.isEmpty()) {
+                            out.println(nachrichtAnClient);
+                        }
+
                         nachrichtAnClient = "";
                     }
                 } catch (IOException e) {

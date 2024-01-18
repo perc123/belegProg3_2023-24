@@ -57,10 +57,9 @@ public class Server {
         }
 
         VendingMachine vendingMachine = new VendingMachine(capacity);
-        Console console = new Console(vendingMachine);
 
         if (protocol.equalsIgnoreCase("TCP")) {
-            ServerTCP serverTCP = new ServerTCP(console);
+            ServerTCP serverTCP = new ServerTCP(vendingMachine);
             serverTCP.start();
         } else if (protocol.equalsIgnoreCase("UDP")) {
             // Implement UDP server logic if needed

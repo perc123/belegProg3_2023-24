@@ -12,6 +12,7 @@ import kuchen.Allergen;
 import saveJBP.JBP;
 import verwaltung.Hersteller;
 import java.math.BigDecimal;
+import java.net.Socket;
 import java.time.Duration;
 import java.util.*;
 
@@ -27,6 +28,12 @@ public class Console {
         this.isRunning = true;
         this.vendingMachine = vendingMachine;  // Initialize the vendingMachine variable
     }
+
+    public Console(Socket socket) {
+        this.isRunning = true;
+        this.vendingMachine = vendingMachine;
+    }
+
 
     public void start() {
         printCommands();
