@@ -9,6 +9,7 @@ import cakes.ObstkuchenImpl;
 import cakes.ObsttorteImpl;
 import commands.Command;
 import kuchen.Allergen;
+import saveJBP.JBP;
 import verwaltung.Hersteller;
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -18,7 +19,7 @@ import java.util.*;
 import java.util.Scanner;
 
 public class Console {
-    HerstellerStorage herstellerList = new HerstellerStorage();
+    HerstellerStorage herstellerStorage = new HerstellerStorage();
     private VendingMachine vendingMachine;
     private boolean isRunning;
 
@@ -66,6 +67,7 @@ public class Console {
         switch (userInput) {
             case ":c" -> {
                 switchToMode(Command.Operator.SWITCH_INSERT_MODE);
+                System.out.println("Enter a manufacturer or a cake: ");
                 Scanner scanner = new Scanner(System.in);
                 String inputLine = scanner.nextLine();
                 String[] values = inputLine.split(" ");
@@ -73,14 +75,14 @@ public class Console {
                     insertHersteller(inputLine);
                 } else if (values.length == 6 || values.length == 8) {
                     String cakeType = values[0];
-                    HerstellerImpl manufacturerName = (HerstellerImpl) herstellerList.findHerstellerByName(values[1]);
+                    HerstellerImpl manufacturerName = (HerstellerImpl) herstellerStorage.findHerstellerByName(values[1]);
                     List<Allergen> allergens = convertToAllergenList(values[2]);
                     int nutritionalValue = Integer.parseInt(values[3]);
                     int shelfLife = Integer.parseInt(values[4]);
                     double price = Double.parseDouble(values[5]);
                     String fruitVariety = (values.length > 6) ? values[6] : null;
                     String creamType = (values.length > 7) ? values[7] : null;
-                    if (herstellerList.getHerstellerList().contains(manufacturerName)) {
+                    if (herstellerStorage.getHerstellerList().contains(manufacturerName)) {
                         switch (cakeType) {
                             case "Kremkuchen" -> {
                                 KuchenImpl cake = new KremkuchenImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType);
@@ -120,9 +122,17 @@ public class Console {
 
             }
             case ":u" -> switchToMode(Command.Operator.SWITCH_UPDATE_MODE);
-            case ":p" -> switchToMode(Command.Operator.SWITCH_PERSISTENCE_MODE);
+            case ":p" -> {
+                switchToMode(Command.Operator.SWITCH_PERSISTENCE_MODE);
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Available: saveJOS, loadJOS, saveJBP, loadJBP");
+                String displayType = scanner.nextLine().toLowerCase();
+                handlePersistenceMode(List.of(displayType));
+            }
             default -> System.out.println("Invalid command. Type 'exit' to exit the application.");
         }
+        System.out.println();
+        printCommands();
     }
     private void handleDisplayMode(List<String> arguments) {
         if (arguments.isEmpty()) {
@@ -153,7 +163,7 @@ public class Console {
     }
     private void displayManufacturers() {
         System.out.println("Manufacturer Display:");
-        herstellerList.displayHersteller();
+        herstellerStorage.displayHersteller();
     }
 
     private void displayCakes() {
@@ -202,7 +212,7 @@ public class Console {
 
     private void insertHersteller(String name) {
         HerstellerImpl hersteller = new HerstellerImpl(name);
-        herstellerList.addHersteller(hersteller);
+        herstellerStorage.addHersteller(hersteller);
     }
 
 
@@ -254,10 +264,10 @@ public class Console {
     }
 
     private void deleteManufacturer(String manufacturerName) {
-        Hersteller hersteller = herstellerList.findHerstellerByName(manufacturerName);
+        Hersteller hersteller = herstellerStorage.findHerstellerByName(manufacturerName);
 
         if (hersteller != null) {
-            herstellerList.removeHersteller(hersteller);
+            herstellerStorage.removeHersteller(hersteller);
             System.out.println("Manufacturer '" + manufacturerName + "' deleted.");
         } else {
             System.out.println("Manufacturer '" + manufacturerName + "' not found.");
@@ -289,5 +299,59 @@ public class Console {
 
     private void inspectCake(int trayNumber) {
         vendingMachine.updateInspectionDate(trayNumber);
+    }
+
+    private void handlePersistenceMode(List<String> arguments){
+        /*if (arguments.isEmpty()) {
+            System.out.println("Invalid arguments for persistence mode.");
+            return;
+        }*/
+        String displayType = arguments.get(0).toLowerCase();
+
+        switch (displayType) {
+            case "savejos":
+                System.out.println("JOS not yet implemented");
+                break;
+            case "loadjos":
+                System.out.println("JOS not yet implemented");
+                break;
+            case "savejbp":
+                handleSaveJBP();
+                break;
+            case "loadjbp":
+                handleLoadJBP();
+                break;
+            default:
+                System.out.println("Invalid arguments for persistence mode.");
+        }
+    }
+    private void handleSaveJBP(){
+        JBP jbpVending = new JBP(vendingMachine); // Save the vending machine data
+        JBP jbpHersteller = new JBP(herstellerStorage); // Save the manufacturer data
+        jbpVending.serialisierenJBP();
+        jbpHersteller.serialHerstellerJBP();
+
+        System.out.println("Vending Machine and Manufacturer data saved");
+    }
+    private void handleLoadJBP() {
+        JBP jbpVending = new JBP(vendingMachine);// Load the vending machine data
+        JBP jbpHesteller = new JBP(herstellerStorage);// Load the manufacturer data
+        VendingMachine loadedVendingMachine = jbpVending.deserialisierenJBP();
+        HerstellerStorage loadedherstellerStorage = jbpHesteller.desirialHerstellerJBP();
+
+        if (loadedVendingMachine != null) {
+            vendingMachine.setModel(loadedVendingMachine);
+            System.out.println("Vending Machine data loaded");
+            //updateCakesListViewTrayNumber();
+        } else {
+            System.out.println("Error loading Vending Machine data.");
+        }
+        if (loadedherstellerStorage != null) {
+            herstellerStorage.setManufacturerList(loadedherstellerStorage);
+            System.out.println("Manufacturer data loaded");
+            //updateManufacturersListView();
+        } else {
+            System.out.println("Error loading Vending Machine data.");
+        }
     }
 }

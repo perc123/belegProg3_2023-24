@@ -10,11 +10,7 @@ public class Command {
         SWITCH_DELETE_MODE(":d"),
         SWITCH_DISPLAY_MODE(":r"),
         SWITCH_UPDATE_MODE(":u"),
-        SWITCH_PERSISTENCE_MODE(":p"),
-        SAVE_JOS("saveJOS"),
-        LOAD_JOS("loadJOS"),
-        SAVE_JBP("saveJBP"),
-        LOAD_JBP("loadJBP");
+        SWITCH_PERSISTENCE_MODE(":p");
 
         private final String value;
 

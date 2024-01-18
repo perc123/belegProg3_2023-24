@@ -335,28 +335,18 @@ public class Controller {
 
     @FXML
     private void handleSave() {
-        // Specify the path for saving
-        //String savePath = "src/saveModeJBP/saveModelJBP.xml";
-
-        // Save the vending machine data
-        JBP jbpVending = new JBP(vendingMachine);
-        JBP jbpHersteller = new JBP(herstellerStorage);
+        JBP jbpVending = new JBP(vendingMachine); // Save the vending machine data
+        JBP jbpHersteller = new JBP(herstellerStorage); // Save the manufacturer data
         jbpVending.serialisierenJBP();
         jbpHersteller.serialHerstellerJBP();
 
         outputTextArea.setText("Vending Machine and Manufacturer data saved");
-        System.out.println(herstellerStorage.getHerstellerList().toString());
-
     }
 
     @FXML
     private void handleLoad() {
-        // Specify the path for loading
-        //String loadPath = "src/saveModeJBP/saveModelJBP.xml";
-
-        // Load the vending machine data
-        JBP jbpVending = new JBP(vendingMachine);
-        JBP jbpHesteller = new JBP(herstellerStorage);
+        JBP jbpVending = new JBP(vendingMachine);// Load the vending machine data
+        JBP jbpHesteller = new JBP(herstellerStorage);// Load the manufacturer data
         VendingMachine loadedVendingMachine = jbpVending.deserialisierenJBP();
         HerstellerStorage loadedherstellerStorage = jbpHesteller.desirialHerstellerJBP();
 

@@ -17,7 +17,6 @@ public class ClientTCP {
             System.out.println("connected to Server");
 
             while (true) {
-                System.out.println("Haaaaallo");
                 inputLine = scanner.nextLine();
                 out.println(inputLine);
                 String response = in.readLine();
