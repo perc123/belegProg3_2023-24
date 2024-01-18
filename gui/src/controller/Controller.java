@@ -374,6 +374,5 @@ public class Controller {
         } else {
             outputTextArea.setText("Error loading Vending Machine data.");
         }
-        //System.out.println(loadedherstellerStorage.getHerstellerList().toString());
     }
 }

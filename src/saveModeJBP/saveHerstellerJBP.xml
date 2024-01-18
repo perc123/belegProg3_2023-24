@@ -9,17 +9,7 @@
    </void>
    <void method="add">
     <object class="administration.HerstellerImpl">
-     <string>chris</string>
-    </object>
-   </void>
-   <void method="add">
-    <object class="administration.HerstellerImpl">
      <string>john</string>
-    </object>
-   </void>
-   <void method="add">
-    <object class="administration.HerstellerImpl">
-     <string>james</string>
     </object>
    </void>
   </void>

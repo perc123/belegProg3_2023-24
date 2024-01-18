@@ -23,7 +23,6 @@ public class ObstkuchenImpl extends KuchenImpl implements Obstkuchen, Serializab
             Duration haltbarkeit,
             BigDecimal preis,
             String obstsorte
-            //Date inspektionsdatum
     ) {
         super(kuchenTyp,hersteller, allergene, naehrwert, haltbarkeit, preis);
         this.obstsorte = obstsorte;

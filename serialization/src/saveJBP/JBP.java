@@ -26,8 +26,8 @@ public class JBP {
         this.herstellerStorage = herstellerStorage;
     }
 
+    //Serialize Vending Machine
     public void serialisierenJBP() {
-       // File folder = new File(Paths.get("src", "serialization", "saveModeJBP").toString());
         File folder = new File("src/saveModeJBP/");
         if (!folder.exists()) {
             if (!folder.mkdirs()) {
@@ -43,6 +43,7 @@ public class JBP {
             e.printStackTrace();
         }
     }
+    // Serialize Manufacturers
     public void serialHerstellerJBP(){
         File folder = new File("src/saveModeJBP/");
         if (!folder.exists()) {
@@ -85,7 +86,6 @@ public class JBP {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //System.out.println(herstellerStorage.getAllHersteller());
         return herstellerStorage;
     }
 
@@ -100,6 +100,9 @@ public class JBP {
                 out.writeStatement(new Statement(oldInstance, "addAllHersteller", new Object[]{storage.getHerstellerList()}));
             }
         });
+        encoder.setPersistenceDelegate(KremkuchenImpl.class, new DefaultPersistenceDelegate(new String[]{"kuchenTyp", "hersteller", "allergene", "naehrwert", "haltbarkeit", "preis", "kremsorte"}));
+        encoder.setPersistenceDelegate(ObstkuchenImpl.class, new DefaultPersistenceDelegate(new String[]{"kuchenTyp", "hersteller", "allergene", "naehrwert", "haltbarkeit", "preis", "obstsorte"}));
+        encoder.setPersistenceDelegate(ObsttorteImpl.class, new DefaultPersistenceDelegate(new String[]{"kuchenTyp", "hersteller", "allergene", "naehrwert", "haltbarkeit", "preis", "kremsorte", "obstsorte"}));
 
 
         encoder.setPersistenceDelegate(Duration.class,
@@ -133,6 +136,17 @@ public class JBP {
                 );
             }
         });
+        encoder.setPersistenceDelegate(BigDecimal.class, new DefaultPersistenceDelegate() {
+            protected Expression instantiate(Object oldInstance, Encoder out) {
+                BigDecimal bd = (BigDecimal) oldInstance;
+                return new Expression(oldInstance, oldInstance.getClass(), "new", new Object[]{bd.toString()});
+            }
+
+            protected boolean mutatesTo(Object oldInstance, Object newInstance) {
+                return oldInstance.equals(newInstance);
+            }
+        });
+
 
         //setPersistenceDelegateForLinkedList(encoder);
     }

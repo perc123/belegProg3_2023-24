@@ -37,5 +37,4 @@ public class KremkuchenImpl extends KuchenImpl implements Kremkuchen, Verkaufsob
     public String getKremsorte() {
         return kremsorte;
     }
-
 }

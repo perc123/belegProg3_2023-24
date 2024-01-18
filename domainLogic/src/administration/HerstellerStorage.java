@@ -56,21 +56,15 @@ public class HerstellerStorage implements Serializable {
 
 
     public void setManufacturerList(HerstellerStorage other) {
-        //this.herstellerList = other.herstellerList;
         // Clear existing
         this.herstellerList.clear();
 
-        // Copy from other
         // Copy from other, avoiding duplicates
         for (Hersteller hersteller : other.herstellerList) {
             if (!this.herstellerList.contains(hersteller)) {
                 this.herstellerList.add(hersteller);
             }
         }
-        //this.herstellerList.addAll(other.herstellerList);
-/*         for (Hersteller hersteller : other.herstellerList){
-            this.herstellerList.add(hersteller);
 
-        }*/
     }
 }
