@@ -1,68 +1,68 @@
 package listener;
 
 
-import infrastructure.AllergeneAnzeigen.AllergeneAnzeigenEvent;
-import infrastructure.AllergeneAnzeigen.AllergeneAnzeigenEventListener;
-import infrastructure.HerstellerAnzeigen.HerstellerAnzeigenEvent;
-import infrastructure.HerstellerAnzeigen.HerstellerAnzeigenEventListener;
-import infrastructure.HerstellerEinfuegen.HerstellerEinfuegenEvent;
-import infrastructure.HerstellerEinfuegen.HerstellerEinfuegenEventListener;
-import infrastructure.HerstellerLoeschen.HerstellerLoeschenEvent;
-import infrastructure.HerstellerLoeschen.HerstellerLoeschenEventListener;
-import infrastructure.InspektionsdatumSetzen.InspektionsEvent;
-import infrastructure.InspektionsdatumSetzen.InspektionsEventListener;
-import infrastructure.KuchenAnzeigen.KuchenAnzeigenEvent;
-import infrastructure.KuchenAnzeigen.KuchenAnzeigenEventListener;
-import infrastructure.KuchenEinfuegen.KuchenEinfuegenEvent;
-import infrastructure.KuchenEinfuegen.KuchenEinfuegenEventListener;
-import infrastructure.KuchenLoeschen.KuchenLoeschenEvent;
-import infrastructure.KuchenLoeschen.KuchenLoeschenEventListener;
-import infrastructure.ModelSpeichern.ModelSpeichernLadenEvent;
-import infrastructure.ModelSpeichern.ModelSpeichernEventListener;
+import infrastructure.AddManufacturer.AddHerstellerEvent;
+import infrastructure.PrintAllergies.PrintAllergiesEvent;
+import infrastructure.PrintAllergies.PrintAllergiesEventListener;
+import infrastructure.PrintManufacturers.PrintHerstellerEvent;
+import infrastructure.PrintManufacturers.PrintHerstellerEventListener;
+import infrastructure.AddManufacturer.AddHerstellerEventListener;
+import infrastructure.RemoveManufacturer.RemoveHerstellerEvent;
+import infrastructure.RemoveManufacturer.RemoveHerstellerEventListener;
+import infrastructure.InspectionsDate.InspectionEvent;
+import infrastructure.InspectionsDate.InspectionEventListener;
+import infrastructure.PrintCakes.PrintCakeEvent;
+import infrastructure.PrintCakes.PrintCakeEventListener;
+import infrastructure.AddCake.AddCakeEvent;
+import infrastructure.AddCake.AddCakeEventListener;
+import infrastructure.RemoveCake.RemoveCakeEvent;
+import infrastructure.RemoveCake.RemoveCakeEventListener;
+import infrastructure.SaveAndLoadVendingMachine.SaveVendingMachineEvent;
+import infrastructure.SaveAndLoadVendingMachine.SaveVendingMachineEventListener;
 
-public class InfoListener implements HerstellerEinfuegenEventListener, KuchenEinfuegenEventListener, HerstellerLoeschenEventListener, KuchenLoeschenEventListener, InspektionsEventListener, AllergeneAnzeigenEventListener, KuchenAnzeigenEventListener, HerstellerAnzeigenEventListener, ModelSpeichernEventListener {
+public class InfoListener implements AddHerstellerEventListener, AddCakeEventListener, RemoveHerstellerEventListener, RemoveCakeEventListener, InspectionEventListener, PrintAllergiesEventListener, PrintCakeEventListener, PrintHerstellerEventListener, SaveVendingMachineEventListener {
     @Override
-    public void onHerstellerEinfuegenEvent(HerstellerEinfuegenEvent event) {
+    public void onAddHerstellerEvent(AddHerstellerEvent event) {
         System.out.println("Eine Operation wurde ausgefuehrt");
     }
 
     @Override
-    public void onEinfuegenEvent(KuchenEinfuegenEvent event) {
+    public void onAddEvent(AddCakeEvent event) {
         System.out.println("Eine Operation wurde ausgefuehrt");
     }
 
     @Override
-    public void onHerstellerLoeschenEvent(HerstellerLoeschenEvent event) {
+    public void onRemoveHerstellerEvent(RemoveHerstellerEvent event) {
         System.out.println("Eine Operation wurde ausgefuehrt");
     }
 
     @Override
-    public void onKuchenLoeschenEvent(KuchenLoeschenEvent event) {
+    public void onRemoveCakeEvent(RemoveCakeEvent event) {
         System.out.println("Eine Operation wurde ausgefuehrt");
     }
 
     @Override
-    public void onInspektionsEvent(InspektionsEvent event) {
+    public void onInspectionEvent(InspectionEvent event) {
         System.out.println("Eine Operation wurde ausgefuehrt");
     }
 
     @Override
-    public void onAllergeneAnzeigenEvent(AllergeneAnzeigenEvent event) {
+    public void onPrintAllergiesEvent(PrintAllergiesEvent event) {
         System.out.println("Eine Operation wurde ausgefuehrt");
     }
 
     @Override
-    public void onHerstellerAnzeigenEvent(HerstellerAnzeigenEvent event) {
+    public void onPrintHerstellerEvent(PrintHerstellerEvent event) {
         System.out.println("Eine Operation wurde ausgefuehrt");
     }
 
     @Override
-    public void onKuchenAnzeigenEvent(KuchenAnzeigenEvent event) {
+    public void onPrintCakeEvent(PrintCakeEvent event) {
         System.out.println("Eine Operation wurde ausgefuehrt");
     }
 
     @Override
-    public void onModelSpeichernEvent(ModelSpeichernLadenEvent event) {
+    public void onSaveVendingMachineEvent(SaveVendingMachineEvent event) {
         System.out.println("Eine Operation wurde ausgefuehrt");
     }
 }

@@ -8,11 +8,13 @@ import cakes.KuchenImpl;
 import cakes.ObstkuchenImpl;
 import cakes.ObsttorteImpl;
 import commands.Command;
+import infrastructure.AddManufacturer.AddHerstellerEvent;
+import infrastructure.AddManufacturer.AddHerstellerEventHandler;
+import infrastructure.AddCake.AddCakeEventHandler;
 import kuchen.Allergen;
 import saveJBP.JBP;
-import verwaltung.Hersteller;
+
 import java.math.BigDecimal;
-import java.net.Socket;
 import java.time.Duration;
 import java.util.*;
 
@@ -20,16 +22,21 @@ import java.util.*;
 import java.util.Scanner;
 
 public class Console {
-    HerstellerStorage herstellerStorage = new HerstellerStorage();
+    //HerstellerStorage herstellerStorage = new HerstellerStorage();
+    private HerstellerStorage herstellerStorage;
     private VendingMachine vendingMachine;
     private boolean isRunning;
 
-    public Console(VendingMachine vendingMachine) {
+    private AddHerstellerEventHandler addHandlerHersteller;
+    private AddCakeEventHandler addHandlerKuchen;
+
+    public Console(VendingMachine vendingMachine, HerstellerStorage herstellerStorage) {
         this.isRunning = true;
-        this.vendingMachine = vendingMachine;  // Initialize the vendingMachine variable
+        this.vendingMachine = vendingMachine; // Initialize the vendingMachine variable
+        this.herstellerStorage = herstellerStorage;
     }
 
-    public Console(Socket socket) {
+    public Console() {
         this.isRunning = true;
         this.vendingMachine = vendingMachine;
     }
@@ -218,8 +225,15 @@ public class Console {
 
 
     private void insertHersteller(String name) {
-        HerstellerImpl hersteller = new HerstellerImpl(name);
-        herstellerStorage.addHersteller(hersteller);
+        AddHerstellerEvent event = new AddHerstellerEvent(this,name);
+        if (null != this.addHandlerHersteller) {
+            this.addHandlerHersteller.handle(event);
+            //HerstellerImpl hersteller = new HerstellerImpl(name);
+            //herstellerStorage.addHersteller(hersteller);
+            System.out.println("Here");
+        }else
+            System.out.println("Handler is null");
+        System.out.println("Inserted " + name);
     }
 
 
@@ -271,10 +285,9 @@ public class Console {
     }
 
     private void deleteManufacturer(String manufacturerName) {
-        Hersteller hersteller = herstellerStorage.findHerstellerByName(manufacturerName);
+        //Hersteller hersteller = herstellerStorage.findHerstellerByName(manufacturerName);
 
-        if (hersteller != null) {
-            herstellerStorage.removeHersteller(hersteller);
+        if (herstellerStorage.removeHersteller(manufacturerName) == true) {
             System.out.println("Manufacturer '" + manufacturerName + "' deleted.");
         } else {
             System.out.println("Manufacturer '" + manufacturerName + "' not found.");

@@ -206,8 +206,8 @@ public class Controller {
             String inputLine = userInputField.getText();
             Hersteller hersteller = herstellerStorage.findHerstellerByName(inputLine);
 
-            if (hersteller != null)  {
-                herstellerStorage.removeHersteller(hersteller);
+            if (herstellerStorage.removeHersteller(inputLine) == true)  {
+                //herstellerStorage.removeHersteller(hersteller);
                 outputTextArea.setText("Manufacturer '" + inputLine + "' deleted.");
                 updateManufacturersListView();
                 deleteCakeByManufacturer(hersteller.getName());

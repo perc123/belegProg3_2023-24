@@ -30,7 +30,7 @@ public class ClientTCP {
                 int capacity = Integer.parseInt(capacityMessage.substring("CAPACITY:".length()));
                 //TODO: Use the capacity to initialize the vending machine
                 vendingMachine = new VendingMachine(capacity);
-                console = new Console(vendingMachine);
+                console = new Console();
             }
 
             // Start communication in a separate thread

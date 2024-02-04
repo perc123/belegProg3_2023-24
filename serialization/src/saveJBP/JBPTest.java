@@ -12,7 +12,7 @@ class JBPTest {
 
     @Test
     void serialisierenJBP() {
-        VendingMachine vendingMachine = new VendingMachine(10);
+        VendingMachine vendingMachine = new VendingMachine();
         JBP jbp = new JBP(vendingMachine);
 
         // Test serialization

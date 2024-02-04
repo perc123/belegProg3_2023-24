@@ -1,33 +1,33 @@
 package listener;
 
 import administration.HerstellerImpl;
-import administration.HerstellerStorage;
 import administration.VendingMachine;
 import cakes.KremkuchenImpl;
 import cakes.KuchenImpl;
 import cakes.ObstkuchenImpl;
 import cakes.ObsttorteImpl;
-import infrastructure.AllergeneAnzeigen.AllergeneAnzeigenEvent;
-import infrastructure.AllergeneAnzeigen.AllergeneAnzeigenEventListener;
-import infrastructure.HerstellerAnzeigen.HerstellerAnzeigenEvent;
-import infrastructure.HerstellerAnzeigen.HerstellerAnzeigenEventListener;
-import infrastructure.HerstellerEinfuegen.HerstellerEinfuegenEvent;
-import infrastructure.HerstellerEinfuegen.HerstellerEinfuegenEventListener;
-import infrastructure.HerstellerLoeschen.HerstellerLoeschenEvent;
-import infrastructure.HerstellerLoeschen.HerstellerLoeschenEventListener;
-import infrastructure.InspektionsdatumSetzen.InspektionsEvent;
-import infrastructure.InspektionsdatumSetzen.InspektionsEventListener;
-import infrastructure.KuchenAnzeigen.KuchenAnzeigenEvent;
-import infrastructure.KuchenAnzeigen.KuchenAnzeigenEventListener;
-import infrastructure.KuchenEinfuegen.KuchenEinfuegenEvent;
-import infrastructure.KuchenEinfuegen.KuchenEinfuegenEventListener;
-import infrastructure.KuchenLoeschen.KuchenLoeschenEvent;
-import infrastructure.KuchenLoeschen.KuchenLoeschenEventListener;
-import infrastructure.ModelSpeichern.ModelSpeichernLadenEvent;
-import infrastructure.ModelSpeichern.ModelSpeichernEventListener;
+import infrastructure.AddCake.AddCakeEvent;
+import infrastructure.RemoveCake.RemoveCakeEvent;
+import infrastructure.SaveAndLoadVendingMachine.SaveVendingMachineEvent;
+import infrastructure.PrintAllergies.PrintAllergiesEvent;
+import infrastructure.PrintAllergies.PrintAllergiesEventListener;
+import infrastructure.PrintCakes.PrintCakeEvent;
+import infrastructure.PrintManufacturers.PrintHerstellerEvent;
+import infrastructure.PrintManufacturers.PrintHerstellerEventListener;
+import infrastructure.AddManufacturer.AddHerstellerEvent;
+import infrastructure.AddManufacturer.AddHerstellerEventListener;
+import infrastructure.RemoveManufacturer.RemoveHerstellerEvent;
+import infrastructure.RemoveManufacturer.RemoveHerstellerEventListener;
+import infrastructure.InspectionsDate.InspectionEvent;
+import infrastructure.InspectionsDate.InspectionEventListener;
+import infrastructure.PrintCakes.PrintCakeEventListener;
+import infrastructure.AddCake.AddCakeEventListener;
+import infrastructure.RemoveCake.RemoveCakeEventListener;
+import infrastructure.SaveAndLoadVendingMachine.SaveVendingMachineEventListener;
 import kuchen.Allergen;
-import kuchen.Kremkuchen;
 import saveJBP.JBP;
+import saveJOS.JOS;
+import singletonPattern.SingletonVendingMachine;
 import verwaltung.Hersteller;
 
 
@@ -38,137 +38,148 @@ import java.util.Collection;
 import java.util.List;
 
 
-public class Listener implements HerstellerEinfuegenEventListener, KuchenEinfuegenEventListener, HerstellerLoeschenEventListener, KuchenLoeschenEventListener, InspektionsEventListener, AllergeneAnzeigenEventListener, KuchenAnzeigenEventListener, HerstellerAnzeigenEventListener, ModelSpeichernEventListener {
+public class Listener implements AddHerstellerEventListener, AddCakeEventListener, RemoveHerstellerEventListener, RemoveCakeEventListener, InspectionEventListener, PrintAllergiesEventListener, PrintCakeEventListener, PrintHerstellerEventListener, SaveVendingMachineEventListener {
 
-    HerstellerStorage herstellerStorage = new HerstellerStorage();
+    //private HerstellerStorage herstellerStorage;
+    //HerstellerStorage herstellerStorage = new HerstellerStorage();
 
-    private VendingMachine vendingMachine;
+    private final VendingMachine vendingMachine;
 
     public Listener(VendingMachine vendingMachine) {
-        this.vendingMachine= vendingMachine;
+        SingletonVendingMachine.getInstance().setVendingMachine(vendingMachine);
+        this.vendingMachine= SingletonVendingMachine.getInstance().getVendingMachine();
     }
 
     @Override
-    public void onHerstellerEinfuegenEvent(HerstellerEinfuegenEvent herstellerEinfuegenEvent) {
-        HerstellerImpl hersteller = new HerstellerImpl(herstellerEinfuegenEvent.getHersteller());
-        herstellerStorage.addHersteller(hersteller);
+    public void onAddHerstellerEvent(AddHerstellerEvent addHerstellerEvent) {
+        HerstellerImpl hersteller = new HerstellerImpl(addHerstellerEvent.getHersteller());
+        SingletonVendingMachine.getInstance().getVendingMachine().addHersteller(hersteller);;
     }
 
     @Override
-    public void onEinfuegenEvent(KuchenEinfuegenEvent kuchenEinfuegenEvent) {
+    public void onAddEvent(AddCakeEvent addCakeEvent) {
 
         String kuchenTyp = null;
 
-        HerstellerImpl hersteller = new HerstellerImpl(kuchenEinfuegenEvent.getHersteller());
+        HerstellerImpl hersteller = new HerstellerImpl(addCakeEvent.getHersteller());
 
         BigDecimal preis;
         try {
-            preis = new BigDecimal(kuchenEinfuegenEvent.getPreis().replace(",", "."));
+            preis = new BigDecimal(addCakeEvent.getPreis().replace(",", "."));
         } catch (IllegalArgumentException | ArithmeticException e) {
             return;
         }
 
         int naehrwert;
         try {
-            naehrwert = Integer.parseInt(kuchenEinfuegenEvent.getNaehrwert());
+            naehrwert = Integer.parseInt(addCakeEvent.getNaehrwert());
         } catch (NumberFormatException e) {
             return;
         }
 
         Duration haltbarkeit;
         try {
-            haltbarkeit = Duration.ofDays(Integer.parseInt(kuchenEinfuegenEvent.getHaltbarkeit()));
+            haltbarkeit = Duration.ofDays(Integer.parseInt(addCakeEvent.getHaltbarkeit()));
         } catch (NumberFormatException e) {
             return;
         }
 
-        String[] allergenStrings = kuchenEinfuegenEvent.getAllergene().split(",");
+        String[] allergenStrings = addCakeEvent.getAllergene().split(",");
         Collection<Allergen> allergene = new ArrayList<>();
         for (String allergenString : allergenStrings) {
             allergene.add(Allergen.valueOf(allergenString));
         }
-        String sorte = kuchenEinfuegenEvent.getSorte();
-        String obstsorte = kuchenEinfuegenEvent.getSorte();
+        String sorte = addCakeEvent.getSorte();
+        String obstsorte = addCakeEvent.getSorte();
 
-        String[] sorteZwei = kuchenEinfuegenEvent.getSorteZwei();
+        String[] sorteZwei = addCakeEvent.getSorteZwei();
 
 
-        switch (kuchenEinfuegenEvent.getKuchentyp()) {
+        switch (addCakeEvent.getKuchentyp()) {
             case "Kremkuchen" -> {
                 KremkuchenImpl kremkuchen = new KremkuchenImpl(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis, sorte);
-                vendingMachine.addItem(kremkuchen, hersteller);
+                vendingMachine.addItem(kremkuchen);
             }
             case "Obstkuchen" -> {
                 ObstkuchenImpl Obstkuchen = new ObstkuchenImpl(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis, sorte);
-                vendingMachine.addItem(Obstkuchen, hersteller);
+                vendingMachine.addItem(Obstkuchen);
             }
             case "Obsttorte" -> {
                 ObsttorteImpl Obsttorte = new ObsttorteImpl(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis, sorte, obstsorte);
-                vendingMachine.addItem(Obsttorte, hersteller);
+                vendingMachine.addItem(Obsttorte);
             }
         }
     }
 
     @Override
-    public void onHerstellerLoeschenEvent(HerstellerLoeschenEvent event) {
-        herstellerStorage.removeHersteller(event.getHersteller());
+    public void onRemoveHerstellerEvent(RemoveHerstellerEvent event) {
+        SingletonVendingMachine.getInstance().getVendingMachine().removeHersteller(event.getHersteller());
     }
 
     @Override
-    public void onKuchenLoeschenEvent(KuchenLoeschenEvent event) {
+    public void onRemoveCakeEvent(RemoveCakeEvent event) {
         int fachnummer = Integer.parseInt(event.getFachnummer());
-        vendingMachine.removeItem(fachnummer);
+        SingletonVendingMachine.getInstance().getVendingMachine().removeItem(fachnummer);
+        //vendingMachine.removeItem(fachnummer);
     }
 
     @Override
-    public void onInspektionsEvent(InspektionsEvent event) {
+    public void onInspectionEvent(InspectionEvent event) {
         int fachnummer = Integer.parseInt(event.getFachnummer());
-        vendingMachine.updateInspectionDate(fachnummer);
+        SingletonVendingMachine.getInstance().getVendingMachine().updateInspectionDate(fachnummer);
     }
 
     @Override
-    public void onAllergeneAnzeigenEvent(AllergeneAnzeigenEvent event) {
-/*        if (event.getAllergene().equals("allergene i")) {
+    public void onPrintAllergiesEvent(PrintAllergiesEvent event) {
+        if (event.getAllergene().equals("allergene i")) {
+            List<Allergen> allergene = SingletonVendingMachine.getInstance().getVendingMachine().allergeneAbrufen(true);
             for (Allergen a : allergene) {
                 System.out.println(a.toString());
             }
         } else if (event.getAllergene().equals("allergene e")) {
+            List<Allergen> allergene = SingletonVendingMachine.getInstance().getVendingMachine().allergeneAbrufen(false);
             for (Allergen a : allergene) {
                 System.out.println(a.toString());
             }
-        }*/
+        }
     }
 
     @Override
-    public void onHerstellerAnzeigenEvent(HerstellerAnzeigenEvent event) {
-        herstellerStorage.displayHersteller();
+    public void onPrintHerstellerEvent(PrintHerstellerEvent event) {
+        List<Hersteller> herstellerList = SingletonVendingMachine.getInstance().getVendingMachine().callHersteller();
+        for (Hersteller hersteller : herstellerList) {
+            System.out.println("Manufacturer name: " + hersteller + " | Number of cakes: " + hersteller.getCakeCount());
+        }
     }
 
     @Override
-    public void onKuchenAnzeigenEvent(KuchenAnzeigenEvent event) {
-        for (KuchenImpl cake : vendingMachine.listItems())
+    public void onPrintCakeEvent(PrintCakeEvent event) {
+        List<KuchenImpl> cakeList = SingletonVendingMachine.getInstance().getVendingMachine().printCake(event.getKuchenTyp());
+        for (KuchenImpl cake : cakeList)
             System.out.println(cake);
     }
 
     @Override
-    public void onModelSpeichernEvent(ModelSpeichernLadenEvent event) {
-        JBP jbpVending = new JBP(vendingMachine); // Save the vending machine data
-        JBP jbpHersteller = new JBP(herstellerStorage); // Save the manufacturer data
-
-        if (event.getSpeicherArt().equals("saveJBP")) {
-            jbpVending.serialisierenJBP();
-            jbpHersteller.serialHerstellerJBP();        }
-        if (event.getSpeicherArt().equals("loadJBP")) {
-            VendingMachine loadedVendingMachine = jbpVending.deserialisierenJBP();
-            HerstellerStorage loadedherstellerStorage = jbpHersteller.desirialHerstellerJBP();
+    public void onSaveVendingMachineEvent(SaveVendingMachineEvent event) {
+        JOS jos = new JOS(vendingMachine);
+        JBP jbp = new JBP(vendingMachine);
+        if (event.getTypeOfSave().equals("saveJOS")) {
+            jos.serialisierenJOS();
+        }
+        if (event.getTypeOfSave().equals("loadJOS")) {
+            VendingMachine loadedVendingMachine = jos.deserialisierenJOS();
             if (loadedVendingMachine != null) {
-                vendingMachine.setModel(loadedVendingMachine);
+                SingletonVendingMachine.getInstance().setVendingMachine(loadedVendingMachine);
             }
         }
-        if (event.getSpeicherArt().equals("saveJOS")) {
-            System.out.println("Not yet");        }
-        if (event.getSpeicherArt().equals("loadJOS")) {
-            System.out.println("Not yet");        }
-
+        if (event.getTypeOfSave().equals("saveJBP")) {
+            jbp.serialisierenJBP();
+        }
+        if (event.getTypeOfSave().equals("loadJBP")) {
+            VendingMachine deserializationVendingMachine = jbp.deserialisierenJBP();
+            if (deserializationVendingMachine != null) {
+                SingletonVendingMachine.getInstance().setVendingMachine(deserializationVendingMachine);
+            }
+        }
     }
 }

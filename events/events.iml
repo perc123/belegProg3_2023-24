@@ -11,5 +11,6 @@
     <orderEntry type="module" module-name="net" />
     <orderEntry type="module" module-name="contract" />
     <orderEntry type="module" module-name="serialization" />
+    <orderEntry type="module" module-name="gui" />
   </component>
 </module>

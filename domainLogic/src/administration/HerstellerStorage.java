@@ -19,8 +19,14 @@ public class HerstellerStorage implements Serializable {
         System.out.println(hersteller.getName());
     }
 
-    public void removeHersteller(Hersteller hersteller) {
-        herstellerList.remove(hersteller);
+    public boolean removeHersteller(String hersteller) {
+        for (Hersteller h : herstellerList) {
+            if (h.getName().equals(hersteller)) {
+                herstellerList.remove(h);
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<Hersteller> getAllHersteller() {
