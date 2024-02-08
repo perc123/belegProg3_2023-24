@@ -1,6 +1,6 @@
 import administration.HerstellerStorage;
 import administration.VendingMachine;
-import controller.Controller;
+import controller.GUIcontroller;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,7 +22,7 @@ public class MainFX extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("controller/sample.fxml"));
             Parent root = loader.load();
 
-            Controller controller = loader.getController();
+            GUIcontroller controller = loader.getController();
             controller.setVendingMachine(vendingMachine, herstellerStorage);
 
 

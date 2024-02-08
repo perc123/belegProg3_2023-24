@@ -3,6 +3,8 @@ package saveJOS;
 
 
 import administration.VendingMachine;
+import observer.AllergiesObserver;
+import observer.CapacityObserver;
 
 import java.io.*;
 
@@ -15,10 +17,10 @@ public class JOS {
     }
 
     public void serialisierenJOS() {
-        File folder = new File("src/serialisierung/speicherstandJOS/");
+        File folder = new File("/serialization/src/saveModeJOS/");
         if (!folder.exists()) {
             if (!folder.mkdirs()) {
-                System.out.println("Konnte Ordner nicht erstellen: " + folder);
+                System.out.println("Could not create folder: " + folder);
                 return;
             }
         }
@@ -27,28 +29,28 @@ public class JOS {
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
             objectOutputStream.writeObject(vendingMachine);
         } catch (IOException e) {
-            System.out.println("Ein I/O-Fehler ist aufgetreten: " + e.getMessage());
+            System.out.println("I/O Error: " + e.getMessage());
         }
     }
 
 
     public VendingMachine deserialisierenJOS(){
-        File file = new File("src/serialisierung/speicherstandJOS/saveModel.ser");
+        File file = new File("/serialization/src/saveModeJOS/saveMode.ser");
         VendingMachine vendingMachine = null;
 
         try (FileInputStream inputStream = new FileInputStream(file);
              ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)) {
             vendingMachine = (VendingMachine) objectInputStream.readObject();
-            AllergenObserver allergenObserver = new AllergenObserver(vendingMachine);
-            vendingMachine.add(allergenObserver);
-            KapazitaetsObserver kapazitaetsObserver = new KapazitaetsObserver(vendingMachine);
-            vendingMachine.add(kapazitaetsObserver);
+            AllergiesObserver allergiesObserver = new AllergiesObserver(vendingMachine);
+            vendingMachine.add(allergiesObserver);
+            CapacityObserver capacityObserver = new CapacityObserver(vendingMachine);
+            vendingMachine.add(capacityObserver);
         } catch (FileNotFoundException e) {
-            System.out.println("Die Datei ist nicht vorhanden: " + file.getAbsolutePath());
+            System.out.println("File not found: " + file.getAbsolutePath());
         } catch (IOException e) {
-            System.out.println("Ein I/O-Fehler ist aufgetreten: " + e.getMessage());
+            System.out.println("I/O Error: " + e.getMessage());
         } catch (ClassNotFoundException e) {
-            System.out.println("Die Model-Klasse wurde nicht gefunden: " + e.getMessage());
+            System.out.println("Vending machine not found: " + e.getMessage());
         }
 
         return vendingMachine;

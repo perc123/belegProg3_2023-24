@@ -1,5 +1,3 @@
-import TCP.ClientTCP;
-import UDP.ClientUDP;
 import administration.VendingMachine;
 import cakes.KuchenImpl;
 import commands.*;
@@ -27,42 +25,32 @@ import observer.AllergiesObserver;
 import observer.CapacityObserver;
 import verwaltung.Hersteller;
 
-import java.io.IOException;
 import java.util.LinkedList;
 
+public class ALternativeCLI {
 
-public class Main {
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+
+    /*
+       Command Line Interface indem die Funktionen Loeschen von Herstellern
+       und das Auflisten der Allergene deaktiviert ist.
+       Außerdem ist der Observer zur Ueberwachung der Kapaztaet nicht aktiv
+        */
+    public static void main(String[] args) {
         int capacity = 0;
-        LinkedList<Hersteller> herstellerLinkedList = new LinkedList<>();
-        LinkedList<KuchenImpl> kuchenLinkedList = new LinkedList<>();
-        boolean TCP = false;
-        boolean UDP = false;
         for (String arg : args) {
             try {
                 capacity = Integer.parseInt(arg);
             } catch (NumberFormatException e) {
-                if (arg.equalsIgnoreCase("TCP")) {
-                    TCP = true;
-                }
-                else if (arg.equalsIgnoreCase("UDP")) {
-                    UDP = true;
-                }
+                return;
             }
         }
-        if (TCP) {
-            ClientTCP client = new ClientTCP();
-            client.start();
-        }
-        if (UDP) {
-            ClientUDP clientUDP = new ClientUDP();
-            clientUDP.start();
-        }
         if(capacity >= 0 ){
+            LinkedList<Hersteller> herstellerLinkedList = new LinkedList<>();
+            LinkedList<KuchenImpl> kuchenLinkedList = new LinkedList<>();
             VendingMachine vendingMachine = new VendingMachine(capacity, kuchenLinkedList,herstellerLinkedList);
+            System.out.println("Achtung! Löschen von Herstellern und das Auflisten der Allergene nicht möglich!");
+
             // Add Observers
-            CapacityObserver capacityObserver = new CapacityObserver(vendingMachine);
-            vendingMachine.add(capacityObserver);
             AllergiesObserver allergiesObserver = new AllergiesObserver(vendingMachine);
             vendingMachine.add(allergiesObserver);
 
@@ -91,10 +79,6 @@ public class Main {
 
             // Remove manufacturer (Hersteller) event
             RemoveHerstellerEventHandler removeHerstellerEventHandler = new RemoveHerstellerEventHandler();
-            RemoveHerstellerEventListener removeHerstellerEventListener = new Listener(vendingMachine);
-            removeHerstellerEventHandler.add(removeHerstellerEventListener);
-            RemoveHerstellerEventListener infoRemoveHerstellerListener = new InfoListener();
-            removeHerstellerEventHandler.add(infoRemoveHerstellerListener);
 
             RemoveMode removeMode = new RemoveMode(removeHerstellerEventHandler,removeCakeEventHandler);
 
@@ -109,10 +93,6 @@ public class Main {
 
             // Print allergies event
             PrintAllergiesEventHandler printAllergiesEventHandler = new PrintAllergiesEventHandler();
-            PrintAllergiesEventListener printAllergiesEventListener = new Listener(vendingMachine);
-            printAllergiesEventHandler.add(printAllergiesEventListener);
-            PrintAllergiesEventListener infoPrintAllergiesEventListener = new InfoListener();
-            printAllergiesEventHandler.add(infoPrintAllergiesEventListener);
 
             // Print cake event
             PrintCakeEventHandler printCakeEventHandler = new PrintCakeEventHandler();
@@ -143,5 +123,6 @@ public class Main {
             cliController.start();
 
         }
+
     }
 }

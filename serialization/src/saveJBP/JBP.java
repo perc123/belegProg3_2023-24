@@ -16,14 +16,10 @@ import java.util.LinkedList;
 
 public class JBP {
 
-    private VendingMachine vendingMachine;
-    private HerstellerStorage herstellerStorage;
+    private final VendingMachine vendingMachine;
 
     public JBP(VendingMachine vendingMachine) {
         this.vendingMachine = vendingMachine;
-    }
-    public JBP(HerstellerStorage herstellerStorage){
-        this.herstellerStorage = herstellerStorage;
     }
 
     //Serialize Vending Machine
@@ -34,7 +30,7 @@ public class JBP {
                 System.out.println("Could not create folder: " + folder);
             }
         }
-        File file = new File(folder, "saveModelJBP.xml");
+        File file = new File(folder, "saveModeJBP.xml");
 
         try (XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
             customizePersistenceDelegates(encoder);
@@ -43,27 +39,11 @@ public class JBP {
             e.printStackTrace();
         }
     }
-    // Serialize Manufacturers
-    public void serialHerstellerJBP(){
-        File folder = new File("/serialization/src/saveModeJBP/");
-        if (!folder.exists()) {
-            if (!folder.mkdirs()) {
-                System.out.println("Could not create folder: " + folder);
-            }
-        }
-        File file = new File(folder, "saveHerstellerJBP.xml");
 
-        try (XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
-            customizePersistenceDelegates(encoder);
-            encoder.writeObject(herstellerStorage);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public VendingMachine deserialisierenJBP() {
         VendingMachine vendingMachine = null;
-        File file = new File("/serialization/src/saveModeJBP/saveModelJBP.xml");
+        File file = new File("/serialization/src/saveModeJBP/saveModeJBP.xml");
 
         try (XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(file)))) {
             vendingMachine = (VendingMachine) decoder.readObject();
@@ -75,19 +55,6 @@ public class JBP {
         return vendingMachine;
     }
 
-    public HerstellerStorage desirialHerstellerJBP(){
-        HerstellerStorage herstellerStorage = null;
-        File file = new File("/serialization/src/saveModeJBP/saveHerstellerJBP.xml");
-
-        try (XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(file)))) {
-            herstellerStorage = (HerstellerStorage) decoder.readObject();
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found: " + file.getAbsolutePath());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return herstellerStorage;
-    }
 
     private void customizePersistenceDelegates(XMLEncoder encoder) {
         encoder.setPersistenceDelegate(VendingMachine.class, new DefaultPersistenceDelegate(new String[]{"capacity"}));
@@ -147,11 +114,10 @@ public class JBP {
             }
         });
 
-
         //setPersistenceDelegateForLinkedList(encoder);
     }
 
-    private void setPersistenceDelegateForLinkedList(XMLEncoder encoder) {
+/*    private void setPersistenceDelegateForLinkedList(XMLEncoder encoder) {
         encoder.setPersistenceDelegate(LinkedList.class, new DefaultPersistenceDelegate() {
             protected void initialize(Class<?> type, Object oldInstance, Object newInstance, Encoder out) {
                 super.initialize(type, oldInstance, newInstance, out);
@@ -161,5 +127,5 @@ public class JBP {
                 }
             }
         });
-    }
+    }*/
 }

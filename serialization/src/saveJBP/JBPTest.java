@@ -18,7 +18,7 @@ class JBPTest {
         // Test serialization
         assertDoesNotThrow(() -> {
             jbp.serialisierenJBP();
-            File file = new File("src/saveModeJBP/saveModelJBP.xml");
+            File file = new File("src/saveModeJBP/saveModeJBP.xml");
             assertTrue(file.exists());
         }, "Serialization should not throw any exception");
     }

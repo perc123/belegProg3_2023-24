@@ -1,7 +1,5 @@
 package singletonPattern;
 
-import controller.Controller;
-
 public class SingletonController {
     private static SingletonController instance;
     private ModuleLayer.Controller Controller;

@@ -1,19 +1,19 @@
-package TCP;
+package UDP;
 
-
+import administration.HerstellerImpl;
 import cakes.KuchenImpl;
 import commands.*;
 import kuchen.Allergen;
 import verwaltung.Hersteller;
 
 
-import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.util.List;
 
-public class ServerTCP {
-
+public class ServerUDP {
 
     private AddMode addMode;
     private RemoveMode removeMode;
@@ -24,8 +24,9 @@ public class ServerTCP {
 
     String respondToClient = "";
 
-    private SerializationMode serializationMode;
+    DatagramPacket datagramPacket;
 
+    private SerializationMode serializationMode;
 
     public void setSerializationMode(SerializationMode serializationMode) {
         this.serializationMode = serializationMode;
@@ -65,59 +66,59 @@ public class ServerTCP {
         }
     }
 
-    public void start() {
-        try (ServerSocket serverSocket = new ServerSocket(5000)) {
-            System.out.println("TCP Server started");
+    public void start() throws IOException {
+        int port = 12345;
+        byte[] buffer = new byte[1024];
+
+        try (DatagramSocket serverSocket = new DatagramSocket(port)) {
+            System.out.println("UDP Server started.");
 
             while (true) {
-                Socket clientSocket = serverSocket.accept();
-                System.out.println("Client connected.");
+                DatagramPacket receivePacket = new DatagramPacket(buffer, buffer.length);
+                serverSocket.receive(receivePacket);
+                datagramPacket = receivePacket;
 
-                try (BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                     PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
+                String receivedMessage = new String(receivePacket.getData(), 0, receivePacket.getLength());
+                respondToClient = "";
+                handleInput(receivedMessage);
 
-                    String inputLine;
-                    while ((inputLine = in.readLine()) != null) {
-                        handleInput(inputLine);
-                        out.println(respondToClient);
-                        respondToClient = "";
-                    }
-                } catch (IOException e) {
-                    System.err.println("Fehler aufgetreten: " + e.getMessage());
-                }
+                InetAddress clientAddress = receivePacket.getAddress();
+                int clientPort = receivePacket.getPort();
+
+                String responseMessage = respondToClient;
+                byte[] responseData = responseMessage.getBytes();
+                DatagramPacket responsePacket = new DatagramPacket(responseData, responseData.length, clientAddress, clientPort);
+                serverSocket.send(responsePacket);
             }
-        } catch (IOException e) {
-            System.err.println("Fehler aufgetreten: " + e.getMessage());
         }
     }
 
-    public void sendHerstellerListToServer(List<Hersteller> output) {
+    public void sendHerstellerListToServer(List<Hersteller> output){
         StringBuilder result = new StringBuilder();
         for (Hersteller h : output) {
-            result.append("[").append(h).append("] [Anzahl Kuchen: ").append(h.getCakeCount()).append("] || ");
+            result.append("[").append(h).append("] [Cake count: ").append(h.getCakeCount()).append("] || ");
         }
-        this.respondToClient = result.toString();
-
+        respondToClient = result.toString();
     }
 
     public void sendKuchenListToServer(List<KuchenImpl> output){
         StringBuilder result = new StringBuilder();
-        for(KuchenImpl k : output){
+        for (KuchenImpl k : output) {
             result.append(k).append(" || ");
         }
-        this.respondToClient = result.toString();
+        respondToClient = result.toString();
     }
 
     public void sendAllergenListToServer(List<Allergen> output){
         StringBuilder result = new StringBuilder();
-        for(Allergen a : output){
+        for (Allergen a : output) {
             result.append(a.toString()).append(" || ");
         }
-        this.respondToClient = result.toString();
+        respondToClient = result.toString();
     }
 
-    public void sendInfoToServer(String output) {
-        this.respondToClient = output;
+    public void sendInfoToServer(String output){
+        respondToClient = output;
     }
-
 }
+

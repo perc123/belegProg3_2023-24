@@ -4,6 +4,7 @@ import cakes.KremkuchenImpl;
 import cakes.KuchenImpl;
 import kuchen.Allergen;
 import kuchen.Kuchen;
+import observer.Subject;
 import verwaltung.Hersteller;
 import verwaltung.Verkaufsobjekt;
 
@@ -15,7 +16,7 @@ import java.util.Date;
 
 
 
-public class VendingMachine implements Serializable {
+public class VendingMachine extends Subject implements Serializable {
     private final List<KuchenImpl> inventory;
     private List<Hersteller> herstellerList;
 
@@ -193,14 +194,4 @@ public class VendingMachine implements Serializable {
         }
         return ergebnisListe;
     }
-/*
-    public void setModel(VendingMachine other) {
-        this.capacity = other.capacity;
-
-        // Clear existing inventory and add all items from the other machine
-        this.inventory.clear();
-        for (KuchenImpl kuchen : other.inventory) {
-            this.inventory.add(kuchen);
-        }
-    }*/
 }

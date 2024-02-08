@@ -24,7 +24,7 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.*;
 
-public class Controller {
+public class GUIcontroller {
 
     private VendingMachine vendingMachine;
     private HerstellerStorage herstellerStorage;
@@ -61,7 +61,7 @@ public class Controller {
     @FXML
     private MenuItem loadMenuItem;
 
-    public Controller() {}
+    public GUIcontroller() {}
     public void setVendingMachine(VendingMachine vendingMachine, HerstellerStorage herstellerStorage) {
         this.vendingMachine = vendingMachine;
         this.herstellerStorage = herstellerStorage;
@@ -139,21 +139,21 @@ public class Controller {
                         switch (cakeType) {
                             case "Kremkuchen" -> {
                                 KuchenImpl cake = new KremkuchenImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType);
-                                vendingMachine.addItem(cake, manufacturerName);
+                                vendingMachine.addItem(cake);
                                 outputTextArea.setText("Inserted a " + cakeType);
                                 cakesListView.getItems().add(printCake(cake));
                                 updateCakesListViewTrayNumber();
                             }
                             case "Obstkuchen" -> {
                                 KuchenImpl cake = new ObstkuchenImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType);
-                                vendingMachine.addItem(cake, manufacturerName);
+                                vendingMachine.addItem(cake);
                                 outputTextArea.setText("Inserted a " + cakeType);
                                 cakesListView.getItems().add(printCake(cake));
                                 updateCakesListViewTrayNumber();
                             }
                             case "Obsttorte" -> {
                                 KuchenImpl cake = new ObsttorteImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType, fruitVariety);
-                                vendingMachine.addItem(cake, manufacturerName);
+                                vendingMachine.addItem(cake);
                                 outputTextArea.setText("Inserted a " + cakeType);
                                 cakesListView.getItems().add(printCake(cake));
                                 updateCakesListViewTrayNumber();
