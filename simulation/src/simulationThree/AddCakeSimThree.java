@@ -1,23 +1,39 @@
+package simulationThree;
+
 import administration.HerstellerImpl;
 import administration.VendingMachine;
 import cakes.KremkuchenImpl;
 import cakes.KuchenImpl;
+import cakes.ObsttorteImpl;
 import kuchen.Allergen;
+import kuchen.Kremkuchen;
+import kuchen.Obsttorte;
+import verwaltung.Hersteller;
 
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 
-public class AddCakeSim extends Thread{
+public class AddCakeSimThree extends Thread{
+
     private final VendingMachine vendingMachine;
     private final Random random;
     private final Lock lock;
+    private final Condition condition;
 
-    public AddCakeSim(VendingMachine vendingMachine, Lock lock, long seed) {
+    private final HerstellerImpl hersteller = new HerstellerImpl("ThreadHersteller");
+    private final BigDecimal preis = new BigDecimal("3.20");
+    private final Duration haltbarkeit = Duration.ofDays(3);
+    private final List<Allergen> allergens = List.of();
+
+    public AddCakeSimThree(VendingMachine vendingMachine, Lock lock, Condition condition, long seed) {
         this.vendingMachine = vendingMachine;
         this.lock = lock;
+        this.condition = condition;
         this.random = new Random(seed);
     }
 
@@ -26,8 +42,10 @@ public class AddCakeSim extends Thread{
         while (true) {
             lock.lock();
             try {
-                String[] randomCakeInfo = createRandomCakeInfo();
-                KuchenImpl randomCake = createRandomCake(randomCakeInfo);
+                //String[] randomCakeInfo = createRandomCakeInfo();
+                KuchenImpl randomCake = random.nextBoolean() ? new ObsttorteImpl("honi",hersteller, allergens, 345, haltbarkeit, preis, "sorte","ew") : new KremkuchenImpl("honi",hersteller, allergens, 345, haltbarkeit, preis, "sorte");
+
+                //createRandomCake(randomCakeInfo);
                 System.out.println(randomCake.getKuchenTyp() + " Probiert Kuchen hinzufuegen");
                 vendingMachine.addItem(randomCake);
             } finally {

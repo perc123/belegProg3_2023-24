@@ -1,8 +1,10 @@
 package singletonPattern;
 
+import controller.GUIcontroller;
+
 public class SingletonController {
     private static SingletonController instance;
-    private ModuleLayer.Controller Controller;
+    private GUIcontroller GUIcontroller;
 
     private SingletonController() {}
 
@@ -13,12 +15,12 @@ public class SingletonController {
         return instance;
     }
 
-    public ModuleLayer.Controller getController() {
-        return Controller;
+    public GUIcontroller getController() {
+        return GUIcontroller;
     }
 
-    public void setController(ModuleLayer.Controller SceneController) {
-        this.Controller = SceneController;
+    public void setController(GUIcontroller guiController) {
+        this.GUIcontroller = guiController;
     }
 
 }

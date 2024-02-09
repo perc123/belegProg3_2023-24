@@ -1,15 +1,12 @@
 package administration;
 
-import cakes.KremkuchenImpl;
 import cakes.KuchenImpl;
 import kuchen.Allergen;
-import kuchen.Kuchen;
 import observer.Subject;
 import verwaltung.Hersteller;
-import verwaltung.Verkaufsobjekt;
 
+import java.io.Serial;
 import java.io.Serializable;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.Date;
@@ -17,6 +14,9 @@ import java.util.Date;
 
 
 public class VendingMachine extends Subject implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private final List<KuchenImpl> inventory;
     private List<Hersteller> herstellerList;
 

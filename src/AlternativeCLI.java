@@ -27,7 +27,7 @@ import verwaltung.Hersteller;
 
 import java.util.LinkedList;
 
-public class ALternativeCLI {
+public class AlternativeCLI {
 
 
     /*

@@ -4,6 +4,8 @@ import cakes.KuchenImpl;
 import observer.AddCakeObserver;
 import observer.CapacityObserver;
 import observer.RemoveCakeObserver;
+import simulationOne.AddCakeSimOne;
+import simulationOne.RemoveCakeSimOne;
 import verwaltung.Hersteller;
 
 import java.util.LinkedList;
@@ -47,8 +49,8 @@ public class SimulationOne {
         vendingMachine.add(capacityObserver);
 
         vendingMachine.addHersteller(new HerstellerImpl("Manufacturer Thread"));
-        AddCakeSim addCakeSim = new AddCakeSim(vendingMachine, lock, 50);
-        RemoveCakeSim removeCakeSim = new RemoveCakeSim(vendingMachine, lock, 50);
+        AddCakeSimOne addCakeSim = new AddCakeSimOne(vendingMachine, lock, 50);
+        RemoveCakeSimOne removeCakeSim = new RemoveCakeSimOne(vendingMachine, lock, 50);
         addCakeSim.start();
         removeCakeSim.start();
 

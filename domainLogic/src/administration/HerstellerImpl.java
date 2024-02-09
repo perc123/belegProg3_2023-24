@@ -1,8 +1,6 @@
 package administration;
 
 import verwaltung.Hersteller;
-import eventSystem.EventListener;
-import eventSystem.EventType;
 
 import java.io.Serializable;
 
@@ -18,6 +16,16 @@ public class HerstellerImpl implements Hersteller, Serializable {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public void setCakeCount(int cakeCount) {
+
+    }
+
+    @Override
+    public int getCakeCount() {
+        return 0;
     }
 
 }

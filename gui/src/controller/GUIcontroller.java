@@ -1,34 +1,42 @@
 package controller;
 
 import administration.HerstellerImpl;
-import administration.HerstellerStorage;
 import administration.VendingMachine;
 import cakes.KremkuchenImpl;
 import cakes.KuchenImpl;
 import cakes.ObstkuchenImpl;
 import cakes.ObsttorteImpl;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import kuchen.Allergen;
 import saveJBP.JBP;
 import verwaltung.Hersteller;
-
+import observer.Subject;
 import java.io.File;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.time.Duration;
 import java.util.*;
 
-public class GUIcontroller {
+public class GUIcontroller implements Initializable {
 
-    private VendingMachine vendingMachine;
-    private HerstellerStorage herstellerStorage;
-    private JBP jbp;
+    private final VendingMachine vendingMachine;
 
     @FXML
     private MenuItem insertManufacturerMenuItem;
@@ -47,26 +55,64 @@ public class GUIcontroller {
     @FXML
     private MenuItem inspectCakeMenuItem;
     @FXML
-    private Text welcomeText;
-    @FXML
     private TextField userInputField;
     @FXML
-    private ListView<String> manufacturersListView;
-    @FXML
     private TextArea outputTextArea;
-    @FXML
-    private ListView<String> cakesListView;
     @FXML
     private MenuItem saveMenuItem;
     @FXML
     private MenuItem loadMenuItem;
 
-    public GUIcontroller() {}
-    public void setVendingMachine(VendingMachine vendingMachine, HerstellerStorage herstellerStorage) {
+    //Tablle für Hersteller
+    @FXML
+    private TableView<Hersteller> manufacturersListView;
+
+    @FXML
+    private TableColumn<Hersteller, Integer> cakeCount;
+
+    @FXML
+    private TableColumn<Hersteller, String> manufacturerName;
+
+    //Tabeller für Kuchen
+    @FXML
+    private TableView<KuchenImpl> cakesListView;
+
+    @FXML
+    private TableColumn<KuchenImpl, String> kuchenTyp;
+
+    @FXML
+    private TableColumn<KuchenImpl, Hersteller> kuchenHersteller;
+
+    @FXML
+    private TableColumn<KuchenImpl, BigDecimal> kuchenPreis;
+
+    @FXML
+    private TableColumn<KuchenImpl, Date> inspektionsdatum;
+
+    @FXML
+    private TableColumn<KuchenImpl, Duration> haltbarkeit;
+
+    @FXML
+    private TableColumn<KuchenImpl, Integer> fachnummer;
+
+    //Tabellen für Allergene
+    @FXML
+    private TableView<Allergen> allergenTableEnthalten;
+
+    @FXML
+    private TableView<Allergen> allergenTableNichtEnthalten;
+
+    @FXML
+    private TableColumn<KuchenImpl, Collection<Allergen>> allergeneVorhanden;
+
+    @FXML
+    private TableColumn<KuchenImpl, Collection<Allergen>> allergeneNichtVorhanden;
+
+
+    public GUIcontroller(VendingMachine vendingMachine) {
         this.vendingMachine = vendingMachine;
-        this.herstellerStorage = herstellerStorage;
-        this.jbp = new JBP(vendingMachine);
     }
+
 
     @FXML
     private void initialize() {
@@ -78,9 +124,6 @@ public class GUIcontroller {
         insertCakeMenuItem.setOnAction(event -> handleInsertCake());
         deleteCakeMenuItem.setOnAction(event -> handleDeleteCake());
         deleteManufacturerMenuItem.setOnAction(event -> handleDeleteManufacturer());
-        displayCakeMenuItem.setOnAction(event -> handleDisplayCake());
-        displayManufacturerMenuItem.setOnAction(event -> handleDisplayManufacturer());
-        displayAllergiesMenuItem.setOnAction(event -> handleDisplayAllergies());
         inspectCakeMenuItem.setOnAction(event -> handleInspectCake());
         saveMenuItem.setOnAction(event -> handleSave());
         loadMenuItem.setOnAction(event -> handleLoad());
@@ -88,185 +131,163 @@ public class GUIcontroller {
 
     @FXML
     private void handleInsertManufacturer() {
-        outputTextArea.setText("Insert a manufacturer:");
+        Platform.runLater(() -> {
+            Stage newStage = new Stage();
+            newStage.initOwner(manufacturersListView.getScene().getWindow());
+            newStage.setTitle("Insert a manufacturer");
+            newStage.setResizable(false);
 
-        userInputField.clear();
+            Text text = new Text("Give manufacturer name: ");
+            TextField textField = new TextField();
+            Button okButton = new Button("OK");
+            Button abbrechenButton = new Button("Cancel");
 
-        userInputField.setOnAction(event -> {
-            String manufacturerName = userInputField.getText();
+            okButton.setOnAction(e -> {
+                String manufacturerName = textField.getText();
 
-            if (manufacturerName != null && !manufacturerName.isEmpty()) {
-                // Check if the manufacturer already exists
-                if (herstellerStorage.findHerstellerByName(manufacturerName) != null) {
-                    outputTextArea.setText("Manufacturer already in the list.");
-                    userInputField.clear();
-                } else {
-                    HerstellerImpl hersteller = new HerstellerImpl(manufacturerName);
-                    herstellerStorage.addHersteller(hersteller);
-                    manufacturersListView.getItems().add(manufacturerName);
-
-                    userInputField.clear();
-
-                    outputTextArea.setText("Manufacturer added: " + manufacturerName);
+                HerstellerImpl hersteller = new HerstellerImpl(manufacturerName);
+                if (vendingMachine.addHersteller(hersteller)) {
+                    manufacturersListView.getItems().clear();
                 }
-            } else {
-                outputTextArea.setText("Please enter a valid manufacturer name.");
-            }
+                tableUpdate();
+                newStage.close();
+            });
+
+            buildStageOne(newStage, text, textField, okButton, abbrechenButton);
         });
     }
 
 
     private void handleInsertCake() {
-        outputTextArea.setText("Insert a cake:");
+        Platform.runLater(() -> {
+            Stage newStage = new Stage();
+            newStage.initOwner(cakesListView.getScene().getWindow());
+            newStage.setTitle("Add cake");
+            newStage.setResizable(false);
 
-        userInputField.clear();
+            Text text = new Text("Provide a cake to be added:");
+            TextField textField = new TextField();
+            Button okButton = new Button("OK");
+            Button abbrechenButton = new Button("Cancel");
 
-        userInputField.setOnAction(event -> {
-            String inputLine = userInputField.getText();
-            String[] values = inputLine.split(" ");
+            okButton.setOnAction(e -> {
+                String kuchenString = textField.getText();
 
-            if (values.length == 6 || values.length == 8) {
-                String cakeType = values[0];
-                HerstellerImpl manufacturerName = (HerstellerImpl) herstellerStorage.findHerstellerByName(values[1]);
-                List<Allergen> allergens = convertToAllergenList(values[2]);
-                int nutritionalValue = Integer.parseInt(values[3]);
-                int shelfLife = Integer.parseInt(values[4]);
-                double price = Double.parseDouble(values[5]);
-                String fruitVariety = (values.length > 6) ? values[6] : null;
-                String creamType = (values.length > 7) ? values[7] : null;
-                if (!vendingMachine.isFull()) {
-                    try  {
-                        switch (cakeType) {
-                            case "Kremkuchen" -> {
-                                KuchenImpl cake = new KremkuchenImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType);
-                                vendingMachine.addItem(cake);
-                                outputTextArea.setText("Inserted a " + cakeType);
-                                cakesListView.getItems().add(printCake(cake));
-                                updateCakesListViewTrayNumber();
+                String[] values = kuchenString.split(" ");
+                if (values.length == 6 || values.length == 8) {
+                    String cakeType = values[0];
+                    HerstellerImpl manufacturerName = new HerstellerImpl(values[1]);
+                    List<Allergen> allergens = convertToAllergenList(values[2]);
+                    int nutritionalValue = Integer.parseInt(values[3]);
+                    int shelfLife = Integer.parseInt(values[4]);
+                    double price = Double.parseDouble(values[5]);
+                    String fruitVariety = (values.length > 6) ? values[6] : null;
+                    String creamType = (values.length > 7) ? values[7] : null;
+                    if (!vendingMachine.isFull()) {
+                        try {
+                            switch (cakeType) {
+                                case "Kremkuchen" -> {
+                                    KuchenImpl cake = new KremkuchenImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType);
+                                    vendingMachine.addItem(cake);
+                                    outputTextArea.setText("Inserted a " + cakeType);
+                                    cakesListView.getItems().add(cake);
+                                    tableUpdate();
+                                }
+                                case "Obstkuchen" -> {
+                                    KuchenImpl cake = new ObstkuchenImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType);
+                                    vendingMachine.addItem(cake);
+                                    outputTextArea.setText("Inserted a " + cakeType);
+                                    cakesListView.getItems().add(cake);
+                                    tableUpdate();
+                                }
+                                case "Obsttorte" -> {
+                                    KuchenImpl cake = new ObsttorteImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType, fruitVariety);
+                                    vendingMachine.addItem(cake);
+                                    outputTextArea.setText("Inserted a " + cakeType);
+                                    cakesListView.getItems().add(cake);
+                                    tableUpdate();
+                                }
+                                default -> outputTextArea.setText("Not a valid cake type" + cakeType);
                             }
-                            case "Obstkuchen" -> {
-                                KuchenImpl cake = new ObstkuchenImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType);
-                                vendingMachine.addItem(cake);
-                                outputTextArea.setText("Inserted a " + cakeType);
-                                cakesListView.getItems().add(printCake(cake));
-                                updateCakesListViewTrayNumber();
-                            }
-                            case "Obsttorte" -> {
-                                KuchenImpl cake = new ObsttorteImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType, fruitVariety);
-                                vendingMachine.addItem(cake);
-                                outputTextArea.setText("Inserted a " + cakeType);
-                                cakesListView.getItems().add(printCake(cake));
-                                updateCakesListViewTrayNumber();
-                            }
-                            default -> outputTextArea.setText("Not a valid cake type" + cakeType);
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        outputTextArea.setText("Cake manufacturer not in the list.");
-                    }
 
-                } else
-                    outputTextArea.setText("Vending Machine is Full.");
-            } else
-                outputTextArea.setText("Invalid arguments for insert mode.");
+                    } else
+                        outputTextArea.setText("Vending Machine is Full.");
+                }
+                 else {
+                    outputTextArea.setText("Invalid arguments for insert mode.");
+                }
+                 newStage.close();
+            });
+
+            buildStageTwo(newStage, text, textField, okButton, abbrechenButton);
         });
     }
+
+
 
     private void handleDeleteCake() {
-        outputTextArea.setText("Give a tray number to delete a cake: ");
-        userInputField.clear();
-        userInputField.setOnAction(event -> {
 
-            String inputLine = userInputField.getText();
-            try {
-                int trayNumber = Integer.parseInt(inputLine);
-                deleteCakeByTrayNumber(trayNumber);
-                updateCakesListViewTrayNumber();
-            } catch (Exception e) {
-                // Handle other unexpected input
-                outputTextArea.setText("Invalid input for delete mode. Please enter a tray number.");
-            }
-            userInputField.clear();
+        Platform.runLater(() -> {
+            Stage newStage = new Stage();
+            newStage.initOwner(cakesListView.getScene().getWindow());
+            newStage.setTitle("Delete cake");
+            newStage.setResizable(false);
+
+            Text text = new Text("Give a tray number:");
+            TextField textField = new TextField();
+            Button okButton = new Button("OK");
+            Button abbrechenButton = new Button("Cancel");
+
+            okButton.setOnAction(e -> {
+                String fachnummer = textField.getText();
+
+                try {
+                    if (vendingMachine.removeItem(Integer.parseInt(fachnummer))) {
+                        cakesListView.getItems().clear();
+                    }
+                } catch (Exception exc) {
+                    return;
+                }
+                tableUpdate();
+                newStage.close();
+            });
+
+            buildStageTwo(newStage, text, textField, okButton, abbrechenButton);
         });
     }
-    private void deleteCakeByTrayNumber(int trayNumber) {
-        boolean success = vendingMachine.removeItem(trayNumber);
-
-        if (success) {
-            outputTextArea.setText("Cake at tray number " + trayNumber + " removed.");
-        } else {
-            outputTextArea.setText("No cake found at tray number " + trayNumber + ".");
-        }
-    }
-
 
     private void handleDeleteManufacturer() {
-        outputTextArea.setText("Delete a manufacturer:");
-        userInputField.clear();
-        userInputField.setOnAction(event -> {
-            String inputLine = userInputField.getText();
-            Hersteller hersteller = herstellerStorage.findHerstellerByName(inputLine);
 
-            if (herstellerStorage.removeHersteller(inputLine) == true)  {
-                //herstellerStorage.removeHersteller(hersteller);
-                outputTextArea.setText("Manufacturer '" + inputLine + "' deleted.");
-                updateManufacturersListView();
-                deleteCakeByManufacturer(hersteller.getName());
-                updateCakesListViewTrayNumber();
-            } else {
-                outputTextArea.setText("Manufacturer '" + inputLine + "' not found.");
-            }
-            userInputField.clear();
+        Platform.runLater(() -> {
+            Stage newStage = new Stage();
+            newStage.initOwner(manufacturersListView.getScene().getWindow());
+            newStage.setTitle("Delete a manufacturer");
+            newStage.setResizable(false);
+
+            Text text = new Text("Give manufacturer name to be deleted:");
+            TextField textField = new TextField();
+            Button okButton = new Button("OK");
+            Button abbrechenButton = new Button("Cancel");
+
+            okButton.setOnAction(e -> {
+                String herstellerName = textField.getText();
+
+                if (vendingMachine.removeHersteller(herstellerName)) {
+                    manufacturersListView.getItems().clear();
+                }
+
+                tableUpdate();
+                newStage.close();
+            });
+
+            buildStageOne(newStage, text, textField, okButton, abbrechenButton);
         });
     }
-    private void updateManufacturersListView() {
-        manufacturersListView.getItems().clear();
-        for (Hersteller hersteller : herstellerStorage.getHerstellerList()){
-            manufacturersListView.getItems().add(hersteller.getName());
-        }
-    }
-
-    private void updateCakesListViewTrayNumber() {
-        cakesListView.getItems().clear();
-
-        List<KuchenImpl> cakes = vendingMachine.listItems();
-
-        cakes.sort(Comparator.comparingInt(KuchenImpl::getFachnummer));
-
-        for (KuchenImpl cake : cakes) {
-            cakesListView.getItems().add(printCake(cake));
-        }
-    }
 
 
-    private void handleDisplayCake() {
-        updateCakesListViewTrayNumber();
-        outputTextArea.setText("Displaying cakes by tray number");
-        userInputField.clear();
-    }
-
-    private void handleDisplayManufacturer() {
-        updateCakesListViewByManufacturer();
-        outputTextArea.setText("Displaying cakes by manufacturer");
-        userInputField.clear();
-    }
-
-    private void updateCakesListViewByManufacturer() {
-        cakesListView.getItems().clear();
-
-        List<KuchenImpl> cakes = vendingMachine.listItems();
-
-        // Sort the cakes by manufacturer's name
-        cakes.sort(Comparator.comparing(cake -> cake.getHersteller().getName()));
-        outputTextArea.setText("It's called");
-
-        for (KuchenImpl cake : cakes) {
-            cakesListView.getItems().add(printCake(cake));
-        }
-    }
-
-    private void handleDisplayAllergies() {
-        // Handle display allergies logic here
-    }
 
     private void handleInspectCake() {
         outputTextArea.setText("Change inspections date. Give tray number:");
@@ -276,13 +297,13 @@ public class GUIcontroller {
             String inputLine = userInputField.getText();
             int trayNumber = Integer.parseInt(inputLine);
 
-            Iterator<KuchenImpl> iterator = vendingMachine.listItems().iterator();
+            Iterator<KuchenImpl> iterator = vendingMachine.getInventory().iterator();
             while (iterator.hasNext()) {
                 KuchenImpl cake = iterator.next();
                 if (cake.getFachnummer() == trayNumber) {
                     vendingMachine.updateInspectionDate(trayNumber);
                     outputTextArea.setText("Cake " + cake.getKuchenTyp() + " updated.");
-                    updateCakesListViewTrayNumber();
+                    tableUpdate();
                     return;
                 }
             }
@@ -321,48 +342,152 @@ public class GUIcontroller {
                 ", Remaining Shelf Life: " + cake.calculateRemainingShelfLife());
     }
 
-    private void deleteCakeByManufacturer(String manufacturer) {
-        ListIterator<KuchenImpl> iterator = vendingMachine.listItems().listIterator();
-        while (iterator.hasNext()) {
-            KuchenImpl cake = iterator.next();
-            if (cake.getHersteller().getName().equalsIgnoreCase(manufacturer)) {
-                iterator.remove();
-            }
-        }
-        updateCakesListViewTrayNumber();
-        outputTextArea.setText("All cakes from " + manufacturer + " removed.");
-    }
 
     @FXML
     private void handleSave() {
         JBP jbpVending = new JBP(vendingMachine); // Save the vending machine data
-        JBP jbpHersteller = new JBP(herstellerStorage); // Save the manufacturer data
         jbpVending.serialisierenJBP();
-        jbpHersteller.serialHerstellerJBP();
-
         outputTextArea.setText("Vending Machine and Manufacturer data saved");
     }
 
     @FXML
     private void handleLoad() {
         JBP jbpVending = new JBP(vendingMachine);// Load the vending machine data
-        JBP jbpHesteller = new JBP(herstellerStorage);// Load the manufacturer data
         VendingMachine loadedVendingMachine = jbpVending.deserialisierenJBP();
-        HerstellerStorage loadedherstellerStorage = jbpHesteller.desirialHerstellerJBP();
 
         if (loadedVendingMachine != null) {
             vendingMachine.setModel(loadedVendingMachine);
             outputTextArea.setText("Vending Machine data loaded");
-            updateCakesListViewTrayNumber();
+            tableUpdate();
         } else {
             outputTextArea.setText("Error loading Vending Machine data.");
         }
-        if (loadedherstellerStorage != null) {
-            herstellerStorage.setManufacturerList(loadedherstellerStorage);
-            outputTextArea.setText("Manufacturer data loaded");
-            updateManufacturersListView();
-        } else {
-            outputTextArea.setText("Error loading Vending Machine data.");
-        }
+    }
+
+
+
+    private void buildStageOne(Stage newStage, Text text, TextField textField, Button okButton, Button abbrechenButton) {
+        abbrechenButton.setOnAction(e -> newStage.close());
+
+        VBox vbox = new VBox(text, textField, new HBox(okButton, abbrechenButton));
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setSpacing(10);
+        StackPane root = new StackPane(vbox);
+
+        Scene scene = new Scene(root, 400, 100);
+        newStage.setScene(scene);
+        newStage.show();
+    }
+
+    private void buildStageTwo(Stage newStage, Text text, TextField textField, Button okButton, Button abbrechenButton) {
+        abbrechenButton.setOnAction(e -> newStage.close());
+
+        VBox vbox = new VBox(text, textField, new HBox(okButton, abbrechenButton));
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setSpacing(10);
+        StackPane root = new StackPane(vbox);
+
+        Scene scene = new Scene(root, 600, 100);
+        newStage.setScene(scene);
+        newStage.show();
+    }
+
+    public void dragAndDrop(){
+        fachnummer.setCellFactory(column -> new TableCell<>() {
+            {
+                setOnDragDetected(event -> {
+                    if (!isEmpty()) {
+                        Dragboard db = startDragAndDrop(TransferMode.MOVE);
+                        ClipboardContent inhalt = new ClipboardContent();
+                        inhalt.put(DataFormat.PLAIN_TEXT, getIndex());
+                        db.setContent(inhalt);
+                        event.consume();
+                    }
+                });
+                setOnDragOver(event -> {
+                    Dragboard db = event.getDragboard();
+                    if (db.hasContent(DataFormat.PLAIN_TEXT)) {
+                        int draggedIndex = (int) db.getContent(DataFormat.PLAIN_TEXT);
+                        if (draggedIndex != getIndex()) {
+                            event.acceptTransferModes(TransferMode.MOVE);
+                            event.consume();
+                        }
+                    }
+                });
+                setOnDragDropped(event -> {
+                    Dragboard db = event.getDragboard();
+                    if (db.hasContent(DataFormat.PLAIN_TEXT)) {
+                        int draggedIndex = (int) db.getContent(DataFormat.PLAIN_TEXT);
+                        KuchenImpl draggedData = cakesListView.getItems().get(draggedIndex);
+                        KuchenImpl dropData = getTableRow().getItem();
+                        int dropIndex = getIndex();
+                        if (draggedData != null && dropData != null) {
+                            int temp = draggedData.getFachnummer();
+                            draggedData.setFachnummer(dropData.getFachnummer());
+                            dropData.setFachnummer(temp);
+                            cakesListView.getItems().set(draggedIndex, dropData);
+                            cakesListView.getItems().set(dropIndex, draggedData);
+                            event.setDropCompleted(true);
+                            cakesListView.getSelectionModel().select(dropIndex);
+                        }
+                        event.consume();
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(Integer item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? "" : getString());
+                setGraphic(null);
+            }
+
+            private String getString() {
+                return getItem() == null ? "" : getItem().toString();
+            }
+        });
+    }
+    private void tableUpdate() {
+        cakesListView.getItems().clear();
+        List<KuchenImpl> kuchen = vendingMachine.printCake("kuchen");
+        ObservableList<KuchenImpl> listeKuchen = cakesListView.getItems();
+        listeKuchen.addAll(kuchen);
+        cakesListView.setItems(listeKuchen);
+        manufacturersListView.getItems().clear();
+        List<Hersteller> resHersteller = vendingMachine.callHersteller();
+        ObservableList<Hersteller> listHersteller = manufacturersListView.getItems();
+        listHersteller.addAll(resHersteller);
+        manufacturersListView.setItems(listHersteller);
+
+
+        allergenTableEnthalten.getItems().clear();
+        List<Allergen> allergeneVorhanden = vendingMachine.allergeneAbrufen(true);
+        ObservableList<Allergen> listeAllergenVorhanden = allergenTableEnthalten.getItems();
+        listeAllergenVorhanden.addAll(allergeneVorhanden);
+        allergenTableEnthalten.setItems(listeAllergenVorhanden);
+
+
+
+        allergenTableNichtEnthalten.getItems().clear();
+        List<Allergen> allergeneNichtVorhanden = vendingMachine.allergeneAbrufen(false);
+        ObservableList<Allergen> listeAllergenNichtVorhanden = allergenTableNichtEnthalten.getItems();
+        listeAllergenNichtVorhanden.addAll(allergeneNichtVorhanden);
+        allergenTableNichtEnthalten.setItems(listeAllergenNichtVorhanden);
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        manufacturerName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        cakeCount.setCellValueFactory(new PropertyValueFactory<>("anzahlKuchen"));
+        kuchenTyp.setCellValueFactory(new PropertyValueFactory<>("kuchentyp"));
+        kuchenHersteller.setCellValueFactory(new PropertyValueFactory<>("hersteller"));
+        kuchenPreis.setCellValueFactory(new PropertyValueFactory<>("preis"));
+        inspektionsdatum.setCellValueFactory(new PropertyValueFactory<>("inspektionsdatum"));
+        haltbarkeit.setCellValueFactory(new PropertyValueFactory<>("haltbarkeit"));
+        fachnummer.setCellValueFactory(new PropertyValueFactory<>("fachnummer"));
+        allergeneVorhanden.setCellValueFactory(new PropertyValueFactory<>("text"));
+        allergeneNichtVorhanden.setCellValueFactory(new PropertyValueFactory<>("text"));
+        tableUpdate();
+        dragAndDrop();
     }
 }

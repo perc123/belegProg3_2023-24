@@ -1,3 +1,5 @@
+package simulationOne;
+
 import administration.VendingMachine;
 import cakes.KuchenImpl;
 
@@ -5,13 +7,13 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.locks.Lock;
 
-public class RemoveCakeSim extends Thread{
+public class RemoveCakeSimOne extends Thread{
     private final VendingMachine vendingMachine;
     private final Random random;
     private final Lock lock;
 
 
-    public RemoveCakeSim(VendingMachine vendingMachine, Lock lock, long seed) {
+    public RemoveCakeSimOne(VendingMachine vendingMachine, Lock lock, long seed) {
         this.vendingMachine = vendingMachine;
         this.lock = lock;
         this.random = new Random(seed);

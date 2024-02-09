@@ -16,7 +16,7 @@ public class PrintCakeEventHandler {
     }
 
     public void handle(PrintCakeEvent event){
-        for(PrintCakeEventListener listener: listenerList) listener.onShowKuchenEvent(event);
+        for(PrintCakeEventListener listener: listenerList) listener.onPrintCakeEvent(event);
     }
 
 }
