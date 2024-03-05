@@ -40,8 +40,6 @@ import java.util.List;
 
 public class Listener implements AddHerstellerEventListener, AddCakeEventListener, RemoveHerstellerEventListener, RemoveCakeEventListener, InspectionEventListener, PrintAllergiesEventListener, PrintCakeEventListener, PrintHerstellerEventListener, SaveVendingMachineEventListener {
 
-    //private HerstellerStorage herstellerStorage;
-    //HerstellerStorage herstellerStorage = new HerstellerStorage();
 
     private final VendingMachine vendingMachine;
 
@@ -90,9 +88,7 @@ public class Listener implements AddHerstellerEventListener, AddCakeEventListene
             allergene.add(Allergen.valueOf(allergenString));
         }
         String sorte = addCakeEvent.getSorte();
-        String obstsorte = addCakeEvent.getSorte();
-
-        String[] sorteZwei = addCakeEvent.getSorteZwei();
+        String sorteZwei = addCakeEvent.getSorteZwei();
 
 
         switch (addCakeEvent.getKuchentyp()) {
@@ -105,7 +101,7 @@ public class Listener implements AddHerstellerEventListener, AddCakeEventListene
                 vendingMachine.addItem(Obstkuchen);
             }
             case "Obsttorte" -> {
-                ObsttorteImpl Obsttorte = new ObsttorteImpl(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis, sorte, obstsorte);
+                ObsttorteImpl Obsttorte = new ObsttorteImpl(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis, sorte, sorteZwei);
                 vendingMachine.addItem(Obsttorte);
             }
         }
@@ -120,7 +116,6 @@ public class Listener implements AddHerstellerEventListener, AddCakeEventListene
     public void onRemoveCakeEvent(RemoveCakeEvent event) {
         int fachnummer = Integer.parseInt(event.getFachnummer());
         SingletonVendingMachine.getInstance().getVendingMachine().removeItem(fachnummer);
-        //vendingMachine.removeItem(fachnummer);
     }
 
     @Override
@@ -132,12 +127,12 @@ public class Listener implements AddHerstellerEventListener, AddCakeEventListene
     @Override
     public void onPrintAllergiesEvent(PrintAllergiesEvent event) {
         if (event.getAllergene().equals("allergene i")) {
-            List<Allergen> allergene = SingletonVendingMachine.getInstance().getVendingMachine().allergeneAbrufen(true);
+            List<Allergen> allergene = SingletonVendingMachine.getInstance().getVendingMachine().printAllergies(true);
             for (Allergen a : allergene) {
                 System.out.println(a.toString());
             }
         } else if (event.getAllergene().equals("allergene e")) {
-            List<Allergen> allergene = SingletonVendingMachine.getInstance().getVendingMachine().allergeneAbrufen(false);
+            List<Allergen> allergene = SingletonVendingMachine.getInstance().getVendingMachine().printAllergies(false);
             for (Allergen a : allergene) {
                 System.out.println(a.toString());
             }
@@ -146,9 +141,9 @@ public class Listener implements AddHerstellerEventListener, AddCakeEventListene
 
     @Override
     public void onPrintHerstellerEvent(PrintHerstellerEvent event) {
-        List<Hersteller> herstellerList = SingletonVendingMachine.getInstance().getVendingMachine().callHersteller();
-        for (Hersteller hersteller : herstellerList) {
-            System.out.println("Manufacturer name: " + hersteller + " | Number of cakes: " + hersteller.getCakeCount());
+        List<HerstellerImpl> herstellerList = SingletonVendingMachine.getInstance().getVendingMachine().printHersteller();
+        for (HerstellerImpl hersteller : herstellerList) {
+            System.out.println("Manufacturer name: " + hersteller.getName() + " | Number of cakes: " + hersteller.getCakeCount());
         }
     }
 

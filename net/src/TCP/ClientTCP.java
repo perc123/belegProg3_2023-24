@@ -34,7 +34,5 @@ public class ClientTCP {
             System.exit(1);
         }
     }
-
-
 }
 

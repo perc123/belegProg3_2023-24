@@ -22,13 +22,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import kuchen.Allergen;
 import saveJBP.JBP;
 import verwaltung.Hersteller;
-import observer.Subject;
-import java.io.File;
+
 import java.math.BigDecimal;
 import java.net.URL;
 import java.time.Duration;
@@ -126,7 +124,7 @@ public class GUIcontroller implements Initializable {
         deleteManufacturerMenuItem.setOnAction(event -> handleDeleteManufacturer());
         inspectCakeMenuItem.setOnAction(event -> handleInspectCake());
         saveMenuItem.setOnAction(event -> handleSave());
-        loadMenuItem.setOnAction(event -> handleLoad());
+        //loadMenuItem.setOnAction(event -> handleLoad());
     }
 
     @FXML
@@ -350,7 +348,7 @@ public class GUIcontroller implements Initializable {
         outputTextArea.setText("Vending Machine and Manufacturer data saved");
     }
 
-    @FXML
+/*    @FXML
     private void handleLoad() {
         JBP jbpVending = new JBP(vendingMachine);// Load the vending machine data
         VendingMachine loadedVendingMachine = jbpVending.deserialisierenJBP();
@@ -362,7 +360,7 @@ public class GUIcontroller implements Initializable {
         } else {
             outputTextArea.setText("Error loading Vending Machine data.");
         }
-    }
+    }*/
 
 
 
@@ -454,14 +452,14 @@ public class GUIcontroller implements Initializable {
         listeKuchen.addAll(kuchen);
         cakesListView.setItems(listeKuchen);
         manufacturersListView.getItems().clear();
-        List<Hersteller> resHersteller = vendingMachine.callHersteller();
+        List<HerstellerImpl> resHersteller = vendingMachine.printHersteller();
         ObservableList<Hersteller> listHersteller = manufacturersListView.getItems();
         listHersteller.addAll(resHersteller);
         manufacturersListView.setItems(listHersteller);
 
 
         allergenTableEnthalten.getItems().clear();
-        List<Allergen> allergeneVorhanden = vendingMachine.allergeneAbrufen(true);
+        List<Allergen> allergeneVorhanden = vendingMachine.printAllergies(true);
         ObservableList<Allergen> listeAllergenVorhanden = allergenTableEnthalten.getItems();
         listeAllergenVorhanden.addAll(allergeneVorhanden);
         allergenTableEnthalten.setItems(listeAllergenVorhanden);
@@ -469,7 +467,7 @@ public class GUIcontroller implements Initializable {
 
 
         allergenTableNichtEnthalten.getItems().clear();
-        List<Allergen> allergeneNichtVorhanden = vendingMachine.allergeneAbrufen(false);
+        List<Allergen> allergeneNichtVorhanden = vendingMachine.printAllergies(false);
         ObservableList<Allergen> listeAllergenNichtVorhanden = allergenTableNichtEnthalten.getItems();
         listeAllergenNichtVorhanden.addAll(allergeneNichtVorhanden);
         allergenTableNichtEnthalten.setItems(listeAllergenNichtVorhanden);

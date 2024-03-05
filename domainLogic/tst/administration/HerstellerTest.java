@@ -1,7 +1,8 @@
-package tst;
+package administration;
 
 import administration.HerstellerImpl;
 import org.junit.jupiter.api.Test;
+import verwaltung.Hersteller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,8 +29,8 @@ class HerstellerTest {
     // Test for the Equals method; should return true
     @Test
     public void testEquals() {
-        HerstellerImpl hersteller1 = new HerstellerImpl("Hersteller 1");
-        HerstellerImpl hersteller2 = new HerstellerImpl("Hersteller 1");
+        HerstellerImpl hersteller1 = new HerstellerImpl("Hersteller1");
+        HerstellerImpl hersteller2 = new HerstellerImpl("Hersteller1");
         assertEquals(hersteller1, hersteller2);
     }
 

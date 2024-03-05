@@ -93,7 +93,7 @@ public class ServerUDP {
         }
     }
 
-    public void sendHerstellerListToServer(List<Hersteller> output){
+    public void sendHerstellerListToServer(List<HerstellerImpl> output){
         StringBuilder result = new StringBuilder();
         for (Hersteller h : output) {
             result.append("[").append(h).append("] [Cake count: ").append(h.getCakeCount()).append("] || ");

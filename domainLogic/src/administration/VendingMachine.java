@@ -3,14 +3,12 @@ package administration;
 import cakes.KuchenImpl;
 import kuchen.Allergen;
 import observer.Subject;
-import verwaltung.Hersteller;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
-import java.util.Date;
-
 
 
 public class VendingMachine extends Subject implements Serializable {
@@ -18,23 +16,19 @@ public class VendingMachine extends Subject implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final List<KuchenImpl> inventory;
-    private List<Hersteller> herstellerList;
+    private final List<HerstellerImpl> herstellerList;
 
-    private int capacity;
+    private final int capacity;
 
-  // Default constructor
-    public VendingMachine() {
-        this.inventory = new LinkedList<>();
-        this.capacity = 0;
-    }
 
-    public VendingMachine(int capacity, List<KuchenImpl> inventory, List<Hersteller> herstellerList) {
+
+    public VendingMachine(int capacity, List<KuchenImpl> inventory, List<HerstellerImpl> herstellerList) {
         this.capacity = capacity;
         this.inventory = inventory;
         this.herstellerList = herstellerList;
     }
 
-    public List<Hersteller> getAllHersteller() {
+    public List<HerstellerImpl> getHerstellerList() {
         return herstellerList;
     }
 
@@ -48,8 +42,8 @@ public class VendingMachine extends Subject implements Serializable {
     }
 
     // Add manufacturer. Checks for name duplications
-    public boolean addHersteller(Hersteller hersteller) {
-        for (Hersteller h : herstellerList) {
+    public boolean addHersteller(HerstellerImpl hersteller) {
+        for (HerstellerImpl h : herstellerList) {
             if (h.getName().equals(hersteller.getName()) || hersteller.getName().equals("")) {
                 return false;
             }
@@ -59,7 +53,7 @@ public class VendingMachine extends Subject implements Serializable {
     }
 
     public boolean removeHersteller(String hersteller) {
-        for (Hersteller h : herstellerList) {
+        for (HerstellerImpl h : herstellerList) {
             if (h.getName().equals(hersteller)) {
                 herstellerList.remove(h);
                 return true;
@@ -68,10 +62,10 @@ public class VendingMachine extends Subject implements Serializable {
         return false;
     }
     // Call all manufacturers with their cakes
-    public List<Hersteller> callHersteller() {
+    public List<HerstellerImpl> printHersteller() {
         int count = 0;
         List<KuchenImpl> cakeList = new LinkedList<>(inventory);
-        for (Hersteller h : herstellerList) {
+        for (HerstellerImpl h : herstellerList) {
             for (int i = 0; i < inventory.size(); i++) {
                 if (cakeList.get(i).getHersteller().equals(h)) {
                     count++;
@@ -85,26 +79,21 @@ public class VendingMachine extends Subject implements Serializable {
 
     public boolean addItem(KuchenImpl kuchen) {
         // In full capacity no cake will be added
-        if (inventory.size() >= capacity) {
-            return false;
-        }
-
-
-        for (Hersteller h : herstellerList) {
-            if (h.equals(kuchen.getHersteller())) {
-                // Give a tray number
-                int fachnummer = inventory.size() + 1;
-                kuchen.setFachnummer(fachnummer);
-
-                inventory.add(kuchen);
-                updateInspectionDate(fachnummer);
-                notifyObservers();
-                return true;
+        while (!isFull()){
+            for (HerstellerImpl h : herstellerList) {
+                if (h.equals(kuchen.getHersteller())) {
+                    // Give a tray number
+                    int fachnummer = inventory.size() + 1;
+                    kuchen.setFachnummer(fachnummer);
+                    inventory.add(kuchen);
+                    updateInspectionDate(fachnummer);
+                    notifyObservers();
+                    return true;
+                }
             }
         }
         return false;
     }
-
 
     public boolean removeItem(int trayNumber) {
         KuchenImpl cakeToRemove = null;
@@ -141,7 +130,7 @@ public class VendingMachine extends Subject implements Serializable {
 
 
     public void updateInspectionDate(int fachnummer) {
-        Date currentDate = new java.sql.Date(System.currentTimeMillis());
+        Date currentDate = new Date(System.currentTimeMillis());
 
         for (KuchenImpl kuchen : inventory) {
             if (kuchen.getFachnummer() == fachnummer) {
@@ -154,8 +143,7 @@ public class VendingMachine extends Subject implements Serializable {
     }
 
     /*
-   Gibt aus, welche Kuchen im Automaten sind. Wird ein Kuchentyp angegeben, werden nur Kuchen von diesen
-   Kuchentypen aufgelistet
+   Prints the cakes in the vending machine by type
     */
     public List<KuchenImpl> printCake(String kuchentyp) {
         List<KuchenImpl> cakeList = new LinkedList<>();
@@ -166,8 +154,7 @@ public class VendingMachine extends Subject implements Serializable {
             return cakeList;
         }
         for (KuchenImpl cake : inventory) {
-            if (cake.getKuchenTyp().equals(kuchentyp.substring(0, 1).toUpperCase() + kuchentyp.substring(1).toLowerCase())) {
-                LocalDateTime jetzt = LocalDateTime.now();
+            if (cake.getKuchenTyp().equals(kuchentyp)) {
                 cake.calculateRemainingShelfLife();
                 cakeList.add(cake);
             }
@@ -175,23 +162,23 @@ public class VendingMachine extends Subject implements Serializable {
         return cakeList;
     }
 
-    // Abruf aller vorhandenen oder nicht vorhandenen Allergene im Automaten
-    public List<Allergen> allergeneAbrufen(boolean vorhanden) {
-        Allergen[] alleAllergene = Allergen.values();
+    // Prints all allergies in the vending machine / present or not
+    public List<Allergen> printAllergies(boolean present) {
+        Allergen[] allAllergies = Allergen.values();
 
-        List<Allergen> ergebnisListe = new LinkedList<>();
-        for (Allergen allergen : alleAllergene) {
-            boolean istVorhanden = false;
+        List<Allergen> allergenList = new LinkedList<>();
+        for (Allergen allergen : allAllergies) {
+            boolean isPresent = false;
             for (KuchenImpl cake : inventory) {
                 if (cake.getAllergene().contains(allergen)) {
-                    istVorhanden = true;
+                    isPresent = true;
                     break;
                 }
             }
-            if (istVorhanden == vorhanden) {
-                ergebnisListe.add(allergen);
+            if (isPresent == present) {
+                allergenList.add(allergen);
             }
         }
-        return ergebnisListe;
+        return allergenList;
     }
 }

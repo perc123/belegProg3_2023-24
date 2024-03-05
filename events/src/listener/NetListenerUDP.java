@@ -90,25 +90,24 @@ public class NetListenerUDP implements AddHerstellerEventListener, AddCakeEventL
             allergene.add(Allergen.valueOf(allergenString));
         }
         String sorte = addCakeEvent.getSorte();
-        String obstsorte = addCakeEvent.getSorte();
 
-        String[] sorteZwei = addCakeEvent.getSorteZwei();
+        String sorteZwei = addCakeEvent.getSorteZwei();
 
 
         switch (addCakeEvent.getKuchentyp()) {
             case "Kremkuchen" -> {
                 KremkuchenImpl kremkuchen = new KremkuchenImpl(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis, sorte);
                 SingletonVendingMachine.getInstance().getVendingMachine().addItem(kremkuchen);
-                server.sendInfoToServer("One successful operation");
+                server.sendInfoToServer("Kremkuchen added");
             }
             case "Obstkuchen" -> {
                 ObstkuchenImpl Obstkuchen = new ObstkuchenImpl(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis, sorte);
                 SingletonVendingMachine.getInstance().getVendingMachine().addItem(Obstkuchen);
-                server.sendInfoToServer("One successful operation");            }
+                server.sendInfoToServer("Obstkuchen added");            }
             case "Obsttorte" -> {
-                ObsttorteImpl Obsttorte = new ObsttorteImpl(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis, sorte, obstsorte);
+                ObsttorteImpl Obsttorte = new ObsttorteImpl(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis, sorte, sorteZwei);
                 SingletonVendingMachine.getInstance().getVendingMachine().addItem(Obsttorte);
-                server.sendInfoToServer("One successful operation");            }
+                server.sendInfoToServer("Obsttorte added");            }
         }
     }
 
@@ -134,17 +133,17 @@ public class NetListenerUDP implements AddHerstellerEventListener, AddCakeEventL
     @Override
     public void onPrintAllergiesEvent(PrintAllergiesEvent event) {
         if (event.getAllergene().equals("allergene i")) {
-            List<Allergen> allergene = SingletonVendingMachine.getInstance().getVendingMachine().allergeneAbrufen(true);
+            List<Allergen> allergene = SingletonVendingMachine.getInstance().getVendingMachine().printAllergies(true);
             server.sendAllergenListToServer(allergene);
         } else if (event.getAllergene().equals("allergene e")) {
-            List<Allergen> allergene = SingletonVendingMachine.getInstance().getVendingMachine().allergeneAbrufen(false);
+            List<Allergen> allergene = SingletonVendingMachine.getInstance().getVendingMachine().printAllergies(false);
             server.sendAllergenListToServer(allergene);
         }
     }
 
     @Override
     public void onPrintHerstellerEvent(PrintHerstellerEvent event) {
-        List<Hersteller> herstellerList = SingletonVendingMachine.getInstance().getVendingMachine().getAllHersteller();
+        List<HerstellerImpl> herstellerList = SingletonVendingMachine.getInstance().getVendingMachine().getHerstellerList();
         server.sendHerstellerListToServer(herstellerList); // Sends the list to client
     }
 

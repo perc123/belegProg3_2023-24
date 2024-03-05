@@ -1,3 +1,4 @@
+import administration.HerstellerImpl;
 import administration.VendingMachine;
 import cakes.KuchenImpl;
 import commands.*;
@@ -8,7 +9,6 @@ import infrastructure.AddManufacturer.AddHerstellerEventListener;
 import infrastructure.InspectionsDate.InspectionEventHandler;
 import infrastructure.InspectionsDate.InspectionEventListener;
 import infrastructure.PrintAllergies.PrintAllergiesEventHandler;
-import infrastructure.PrintAllergies.PrintAllergiesEventListener;
 import infrastructure.PrintCakes.PrintCakeEventHandler;
 import infrastructure.PrintCakes.PrintCakeEventListener;
 import infrastructure.PrintManufacturers.PrintHerstellerEventHandler;
@@ -16,14 +16,11 @@ import infrastructure.PrintManufacturers.PrintHerstellerEventListener;
 import infrastructure.RemoveCake.RemoveCakeEventHandler;
 import infrastructure.RemoveCake.RemoveCakeEventListener;
 import infrastructure.RemoveManufacturer.RemoveHerstellerEventHandler;
-import infrastructure.RemoveManufacturer.RemoveHerstellerEventListener;
 import infrastructure.SaveAndLoadVendingMachine.SaveVendingMachineEventHandler;
 import infrastructure.SaveAndLoadVendingMachine.SaveVendingMachineEventListener;
 import listener.InfoListener;
 import listener.Listener;
 import observer.AllergiesObserver;
-import observer.CapacityObserver;
-import verwaltung.Hersteller;
 
 import java.util.LinkedList;
 
@@ -45,7 +42,7 @@ public class AlternativeCLI {
             }
         }
         if(capacity >= 0 ){
-            LinkedList<Hersteller> herstellerLinkedList = new LinkedList<>();
+            LinkedList<HerstellerImpl> herstellerLinkedList = new LinkedList<>();
             LinkedList<KuchenImpl> kuchenLinkedList = new LinkedList<>();
             VendingMachine vendingMachine = new VendingMachine(capacity, kuchenLinkedList,herstellerLinkedList);
             System.out.println("Achtung! Löschen von Herstellern und das Auflisten der Allergene nicht möglich!");

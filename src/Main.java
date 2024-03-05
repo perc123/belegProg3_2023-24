@@ -1,5 +1,6 @@
 import TCP.ClientTCP;
 import UDP.ClientUDP;
+import administration.HerstellerImpl;
 import administration.VendingMachine;
 import cakes.KuchenImpl;
 import commands.*;
@@ -25,7 +26,6 @@ import listener.InfoListener;
 import listener.Listener;
 import observer.AllergiesObserver;
 import observer.CapacityObserver;
-import verwaltung.Hersteller;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -34,7 +34,7 @@ import java.util.LinkedList;
 public class Main {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         int capacity = 0;
-        LinkedList<Hersteller> herstellerLinkedList = new LinkedList<>();
+        LinkedList<HerstellerImpl> herstellerLinkedList = new LinkedList<>();
         LinkedList<KuchenImpl> kuchenLinkedList = new LinkedList<>();
         boolean TCP = false;
         boolean UDP = false;
@@ -53,13 +53,17 @@ public class Main {
         if (TCP) {
             ClientTCP client = new ClientTCP();
             client.start();
+            System.out.println("Here TCP");
         }
         if (UDP) {
             ClientUDP clientUDP = new ClientUDP();
             clientUDP.start();
+            System.out.println("Here UDP");
+
         }
-        if(capacity >= 0 ){
-            VendingMachine vendingMachine = new VendingMachine(capacity, kuchenLinkedList,herstellerLinkedList);
+        if (capacity >= 0) {
+
+            VendingMachine vendingMachine = new VendingMachine(capacity, kuchenLinkedList, herstellerLinkedList);
             // Add Observers
             CapacityObserver capacityObserver = new CapacityObserver(vendingMachine);
             vendingMachine.add(capacityObserver);
@@ -70,7 +74,7 @@ public class Main {
             AddCakeEventHandler addCakeEventHandler = new AddCakeEventHandler();
             AddCakeEventListener addCakeEventListener = new Listener(vendingMachine);
             addCakeEventHandler.add(addCakeEventListener);
-            AddCakeEventListener infoCakeListener = new Listener(vendingMachine);
+            AddCakeEventListener infoCakeListener = new InfoListener();
             addCakeEventHandler.add(infoCakeListener);
 
             // Add manufacturer (Hersteller) event
@@ -80,13 +84,13 @@ public class Main {
             AddHerstellerEventListener infoHerstellerListener = new InfoListener();
             addHerstellerEventHandler.add(infoHerstellerListener);
 
-            AddMode addMode = new AddMode(addHerstellerEventHandler,addCakeEventHandler);
+            AddMode addMode = new AddMode(addHerstellerEventHandler, addCakeEventHandler);
 
             // Remove cake event
             RemoveCakeEventHandler removeCakeEventHandler = new RemoveCakeEventHandler();
             RemoveCakeEventListener removeCakeEventListener = new Listener(vendingMachine);
             removeCakeEventHandler.add(removeCakeEventListener);
-            RemoveCakeEventListener infoRemoveCakeListener = new Listener(vendingMachine);
+            RemoveCakeEventListener infoRemoveCakeListener = new InfoListener();
             removeCakeEventHandler.add(infoRemoveCakeListener);
 
             // Remove manufacturer (Hersteller) event
@@ -96,7 +100,7 @@ public class Main {
             RemoveHerstellerEventListener infoRemoveHerstellerListener = new InfoListener();
             removeHerstellerEventHandler.add(infoRemoveHerstellerListener);
 
-            RemoveMode removeMode = new RemoveMode(removeHerstellerEventHandler,removeCakeEventHandler);
+            RemoveMode removeMode = new RemoveMode(removeHerstellerEventHandler, removeCakeEventHandler);
 
             // Update inspection date event
             InspectionEventHandler inspectionEventHandler = new InspectionEventHandler();
@@ -128,7 +132,7 @@ public class Main {
             PrintHerstellerEventListener infoPrintHerstellerEventListener = new InfoListener();
             printHerstellerEventHandler.add(infoPrintHerstellerEventListener);
 
-            PrintMode printMode = new PrintMode(printHerstellerEventHandler,printCakeEventHandler,printAllergiesEventHandler);
+            PrintMode printMode = new PrintMode(printHerstellerEventHandler, printCakeEventHandler, printAllergiesEventHandler);
 
             // Save vending machine
             SaveVendingMachineEventHandler saveVendingMachineEventHandler = new SaveVendingMachineEventHandler();
@@ -139,9 +143,9 @@ public class Main {
 
             SerializationMode serializationMode = new SerializationMode(saveVendingMachineEventHandler);
 
-            CLIcontroller cliController = new CLIcontroller(addMode,removeMode,updateMode,printMode,serializationMode);
+            CLIcontroller cliController = new CLIcontroller(addMode, removeMode, updateMode, printMode, serializationMode);
             cliController.start();
-
         }
     }
 }
+

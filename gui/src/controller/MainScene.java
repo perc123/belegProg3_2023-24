@@ -1,5 +1,6 @@
 package controller;
 
+import administration.HerstellerImpl;
 import administration.VendingMachine;
 import cakes.KuchenImpl;
 import javafx.event.ActionEvent;
@@ -49,7 +50,7 @@ public class MainScene implements Initializable {
         else {
             try {
                 capacity = Integer.parseInt(startTextField.getText());
-                LinkedList<Hersteller> herstellerLinkedList = new LinkedList<>();
+                LinkedList<HerstellerImpl> herstellerLinkedList = new LinkedList<>();
                 LinkedList<KuchenImpl> kuchenLinkedList = new LinkedList<>();
                 VendingMachine vendingMachine = new VendingMachine(capacity, kuchenLinkedList, herstellerLinkedList);
                 FXMLLoader loader = new FXMLLoader();

@@ -1,6 +1,7 @@
 package TCP;
 
 
+import administration.HerstellerImpl;
 import cakes.KuchenImpl;
 import commands.*;
 import kuchen.Allergen;
@@ -91,7 +92,7 @@ public class ServerTCP {
         }
     }
 
-    public void sendHerstellerListToServer(List<Hersteller> output) {
+    public void sendHerstellerListToServer(List<HerstellerImpl> output) {
         StringBuilder result = new StringBuilder();
         for (Hersteller h : output) {
             result.append("[").append(h).append("] [Anzahl Kuchen: ").append(h.getCakeCount()).append("] || ");

@@ -2,7 +2,6 @@ package listener;
 
 import TCP.ServerTCP;
 import administration.HerstellerImpl;
-import administration.HerstellerStorage;
 import administration.VendingMachine;
 import cakes.KremkuchenImpl;
 import cakes.KuchenImpl;
@@ -90,24 +89,23 @@ public class NetListenerTCP implements AddHerstellerEventListener, AddCakeEventL
             allergene.add(Allergen.valueOf(allergenString));
         }
         String sorte = addCakeEvent.getSorte();
-        String obstsorte = addCakeEvent.getSorte();
 
-        String[] sorteZwei = addCakeEvent.getSorteZwei();
+        String sorteZwei = addCakeEvent.getSorteZwei();
 
 
         switch (addCakeEvent.getKuchentyp()) {
             case "Kremkuchen" -> {
                 KremkuchenImpl kremkuchen = new KremkuchenImpl(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis, sorte);
                 SingletonVendingMachine.getInstance().getVendingMachine().addItem(kremkuchen);
-                serverTCP.sendInfoToServer("One successful operation");            }
+                serverTCP.sendInfoToServer("One successful Kremkuchen");            }
             case "Obstkuchen" -> {
                 ObstkuchenImpl Obstkuchen = new ObstkuchenImpl(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis, sorte);
                 SingletonVendingMachine.getInstance().getVendingMachine().addItem(Obstkuchen);
-                serverTCP.sendInfoToServer("One successful operation");            }
+                serverTCP.sendInfoToServer("One successful Obstkuchen");            }
             case "Obsttorte" -> {
-                ObsttorteImpl Obsttorte = new ObsttorteImpl(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis, sorte, obstsorte);
+                ObsttorteImpl Obsttorte = new ObsttorteImpl(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis, sorte, sorteZwei);
                 SingletonVendingMachine.getInstance().getVendingMachine().addItem(Obsttorte);
-                serverTCP.sendInfoToServer("One successful operation");            }
+                serverTCP.sendInfoToServer("One successful Obsttorte");            }
         }
     }
     @Override
@@ -124,7 +122,7 @@ public class NetListenerTCP implements AddHerstellerEventListener, AddCakeEventL
 
     @Override
     public void onPrintHerstellerEvent(PrintHerstellerEvent event) {
-        List<Hersteller> herstellerList = SingletonVendingMachine.getInstance().getVendingMachine().getAllHersteller();
+        List<HerstellerImpl> herstellerList = SingletonVendingMachine.getInstance().getVendingMachine().getHerstellerList();
         serverTCP.sendHerstellerListToServer(herstellerList); // Sends the list to client
     }
 
@@ -165,10 +163,10 @@ public class NetListenerTCP implements AddHerstellerEventListener, AddCakeEventL
     @Override
     public void onPrintAllergiesEvent(PrintAllergiesEvent event) {
         if (event.getAllergene().equals("allergene i")) {
-            List<Allergen> allergene = SingletonVendingMachine.getInstance().getVendingMachine().allergeneAbrufen(true);
+            List<Allergen> allergene = SingletonVendingMachine.getInstance().getVendingMachine().printAllergies(true);
             serverTCP.sendAllergenListToServer(allergene);
         } else if (event.getAllergene().equals("allergene e")) {
-            List<Allergen> allergene = SingletonVendingMachine.getInstance().getVendingMachine().allergeneAbrufen(false);
+            List<Allergen> allergene = SingletonVendingMachine.getInstance().getVendingMachine().printAllergies(false);
             serverTCP.sendAllergenListToServer(allergene);
         }
     }

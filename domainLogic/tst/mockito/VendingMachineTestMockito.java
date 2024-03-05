@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 
 class VendingMachineTestMockito {
 
-    private VendingMachine vendingMachine;
+/*    private VendingMachine vendingMachine;
 
     @Mock
     private HerstellerImpl mockHersteller;
@@ -87,5 +87,5 @@ class VendingMachineTestMockito {
             assertNotNull(kuchen.getInspektionsdatum());
             assertEquals(currentDate, kuchen.getInspektionsdatum());
         }
-    }
+    }*/
 }

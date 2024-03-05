@@ -14,7 +14,7 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Date;
 
-public class KuchenImpl implements Kuchen, Verkaufsobjekt, Serializable {
+public abstract class KuchenImpl implements Kuchen, Verkaufsobjekt, Serializable {
     private String kuchenTyp;
     private HerstellerImpl hersteller;
     private Collection<Allergen> allergene;

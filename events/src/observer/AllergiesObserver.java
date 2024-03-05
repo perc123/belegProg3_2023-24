@@ -12,13 +12,13 @@ public class AllergiesObserver implements Observer {
 
     public AllergiesObserver(VendingMachine vendingMachine) {
         this.vendingMachine = vendingMachine;
-        this.lastAllergy = vendingMachine.allergeneAbrufen(true);
+        this.lastAllergy = vendingMachine.printAllergies(true);
     }
 
     @Override
     public void update(Subject subject) {
         if (subject instanceof VendingMachine) {
-            List<Allergen> aktuelleAllergene = this.vendingMachine.allergeneAbrufen(true);
+            List<Allergen> aktuelleAllergene = this.vendingMachine.printAllergies(true);
             if (!aktuelleAllergene.equals(lastAllergy)) {
                 System.out.println("Changes in allergies:");
                 System.out.println("Old allergy: " + lastAllergy);

@@ -27,7 +27,7 @@ public class SimulationThree {
         int interval = scanner.nextInt();
 
         // Initialize vending machine and lock
-        LinkedList<Hersteller> herstellerLinkedList = new LinkedList<>();
+        LinkedList<HerstellerImpl> herstellerLinkedList = new LinkedList<>();
         LinkedList<KuchenImpl> cakeLinkedList = new LinkedList<>();
         VendingMachine vendingMachine= new VendingMachine(capacity, cakeLinkedList, herstellerLinkedList);
         Lock lock = new ReentrantLock();

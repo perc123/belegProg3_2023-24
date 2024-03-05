@@ -6,7 +6,6 @@ import observer.CapacityObserver;
 import observer.RemoveCakeObserver;
 import simulationOne.AddCakeSimOne;
 import simulationOne.RemoveCakeSimOne;
-import verwaltung.Hersteller;
 
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -36,7 +35,7 @@ public class SimulationOne {
                 scanner.nextLine();
             }
         }
-        LinkedList<Hersteller> herstellerLinkedList = new LinkedList<>();
+        LinkedList<HerstellerImpl> herstellerLinkedList = new LinkedList<>();
         LinkedList<KuchenImpl> kuchenLinkedList = new LinkedList<>();
         VendingMachine vendingMachine = new VendingMachine(capacity, kuchenLinkedList,herstellerLinkedList);
         Lock lock = new ReentrantLock();
@@ -48,9 +47,9 @@ public class SimulationOne {
         CapacityObserver capacityObserver = new CapacityObserver(vendingMachine);
         vendingMachine.add(capacityObserver);
 
-        vendingMachine.addHersteller(new HerstellerImpl("Manufacturer Thread"));
-        AddCakeSimOne addCakeSim = new AddCakeSimOne(vendingMachine, lock, 50);
-        RemoveCakeSimOne removeCakeSim = new RemoveCakeSimOne(vendingMachine, lock, 50);
+        vendingMachine.addHersteller(new HerstellerImpl("Manufacturer 1"));
+        AddCakeSimOne addCakeSim = new AddCakeSimOne(vendingMachine, lock, 42);
+        RemoveCakeSimOne removeCakeSim = new RemoveCakeSimOne(vendingMachine, lock, 42);
         addCakeSim.start();
         removeCakeSim.start();
 

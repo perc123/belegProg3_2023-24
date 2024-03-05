@@ -22,7 +22,7 @@ public class SimulationTwo {
         System.out.println("Enter the number of Threads");
         int numThreads = scanner.nextInt();
         Lock lock = new ReentrantLock();
-        LinkedList<Hersteller> herstellerLinkedList = new LinkedList<>();
+        LinkedList<HerstellerImpl> herstellerLinkedList = new LinkedList<>();
         LinkedList<KuchenImpl> cakeLinkedList = new LinkedList<>();
         VendingMachine vendingMachine= new VendingMachine(capacity, cakeLinkedList, herstellerLinkedList);
         vendingMachine.addHersteller(new HerstellerImpl("ThreadHersteller"));

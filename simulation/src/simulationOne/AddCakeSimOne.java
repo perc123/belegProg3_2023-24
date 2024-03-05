@@ -30,7 +30,7 @@ public class AddCakeSimOne extends Thread{
             try {
                 String[] randomCakeInfo = createRandomCakeInfo();
                 KuchenImpl randomCake = createRandomCake(randomCakeInfo);
-                System.out.println(randomCake.getKuchenTyp() + " Probiert Kuchen hinzufuegen");
+                System.out.println(randomCake.getKuchenTyp() + " tried to add cake");
                 vendingMachine.addItem(randomCake);
             } finally {
                 lock.unlock();

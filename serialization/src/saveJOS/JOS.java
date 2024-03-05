@@ -24,7 +24,7 @@ public class JOS {
                 return;
             }
         }
-        File file = new File(folder, "saveModel.ser");
+        File file = new File(folder, "saveMode.ser");
         try (FileOutputStream outputStream = new FileOutputStream(file);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
             objectOutputStream.writeObject(vendingMachine);

@@ -1,5 +1,6 @@
 import TCP.ServerTCP;
 import UDP.ServerUDP;
+import administration.HerstellerImpl;
 import administration.VendingMachine;
 import cakes.KuchenImpl;
 import commands.*;
@@ -23,23 +24,21 @@ import infrastructure.SaveAndLoadVendingMachine.SaveVendingMachineEventHandler;
 import infrastructure.SaveAndLoadVendingMachine.SaveVendingMachineEventListener;
 import listener.NetListenerTCP;
 import listener.NetListenerUDP;
-import verwaltung.Hersteller;
 
 import java.io.IOException;
 
 import java.util.LinkedList;
-import java.util.Scanner;
 
 public class Server {
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
+    public static void main(String[] args) throws IOException {
         if (args.length < 2) {
             System.err.println("Usage: java Server <TCP/UDP> <capacity>");
             System.exit(1);
         }
 
         int capacity = Integer.parseInt(args[1]);
-        LinkedList<Hersteller> herstellerLinkedList = new LinkedList<>();
+        LinkedList<HerstellerImpl> herstellerLinkedList = new LinkedList<>();
         LinkedList<KuchenImpl> kuchenLinkedList = new LinkedList<>();
         VendingMachine vendingMachine = new VendingMachine(capacity, kuchenLinkedList, herstellerLinkedList);
 

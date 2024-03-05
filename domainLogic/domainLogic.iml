@@ -37,5 +37,6 @@
     </orderEntry>
     <orderEntry type="library" scope="TEST" name="mockito.core" level="project" />
     <orderEntry type="module" module-name="events" />
+    <orderEntry type="module" module-name="serialization" scope="TEST" />
   </component>
 </module>
