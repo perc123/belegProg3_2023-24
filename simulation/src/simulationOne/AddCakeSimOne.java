@@ -58,6 +58,6 @@ public class AddCakeSimOne extends Thread{
         String kremsorte = randomCakeInfo[4];
         BigDecimal preis = BigDecimal.valueOf(Double.parseDouble(randomCakeInfo[5]));
 
-        return new KremkuchenImpl(kuchenTyp, hersteller, allergy, naehwert, duration, preis, kremsorte);
+        return new KremkuchenImpl(kuchenTyp, hersteller, preis, naehwert, duration, allergy, kremsorte);
     }
 }

@@ -30,4 +30,18 @@ public class HerstellerImpl implements Hersteller, Serializable {
         return cakeCount;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof HerstellerImpl herstellerImpl) {
+            return name.equals(herstellerImpl.name);
+        } else {
+            return false;
+        }
+    }
+
 }

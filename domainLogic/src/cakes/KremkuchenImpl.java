@@ -3,6 +3,7 @@ package cakes;
 import administration.HerstellerImpl;
 import kuchen.Allergen;
 import kuchen.Kremkuchen;
+import verwaltung.Hersteller;
 import verwaltung.Verkaufsobjekt;
 
 import java.io.Serializable;
@@ -19,14 +20,14 @@ public class KremkuchenImpl extends KuchenImpl implements Kremkuchen, Verkaufsob
 
     public KremkuchenImpl(
             String kuchenTyp,
-            HerstellerImpl hersteller,
-            Collection<Allergen> allergene,
+            Hersteller hersteller,
+            BigDecimal preis,
             int naehrwert,
             Duration haltbarkeit,
-            BigDecimal preis,
+            Collection<Allergen> allergene,
             String sorte
     ) {
-        super(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis);
+        super(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit, allergene);
         this.kremsorte = sorte;
     }
 

@@ -93,15 +93,15 @@ public class Listener implements AddHerstellerEventListener, AddCakeEventListene
 
         switch (addCakeEvent.getKuchentyp()) {
             case "Kremkuchen" -> {
-                KremkuchenImpl kremkuchen = new KremkuchenImpl(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis, sorte);
+                KremkuchenImpl kremkuchen = new KremkuchenImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit,allergene , sorte);
                 vendingMachine.addItem(kremkuchen);
             }
             case "Obstkuchen" -> {
-                ObstkuchenImpl Obstkuchen = new ObstkuchenImpl(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis, sorte);
+                ObstkuchenImpl Obstkuchen = new ObstkuchenImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit,allergene , sorte);
                 vendingMachine.addItem(Obstkuchen);
             }
             case "Obsttorte" -> {
-                ObsttorteImpl Obsttorte = new ObsttorteImpl(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis, sorte, sorteZwei);
+                ObsttorteImpl Obsttorte = new ObsttorteImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit,allergene , sorte, sorteZwei);
                 vendingMachine.addItem(Obsttorte);
             }
         }

@@ -96,16 +96,16 @@ public class NetListenerUDP implements AddHerstellerEventListener, AddCakeEventL
 
         switch (addCakeEvent.getKuchentyp()) {
             case "Kremkuchen" -> {
-                KremkuchenImpl kremkuchen = new KremkuchenImpl(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis, sorte);
+                KremkuchenImpl kremkuchen = new KremkuchenImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit,allergene, sorte);
                 SingletonVendingMachine.getInstance().getVendingMachine().addItem(kremkuchen);
                 server.sendInfoToServer("Kremkuchen added");
             }
             case "Obstkuchen" -> {
-                ObstkuchenImpl Obstkuchen = new ObstkuchenImpl(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis, sorte);
+                ObstkuchenImpl Obstkuchen = new ObstkuchenImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit,allergene, sorte);
                 SingletonVendingMachine.getInstance().getVendingMachine().addItem(Obstkuchen);
                 server.sendInfoToServer("Obstkuchen added");            }
             case "Obsttorte" -> {
-                ObsttorteImpl Obsttorte = new ObsttorteImpl(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis, sorte, sorteZwei);
+                ObsttorteImpl Obsttorte = new ObsttorteImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit,allergene, sorte, sorteZwei);
                 SingletonVendingMachine.getInstance().getVendingMachine().addItem(Obsttorte);
                 server.sendInfoToServer("Obsttorte added");            }
         }

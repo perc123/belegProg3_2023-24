@@ -27,11 +27,11 @@ public abstract class KuchenImpl implements Kuchen, Verkaufsobjekt, Serializable
     public KuchenImpl(
             String kuchenTyp,
             Hersteller hersteller,
-            Collection<Allergen> allergene,
+            BigDecimal preis,
             int naehrwert,
             Duration haltbarkeit,
-            BigDecimal preis
-    ) {
+            Collection<Allergen> allergene
+            ) {
         this.hersteller = (HerstellerImpl) hersteller;
         this.allergene = allergene;
         this.naehrwert = naehrwert;
@@ -81,8 +81,8 @@ public abstract class KuchenImpl implements Kuchen, Verkaufsobjekt, Serializable
         return fachnummer;
     }
 
-    public void setInspektionsdatum(Date currentDate) {
-        this.inspektionsdatum = currentDate;
+    public void setInspektionsdatum(Date inspektionsdatum) {
+        this.inspektionsdatum = inspektionsdatum;
     }
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

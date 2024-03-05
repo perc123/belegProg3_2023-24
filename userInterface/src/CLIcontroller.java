@@ -1,42 +1,43 @@
+import com.sun.jdi.VMCannotBeModifiedException;
 import commands.*;
 
 import java.util.Scanner;
 
 public class CLIcontroller implements Runnable {
-    private final AddMode einfuegeModus;
-    private final RemoveMode loeschModus;
-    private final UpdateMode aenderungsModus;
-    private final PrintMode anzeigeModus;
+    private final AddMode addMode;
+    private final RemoveMode removeMode;
+    private final UpdateMode updateMode;
+    private final PrintMode printMode;
 
-    private final SerializationMode serialisierungsModus;
+    private final SerializationMode serializationMode;
 
-    public CLIcontroller(AddMode einfuegeModus, RemoveMode loeschModus, UpdateMode aenderungsModus, PrintMode anzeigeModus, SerializationMode serialisierungsModus) {
-        this.einfuegeModus = einfuegeModus;
-        this.loeschModus = loeschModus;
-        this.aenderungsModus = aenderungsModus;
-        this.anzeigeModus = anzeigeModus;
-        this.serialisierungsModus = serialisierungsModus;
+    public CLIcontroller(AddMode addMode, RemoveMode removeMode, UpdateMode updateMode, PrintMode printMode, SerializationMode serializationMode) {
+        this.addMode = addMode;
+        this.removeMode = removeMode;
+        this.updateMode = updateMode;
+        this.printMode = printMode;
+        this.serializationMode = serializationMode;
     }
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
         String input;
-        Mode aktuellerModus = anzeigeModus;
+        Mode mode = printMode;
 
         while (true) {
             input = scanner.nextLine();
 
             if (input.startsWith(":")) {
                 switch (input) {
-                    case ":c" -> aktuellerModus = einfuegeModus;
-                    case ":r" -> aktuellerModus = anzeigeModus;
-                    case ":d" -> aktuellerModus = loeschModus;
-                    case ":u" -> aktuellerModus = aenderungsModus;
-                    case ":p" -> aktuellerModus = serialisierungsModus;
+                    case ":c" -> mode = addMode;
+                    case ":r" -> mode = printMode;
+                    case ":d" -> mode = removeMode;
+                    case ":u" -> mode = updateMode;
+                    case ":p" -> mode = serializationMode;
                     default -> System.out.println("Unknown command. Please try again.");
                 }
             } else {
-                aktuellerModus.handleInput(input);
+                mode.handleInput(input);
             }
         }
     }
@@ -46,22 +47,22 @@ public class CLIcontroller implements Runnable {
     public void run() {
         Scanner scanner = new Scanner(System.in);
         String input;
-        Mode aktuellerModus = anzeigeModus;
+        Mode mode = printMode;
 
         while (true) {
             input = scanner.nextLine();
 
             if (input.startsWith(":")) {
                 switch (input) {
-                    case ":c" -> aktuellerModus = einfuegeModus;
-                    case ":r" -> aktuellerModus = anzeigeModus;
-                    case ":d" -> aktuellerModus = loeschModus;
-                    case ":u" -> aktuellerModus = aenderungsModus;
-                    case ":p" -> aktuellerModus = serialisierungsModus;
+                    case ":c" -> mode = addMode;
+                    case ":r" -> mode = printMode;
+                    case ":d" -> mode = removeMode;
+                    case ":u" -> mode = updateMode;
+                    case ":p" -> mode = serializationMode;
                     default -> System.out.println("Unknown command. Please try again.");
                 }
             } else {
-                aktuellerModus.handleInput(input);
+                mode.handleInput(input);
             }
         }
     }

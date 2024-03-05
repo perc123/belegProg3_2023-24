@@ -95,15 +95,15 @@ public class NetListenerTCP implements AddHerstellerEventListener, AddCakeEventL
 
         switch (addCakeEvent.getKuchentyp()) {
             case "Kremkuchen" -> {
-                KremkuchenImpl kremkuchen = new KremkuchenImpl(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis, sorte);
+                KremkuchenImpl kremkuchen = new KremkuchenImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit,allergene, sorte);
                 SingletonVendingMachine.getInstance().getVendingMachine().addItem(kremkuchen);
                 serverTCP.sendInfoToServer("One successful Kremkuchen");            }
             case "Obstkuchen" -> {
-                ObstkuchenImpl Obstkuchen = new ObstkuchenImpl(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis, sorte);
+                ObstkuchenImpl Obstkuchen = new ObstkuchenImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit,allergene, sorte);
                 SingletonVendingMachine.getInstance().getVendingMachine().addItem(Obstkuchen);
                 serverTCP.sendInfoToServer("One successful Obstkuchen");            }
             case "Obsttorte" -> {
-                ObsttorteImpl Obsttorte = new ObsttorteImpl(kuchenTyp, hersteller, allergene, naehrwert, haltbarkeit, preis, sorte, sorteZwei);
+                ObsttorteImpl Obsttorte = new ObsttorteImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit,allergene, sorte, sorteZwei);
                 SingletonVendingMachine.getInstance().getVendingMachine().addItem(Obsttorte);
                 serverTCP.sendInfoToServer("One successful Obsttorte");            }
         }

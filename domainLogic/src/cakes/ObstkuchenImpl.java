@@ -18,13 +18,13 @@ public class ObstkuchenImpl extends KuchenImpl implements Obstkuchen, Serializab
     public ObstkuchenImpl(
             String kuchenTyp,
             Hersteller hersteller,
-            Collection<Allergen> allergene,
+            BigDecimal preis,
             int naehrwert,
             Duration haltbarkeit,
-            BigDecimal preis,
+            Collection<Allergen> allergene,
             String sorte
     ) {
-        super(kuchenTyp,hersteller, allergene, naehrwert, haltbarkeit, preis);
+        super(kuchenTyp,hersteller, preis, naehrwert, haltbarkeit, allergene);
         this.obstsorte = sorte;
         this.getInspektionsdatum();
     }

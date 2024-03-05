@@ -185,21 +185,21 @@ public class GUIcontroller implements Initializable {
                         try {
                             switch (cakeType) {
                                 case "Kremkuchen" -> {
-                                    KuchenImpl cake = new KremkuchenImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType);
+                                    KuchenImpl cake = new KremkuchenImpl(cakeType, manufacturerName, BigDecimal.valueOf(price), nutritionalValue, Duration.ofDays(shelfLife), allergens, creamType);
                                     vendingMachine.addItem(cake);
                                     outputTextArea.setText("Inserted a " + cakeType);
                                     cakesListView.getItems().add(cake);
                                     tableUpdate();
                                 }
                                 case "Obstkuchen" -> {
-                                    KuchenImpl cake = new ObstkuchenImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType);
+                                    KuchenImpl cake = new ObstkuchenImpl(cakeType, manufacturerName, BigDecimal.valueOf(price), nutritionalValue, Duration.ofDays(shelfLife), allergens, creamType);
                                     vendingMachine.addItem(cake);
                                     outputTextArea.setText("Inserted a " + cakeType);
                                     cakesListView.getItems().add(cake);
                                     tableUpdate();
                                 }
                                 case "Obsttorte" -> {
-                                    KuchenImpl cake = new ObsttorteImpl(cakeType, manufacturerName, allergens, nutritionalValue, Duration.ofDays(shelfLife), BigDecimal.valueOf(price), creamType, fruitVariety);
+                                    KuchenImpl cake = new ObsttorteImpl(cakeType, manufacturerName, BigDecimal.valueOf(price), nutritionalValue, Duration.ofDays(shelfLife), allergens, creamType, fruitVariety);
                                     vendingMachine.addItem(cake);
                                     outputTextArea.setText("Inserted a " + cakeType);
                                     cakesListView.getItems().add(cake);

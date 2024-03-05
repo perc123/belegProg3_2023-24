@@ -21,14 +21,14 @@ public class AddMode implements Mode {
         String[] commandParts = input.split(" ");
 
         if (commandParts.length <= 4) {
-            // Hersteller einfügen
+            // Add manufacturer
             String herstellerName = String.join(" ", commandParts);
             AddHerstellerEvent event = new AddHerstellerEvent(this,herstellerName);
             if (null != this.addHandlerHersteller) {
                 this.addHandlerHersteller.handle(event);
             }
         } else if(commandParts.length == 7 || commandParts.length == 8) {
-            // Kuchen einfügen
+            // Add cake
             AddCakeEvent event2 = new AddCakeEvent(this, commandParts[0], commandParts[1], commandParts[2], commandParts[3], commandParts[4], commandParts[5], commandParts[6]);
             if (null != this.addHandlerKuchen) {
                 this.addHandlerKuchen.handle(event2);

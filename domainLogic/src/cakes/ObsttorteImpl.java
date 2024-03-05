@@ -3,10 +3,12 @@ package cakes;
 import administration.HerstellerImpl;
 import kuchen.Allergen;
 import kuchen.Obsttorte;
+import verwaltung.Hersteller;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 
@@ -16,15 +18,15 @@ public class ObsttorteImpl extends ObstkuchenImpl implements Obsttorte, Serializ
 
     public ObsttorteImpl(
             String kuchenTyp,
-            HerstellerImpl hersteller,
-            Collection<Allergen> allergene,
+            Hersteller hersteller,
+            BigDecimal preis,
             int naehrwert,
             Duration haltbarkeit,
-            BigDecimal preis,
+            Collection<Allergen> allergene,
             String sorteEins,
             String sorteZwei
     ) {
-        super(kuchenTyp,hersteller, allergene, naehrwert, haltbarkeit, preis, sorteEins);
+        super(kuchenTyp,hersteller, preis, naehrwert, haltbarkeit, allergene, sorteEins);
         this.kremsorte = sorteZwei;
     }
 

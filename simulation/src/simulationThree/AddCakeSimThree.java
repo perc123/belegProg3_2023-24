@@ -43,7 +43,7 @@ public class AddCakeSimThree extends Thread{
             lock.lock();
             try {
                 //String[] randomCakeInfo = createRandomCakeInfo();
-                KuchenImpl randomCake = random.nextBoolean() ? new ObsttorteImpl("honi",hersteller, allergens, 345, haltbarkeit, preis, "sorte","ew") : new KremkuchenImpl("honi",hersteller, allergens, 345, haltbarkeit, preis, "sorte");
+                KuchenImpl randomCake = random.nextBoolean() ? new ObsttorteImpl("honi",hersteller, preis, 345, haltbarkeit, allergens, "sorte","ew") : new KremkuchenImpl("honi",hersteller, preis, 345, haltbarkeit, allergens, "sorte");
 
                 //createRandomCake(randomCakeInfo);
                 System.out.println(randomCake.getKuchenTyp() + " Probiert Kuchen hinzufuegen");
@@ -74,6 +74,6 @@ public class AddCakeSimThree extends Thread{
         String kremsorte = randomCakeInfo[4];
         BigDecimal preis = BigDecimal.valueOf(Double.parseDouble(randomCakeInfo[5]));
 
-        return new KremkuchenImpl(kuchenTyp, hersteller, allergy, naehwert, duration, preis, kremsorte);
+        return new KremkuchenImpl(kuchenTyp, hersteller, preis, naehwert, duration, allergy, kremsorte);
     }
 }
