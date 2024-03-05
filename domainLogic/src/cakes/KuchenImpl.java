@@ -14,7 +14,7 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Date;
 
-public class KuchenImpl implements Kuchen, Verkaufsobjekt, Serializable {
+public abstract class KuchenImpl implements Kuchen, Verkaufsobjekt, Serializable {
     private String kuchenTyp;
     private HerstellerImpl hersteller;
     private Collection<Allergen> allergene;
@@ -91,7 +91,7 @@ public class KuchenImpl implements Kuchen, Verkaufsobjekt, Serializable {
         return DATE_FORMAT.format(inspektionsdatum);
     }
 
-    public String calculateRemainingShelfLife() {
+    public long calculateRemainingShelfLife() {
         Instant currentDate = Instant.now();
         Instant expirationDate = currentDate.plus(getHaltbarkeit());
 
@@ -99,9 +99,9 @@ public class KuchenImpl implements Kuchen, Verkaufsobjekt, Serializable {
 
 
         if (remainingDays >= 0) {
-            return remainingDays + " days";
+            return remainingDays;
         } else {
-            return"Be careful, cake past expiration date!";
+            return -1;
         }
     }
 }

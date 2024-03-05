@@ -22,11 +22,66 @@ public class ObstkuchenImpl extends KuchenImpl implements Obstkuchen, Serializab
             int naehrwert,
             Duration haltbarkeit,
             BigDecimal preis,
-            String obstsorte
+            String sorte
     ) {
         super(kuchenTyp,hersteller, allergene, naehrwert, haltbarkeit, preis);
-        this.obstsorte = obstsorte;
+        this.obstsorte = sorte;
         this.getInspektionsdatum();
+    }
+
+    @Override
+    public HerstellerImpl getHersteller() {
+        return super.getHersteller();
+    }
+
+    @Override
+    public Collection<Allergen> getAllergene() {
+        return super.getAllergene();
+    }
+
+    @Override
+    public int getNaehrwert() {
+        return super.getNaehrwert();
+    }
+
+    @Override
+    public Duration getHaltbarkeit() {
+        return super.getHaltbarkeit();
+    }
+
+    @Override
+    public BigDecimal getPreis() {
+        return super.getPreis();
+    }
+
+    @Override
+    public Date getInspektionsdatum() {
+        return super.getInspektionsdatum();
+    }
+
+    @Override
+    public void setFachnummer(int fachnummer) {
+        super.setFachnummer(fachnummer);
+    }
+
+    @Override
+    public int getFachnummer() {
+        return super.getFachnummer();
+    }
+
+    @Override
+    public void setInspektionsdatum(Date currentDate) {
+        super.setInspektionsdatum(currentDate);
+    }
+
+    @Override
+    public String getFormattedInspectionDate() {
+        return super.getFormattedInspectionDate();
+    }
+
+    @Override
+    public long calculateRemainingShelfLife() {
+        return super.calculateRemainingShelfLife();
     }
 
     @Override
