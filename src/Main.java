@@ -53,13 +53,10 @@ public class Main {
         if (TCP) {
             ClientTCP client = new ClientTCP();
             client.start();
-            System.out.println("Here TCP");
         }
         if (UDP) {
             ClientUDP clientUDP = new ClientUDP();
             clientUDP.start();
-            System.out.println("Here UDP");
-
         }
         if (capacity >= 0) {
 

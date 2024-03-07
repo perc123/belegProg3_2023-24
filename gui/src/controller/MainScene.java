@@ -15,7 +15,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import singletonPattern.SingletonController;
 import singletonPattern.SingletonVendingMachine;
-import verwaltung.Hersteller;
 
 import java.net.URL;
 import java.util.LinkedList;
@@ -29,7 +28,7 @@ public class MainScene implements Initializable {
     Text startText;
 
     @FXML
-    public void startWindow(ActionEvent actionEvent) {
+    public void startWindowCapacity(ActionEvent actionEvent) {
         if(SingletonVendingMachine.getInstance().getVendingMachine() != null) {
             try {
                 FXMLLoader loader = new FXMLLoader();
@@ -44,17 +43,19 @@ public class MainScene implements Initializable {
                 app_stage.setScene(hauptfenster_scene);
                 app_stage.show();
             } catch (Exception e) {
-                startText.setText("Give a number");
+                startText.setText("The capacity should be a number!");
             }
         }
         else {
+            System.out.println(capacity);
+
             try {
                 capacity = Integer.parseInt(startTextField.getText());
                 LinkedList<HerstellerImpl> herstellerLinkedList = new LinkedList<>();
                 LinkedList<KuchenImpl> kuchenLinkedList = new LinkedList<>();
                 VendingMachine vendingMachine = new VendingMachine(capacity, kuchenLinkedList, herstellerLinkedList);
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("/view/gui/scene/hauptfenster.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/hauptfenster.fxml"));
+                //loader.setLocation(getClass().getResource("/fxml/hauptfenster.fxml"));
                 loader.setControllerFactory(e -> new GUIcontroller(vendingMachine));
                 Parent root = loader.load();
                 Scene hauptfenster_scene = new Scene(root);
@@ -63,7 +64,8 @@ public class MainScene implements Initializable {
                 app_stage.setScene(hauptfenster_scene);
                 app_stage.show();
             } catch (Exception e) {
-                startText.setText("Give a number");
+                startText.setText("The capacity should be a number!");
+                System.out.println(e);
             }
         }
     }

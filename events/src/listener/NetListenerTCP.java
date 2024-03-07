@@ -40,8 +40,6 @@ import java.util.List;
 
 public class NetListenerTCP implements AddHerstellerEventListener, AddCakeEventListener, RemoveHerstellerEventListener, RemoveCakeEventListener, InspectionEventListener, PrintAllergiesEventListener, PrintCakeEventListener, PrintHerstellerEventListener, SaveVendingMachineEventListener {
 
-    //HerstellerStorage herstellerStorage = new HerstellerStorage();
-    private VendingMachine vendingMachine;
     private final ServerTCP serverTCP;
 
     public NetListenerTCP(VendingMachine vendingMachine, ServerTCP serverTCP){
@@ -57,7 +55,7 @@ public class NetListenerTCP implements AddHerstellerEventListener, AddCakeEventL
 
     @Override
     public void onAddEvent(AddCakeEvent addCakeEvent) {
-
+        serverTCP.sendInfoToServer(addCakeEvent.getKuchentyp());
         String kuchenTyp = null;
 
         HerstellerImpl hersteller = new HerstellerImpl(addCakeEvent.getHersteller());
@@ -95,15 +93,15 @@ public class NetListenerTCP implements AddHerstellerEventListener, AddCakeEventL
 
         switch (addCakeEvent.getKuchentyp()) {
             case "Kremkuchen" -> {
-                KremkuchenImpl kremkuchen = new KremkuchenImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit,allergene, sorte);
+                KuchenImpl kremkuchen = new KremkuchenImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit,allergene, sorte);
                 SingletonVendingMachine.getInstance().getVendingMachine().addItem(kremkuchen);
                 serverTCP.sendInfoToServer("One successful Kremkuchen");            }
             case "Obstkuchen" -> {
-                ObstkuchenImpl Obstkuchen = new ObstkuchenImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit,allergene, sorte);
+                KuchenImpl Obstkuchen = new ObstkuchenImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit,allergene, sorte);
                 SingletonVendingMachine.getInstance().getVendingMachine().addItem(Obstkuchen);
                 serverTCP.sendInfoToServer("One successful Obstkuchen");            }
             case "Obsttorte" -> {
-                ObsttorteImpl Obsttorte = new ObsttorteImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit,allergene, sorte, sorteZwei);
+                KuchenImpl Obsttorte = new ObsttorteImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit,allergene, sorte, sorteZwei);
                 SingletonVendingMachine.getInstance().getVendingMachine().addItem(Obsttorte);
                 serverTCP.sendInfoToServer("One successful Obsttorte");            }
         }

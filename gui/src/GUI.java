@@ -8,17 +8,15 @@ import java.util.Objects;
 
 public class GUI extends Application {
 
-    public static void run(){
+    public static void run() {
         launch();
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load((Objects.requireNonNull(getClass().getClassLoader().getResource("/fxml/startWindow.fxml"))));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/startWindow.fxml"));
         primaryStage.setTitle("Vending Machine");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
-
-
 }
