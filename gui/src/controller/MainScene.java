@@ -38,7 +38,10 @@ public class MainScene implements Initializable {
                 loader.setControllerFactory(e -> guiController);
                 Parent root = loader.load();
                 Scene hauptfenster_scene = new Scene(root);
+                hauptfenster_scene.getStylesheets().add(getClass().getResource("/fxml/style.css").toExternalForm());
                 Stage app_stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                //String css = this.getClass().getResource("/fxml/styles.css").toExternalForm();
+                //hauptfenster_scene.getStylesheets().add(css);
                 app_stage.hide();
                 app_stage.setScene(hauptfenster_scene);
                 app_stage.show();
@@ -55,10 +58,10 @@ public class MainScene implements Initializable {
                 LinkedList<KuchenImpl> kuchenLinkedList = new LinkedList<>();
                 VendingMachine vendingMachine = new VendingMachine(capacity, kuchenLinkedList, herstellerLinkedList);
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/hauptfenster.fxml"));
-                //loader.setLocation(getClass().getResource("/fxml/hauptfenster.fxml"));
                 loader.setControllerFactory(e -> new GUIcontroller(vendingMachine));
                 Parent root = loader.load();
                 Scene hauptfenster_scene = new Scene(root);
+                hauptfenster_scene.getStylesheets().add(getClass().getResource("/fxml/style.css").toExternalForm());
                 Stage app_stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                 app_stage.hide();
                 app_stage.setScene(hauptfenster_scene);

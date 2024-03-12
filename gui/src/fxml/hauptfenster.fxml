@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.SplitPane?>
@@ -9,30 +8,26 @@
 <?import javafx.scene.layout.HBox?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="655.0" prefWidth="1001.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GUIcontroller">
+
     <left>
         <TableView fx:id="herstellerTable" prefHeight="502.0" prefWidth="226.0" BorderPane.alignment="CENTER">
             <columns>
-                <TableColumn prefWidth="225.0" text="Herstellerliste">
+                <TableColumn prefWidth="225.0" text="Manufacturer">
                     <columns>
-                        <TableColumn fx:id="anzahlKuchen" prefWidth="113.0" text="Anzahl Kuchen" />
-                        <TableColumn fx:id="herstellerName" minWidth="1.0" prefWidth="112.0" text="Herstellername" />
+                        <TableColumn fx:id="anzahlKuchen" prefWidth="113.0" text="Number of Cakes" />
+                        <TableColumn fx:id="herstellerName" minWidth="1.0" prefWidth="112.0" text="Name" />
                     </columns>
                 </TableColumn>
             </columns>
         </TableView>
     </left>
     <center>
-        <TableView fx:id="kuchenTable" prefHeight="596.0" prefWidth="606.0" BorderPane.alignment="CENTER">
+        <TableView fx:id="allergenTableEnthalten" prefHeight="200.0" prefWidth="200.0">
             <columns>
-                <TableColumn prefWidth="607.0" text="Kuchenliste">
+                <TableColumn prefWidth="96.0" text="Allergies">
                     <columns>
-                        <TableColumn fx:id="kuchenTyp" prefWidth="101.0" text="Kuchentyp" />
-                        <TableColumn fx:id="kuchenHersteller" prefWidth="101.0" text="Hersteller" />
-                        <TableColumn fx:id="kuchenPreis" minWidth="8.0" prefWidth="101.0" text="Preis" />
-                        <TableColumn fx:id="inspektionsdatum" prefWidth="101.0" text="Inspektionsdatum" />
-                        <TableColumn fx:id="haltbarkeit" prefWidth="101.0" text="verbleibende Hatlbarkeit" />
-                        <TableColumn fx:id="fachnummer" prefWidth="101.0" text="Fachnummer" />
-                        <TableColumn minWidth="0.0" prefWidth="0.0" />
+                        <TableColumn fx:id="allergeneVorhanden" prefWidth="96.0" text="Allergene (i)"/>
+                        <TableColumn fx:id="allergeneNichtVorhanden" prefWidth="96.0" text="Allergene (e)"/>
                     </columns>
                 </TableColumn>
             </columns>
@@ -42,27 +37,31 @@
         <SplitPane orientation="VERTICAL" prefHeight="153.0" prefWidth="1001.0" BorderPane.alignment="CENTER">
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="120.0" prefWidth="999.0">
                 <HBox layoutX="1.0" layoutY="-1.0" prefHeight="156.0" prefWidth="994.0">
-                    <Button mnemonicParsing="false" onAction="#HerstellerEinfuegen" prefHeight="155.0" prefWidth="250.0" text="Herstelle einfuegen" />
-                    <Button layoutX="237.0" layoutY="10.0" mnemonicParsing="false" onAction="#HerstellerLoeschen" prefHeight="155.0" prefWidth="250.0" text="Hersteller loeschen" />
-                    <Button layoutX="237.0" layoutY="10.0" mnemonicParsing="false" onAction="#KuchenEinfuegen" prefHeight="155.0" prefWidth="250.0" text="Kuchen einfuegen" />
-                    <Button layoutX="237.0" layoutY="10.0" mnemonicParsing="false" onAction="#KuchenLoeschen" prefHeight="155.0" prefWidth="250.0" text="Kuchen loeschen" />
-                    <Button layoutX="237.0" layoutY="10.0" mnemonicParsing="false" onAction="#inspektionSetzen" prefHeight="155.0" prefWidth="250.0" text="Inspektionsdatum setzen" />
+                    <Button mnemonicParsing="false" onAction="#HerstellerEinfuegen" prefHeight="155.0" prefWidth="250.0" text="Add Manufacturer" />
+                    <Button mnemonicParsing="false" onAction="#HerstellerLoeschen" prefHeight="155.0" prefWidth="250.0" text="Remove Manufacturer" />
+                    <Button mnemonicParsing="false" onAction="#KuchenEinfuegen" prefHeight="155.0" prefWidth="250.0" text="Add Cake" />
+                    <Button mnemonicParsing="false" onAction="#KuchenLoeschen" prefHeight="155.0" prefWidth="250.0" text="Remove Cake" />
+                    <Button mnemonicParsing="false" onAction="#inspektionSetzen" prefHeight="155.0" prefWidth="250.0" text="Update Inspection Date" />
+
                 </HBox>
             </AnchorPane>
         </SplitPane>
     </bottom>
     <right>
-        <SplitPane dividerPositions="0.5" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <TableView fx:id="allergenTableEnthalten" prefHeight="200.0" prefWidth="200.0">
-                <columns>
-                    <TableColumn fx:id="allergeneVorhanden" prefWidth="96.0" text="Allergene (i)"/>
-                </columns>
-            </TableView>
-            <TableView fx:id="allergenTableNichtEnthalten" prefHeight="500.0" prefWidth="162.0">
-                <columns>
-                    <TableColumn fx:id="allergeneNichtVorhanden" prefWidth="96.0" text="Allergene (e)"/>
-                </columns>
-            </TableView>
-        </SplitPane>
+        <TableView fx:id="kuchenTable" prefHeight="596.0" prefWidth="606.0" BorderPane.alignment="CENTER">
+            <columns>
+                <TableColumn prefWidth="607.0" text="Cake">
+                    <columns>
+                        <TableColumn fx:id="kuchenTyp" prefWidth="101.0" text="Cake Type" />
+                        <TableColumn fx:id="kuchenHersteller" prefWidth="101.0" text="Manufacturer" />
+                        <TableColumn fx:id="kuchenPreis" minWidth="8.0" prefWidth="101.0" text="Price" />
+                        <TableColumn fx:id="inspektionsdatum" prefWidth="101.0" text="Inspection Date" />
+                        <TableColumn fx:id="haltbarkeit" prefWidth="101.0" text="Remaining Shelf Life" />
+                        <TableColumn fx:id="fachnummer" prefWidth="101.0" text="Tray Number" />
+                        <TableColumn minWidth="0.0" prefWidth="0.0" />
+                    </columns>
+                </TableColumn>
+            </columns>
+        </TableView>
     </right>
 </BorderPane>

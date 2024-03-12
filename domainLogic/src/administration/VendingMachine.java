@@ -81,10 +81,11 @@ public class VendingMachine extends Subject implements Serializable {
 
     public boolean addItem(KuchenImpl kuchen) {
         // In full capacity no cake will be added
+        System.out.println("addItem");
         if(isFull())
             return false;
 
-        if (null != herstellerList)
+        //if (null != herstellerList)
        // while (!isFull()){
            // if (null != herstellerList){
                 for (HerstellerImpl h : herstellerList) {
@@ -95,8 +96,11 @@ public class VendingMachine extends Subject implements Serializable {
                         inventory.add(kuchen);
                         updateInspectionDate(fachnummer);
                         notifyObservers();
+                        System.out.println("added3");
                         return true;
                     }
+                    System.out.println("added4");
+
                 }
 
 

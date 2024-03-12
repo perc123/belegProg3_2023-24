@@ -57,7 +57,7 @@ public class Listener implements AddHerstellerEventListener, AddCakeEventListene
     @Override
     public void onAddEvent(AddCakeEvent addCakeEvent) {
 
-        String kuchenTyp = null;
+        //String kuchenTyp = null;
 
         HerstellerImpl hersteller = new HerstellerImpl(addCakeEvent.getHersteller());
 
@@ -93,15 +93,15 @@ public class Listener implements AddHerstellerEventListener, AddCakeEventListene
 
         switch (addCakeEvent.getKuchentyp()) {
             case "Kremkuchen" -> {
-                KremkuchenImpl kremkuchen = new KremkuchenImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit,allergene , sorte);
+                KuchenImpl kremkuchen = new KremkuchenImpl("Kremkuchen", hersteller, preis, naehrwert, haltbarkeit,allergene , sorte);
                 vendingMachine.addItem(kremkuchen);
             }
             case "Obstkuchen" -> {
-                ObstkuchenImpl Obstkuchen = new ObstkuchenImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit,allergene , sorte);
+                KuchenImpl Obstkuchen = new ObstkuchenImpl("Obstkuchen", hersteller, preis, naehrwert, haltbarkeit,allergene , sorte);
                 vendingMachine.addItem(Obstkuchen);
             }
             case "Obsttorte" -> {
-                ObsttorteImpl Obsttorte = new ObsttorteImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit,allergene , sorte, sorteZwei);
+                KuchenImpl Obsttorte = new ObsttorteImpl("Obsttorte", hersteller, preis, naehrwert, haltbarkeit,allergene , sorte, sorteZwei);
                 vendingMachine.addItem(Obsttorte);
             }
         }

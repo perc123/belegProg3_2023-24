@@ -18,7 +18,7 @@ public class AddCakeEvent extends EventObject {
      * @param source the object on which the Event initially occurred
      * @throws IllegalArgumentException if source is null
      */
-    public AddCakeEvent(Object source, String kuchentyp, String hersteller, String preis, String allergene, String naehrwert, String haltbarkeit, String sorte, String... sorteZwei) {
+    public AddCakeEvent(Object source, String kuchentyp, String hersteller, String preis, String naehrwert, String haltbarkeit,String allergene, String sorte, String... sorteZwei) {
         super(source);
         this.kuchentyp = kuchentyp;
         this.hersteller = hersteller;

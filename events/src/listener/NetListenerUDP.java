@@ -53,13 +53,14 @@ public class NetListenerUDP implements AddHerstellerEventListener, AddCakeEventL
     public void onAddHerstellerEvent(AddHerstellerEvent addHerstellerEvent) {
         HerstellerImpl hersteller = new HerstellerImpl(addHerstellerEvent.getHersteller());
         SingletonVendingMachine.getInstance().getVendingMachine().addHersteller(hersteller);
-        server.sendInfoToServer("One successful operation");
+        server.sendInfoToServer("Hersteller UDP");
     }
 
     @Override
     public void onAddEvent(AddCakeEvent addCakeEvent) {
+        //server.sendInfoToServer(addCakeEvent.getKuchentyp());
 
-        String kuchenTyp = null;
+        String kuchenTyp;
 
         HerstellerImpl hersteller = new HerstellerImpl(addCakeEvent.getHersteller());
 
@@ -70,19 +71,27 @@ public class NetListenerUDP implements AddHerstellerEventListener, AddCakeEventL
             return;
         }
 
+
         int naehrwert;
         try {
             naehrwert = Integer.parseInt(addCakeEvent.getNaehrwert());
         } catch (NumberFormatException e) {
+            System.out.println("naewert?");
             return;
         }
+        //TODO here???
 
         Duration haltbarkeit;
         try {
             haltbarkeit = Duration.ofDays(Integer.parseInt(addCakeEvent.getHaltbarkeit()));
         } catch (NumberFormatException e) {
+            System.out.println(addCakeEvent.getKuchentyp() + addCakeEvent.getHersteller() + addCakeEvent.getPreis() + addCakeEvent.getNaehrwert() + addCakeEvent.getHaltbarkeit() + addCakeEvent.getAllergene() + addCakeEvent.getSorte());
             return;
         }
+        if(addCakeEvent.getKuchentyp().equals("Kremkuchen")){
+            System.out.println("Kremkuchen Net");
+        }else
+            System.out.println("Not Kremkuchen Net");
 
         String[] allergenStrings = addCakeEvent.getAllergene().split(",");
         Collection<Allergen> allergene = new ArrayList<>();
@@ -94,22 +103,44 @@ public class NetListenerUDP implements AddHerstellerEventListener, AddCakeEventL
         String sorteZwei = addCakeEvent.getSorteZwei();
 
 
-        switch (addCakeEvent.getKuchentyp()) {
-            case "Kremkuchen" -> {
-                KremkuchenImpl kremkuchen = new KremkuchenImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit,allergene, sorte);
+        if (addCakeEvent.getKuchentyp().equals("Kremkuchen")) {
+
+                KuchenImpl kremkuchen = new KremkuchenImpl("Kremkuchen", hersteller, preis, naehrwert, haltbarkeit,allergene, sorte);
                 SingletonVendingMachine.getInstance().getVendingMachine().addItem(kremkuchen);
                 server.sendInfoToServer("Kremkuchen added");
+                System.out.println("Kremkuchen added");
+
             }
-            case "Obstkuchen" -> {
-                ObstkuchenImpl Obstkuchen = new ObstkuchenImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit,allergene, sorte);
+            else if (addCakeEvent.getKuchentyp().equals("Obstkuchen")) {
+                KuchenImpl Obstkuchen = new ObstkuchenImpl("Obstkuchen", hersteller, preis, naehrwert, haltbarkeit,allergene, sorte);
                 SingletonVendingMachine.getInstance().getVendingMachine().addItem(Obstkuchen);
                 server.sendInfoToServer("Obstkuchen added");            }
-            case "Obsttorte" -> {
-                ObsttorteImpl Obsttorte = new ObsttorteImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit,allergene, sorte, sorteZwei);
+            else if(addCakeEvent.getKuchentyp().equals("Obsttorte")){
+                KuchenImpl Obsttorte = new ObsttorteImpl("Obsttorte", hersteller, preis, naehrwert, haltbarkeit,allergene, sorte, sorteZwei);
                 SingletonVendingMachine.getInstance().getVendingMachine().addItem(Obsttorte);
                 server.sendInfoToServer("Obsttorte added");            }
         }
-    }
+
+        /*
+
+        switch (addCakeEvent.getKuchentyp()) {
+            case "Kremkuchen" -> {
+                KuchenImpl kremkuchen = new KremkuchenImpl("Kremkuchen", hersteller, preis, naehrwert, haltbarkeit,allergene, sorte);
+                SingletonVendingMachine.getInstance().getVendingMachine().addItem(kremkuchen);
+                server.sendInfoToServer("Kremkuchen added");
+                System.out.println("Kremkuchen added");
+
+            }
+            case "Obstkuchen" -> {
+                KuchenImpl Obstkuchen = new ObstkuchenImpl("Obstkuchen", hersteller, preis, naehrwert, haltbarkeit,allergene, sorte);
+                SingletonVendingMachine.getInstance().getVendingMachine().addItem(Obstkuchen);
+                server.sendInfoToServer("Obstkuchen added");            }
+            case "Obsttorte" -> {
+                KuchenImpl Obsttorte = new ObsttorteImpl("Obsttorte", hersteller, preis, naehrwert, haltbarkeit,allergene, sorte, sorteZwei);
+                SingletonVendingMachine.getInstance().getVendingMachine().addItem(Obsttorte);
+                server.sendInfoToServer("Obsttorte added");            }
+        }
+    }*/
 
     @Override
     public void onRemoveHerstellerEvent(RemoveHerstellerEvent event) {
@@ -182,5 +213,13 @@ public class NetListenerUDP implements AddHerstellerEventListener, AddCakeEventL
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
