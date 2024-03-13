@@ -58,8 +58,6 @@ public class NetListenerUDP implements AddHerstellerEventListener, AddCakeEventL
 
     @Override
     public void onAddEvent(AddCakeEvent addCakeEvent) {
-        //server.sendInfoToServer(addCakeEvent.getKuchentyp());
-
         String kuchenTyp;
 
         HerstellerImpl hersteller = new HerstellerImpl(addCakeEvent.getHersteller());
@@ -76,22 +74,15 @@ public class NetListenerUDP implements AddHerstellerEventListener, AddCakeEventL
         try {
             naehrwert = Integer.parseInt(addCakeEvent.getNaehrwert());
         } catch (NumberFormatException e) {
-            System.out.println("naewert?");
             return;
         }
-        //TODO here???
 
         Duration haltbarkeit;
         try {
             haltbarkeit = Duration.ofDays(Integer.parseInt(addCakeEvent.getHaltbarkeit()));
         } catch (NumberFormatException e) {
-            System.out.println(addCakeEvent.getKuchentyp() + addCakeEvent.getHersteller() + addCakeEvent.getPreis() + addCakeEvent.getNaehrwert() + addCakeEvent.getHaltbarkeit() + addCakeEvent.getAllergene() + addCakeEvent.getSorte());
             return;
         }
-        if(addCakeEvent.getKuchentyp().equals("Kremkuchen")){
-            System.out.println("Kremkuchen Net");
-        }else
-            System.out.println("Not Kremkuchen Net");
 
         String[] allergenStrings = addCakeEvent.getAllergene().split(",");
         Collection<Allergen> allergene = new ArrayList<>();
@@ -102,13 +93,12 @@ public class NetListenerUDP implements AddHerstellerEventListener, AddCakeEventL
 
         String sorteZwei = addCakeEvent.getSorteZwei();
 
-
+        //TODO: change to switch case
         if (addCakeEvent.getKuchentyp().equals("Kremkuchen")) {
 
                 KuchenImpl kremkuchen = new KremkuchenImpl("Kremkuchen", hersteller, preis, naehrwert, haltbarkeit,allergene, sorte);
                 SingletonVendingMachine.getInstance().getVendingMachine().addItem(kremkuchen);
                 server.sendInfoToServer("Kremkuchen added");
-                System.out.println("Kremkuchen added");
 
             }
             else if (addCakeEvent.getKuchentyp().equals("Obstkuchen")) {
@@ -174,7 +164,7 @@ public class NetListenerUDP implements AddHerstellerEventListener, AddCakeEventL
 
     @Override
     public void onPrintHerstellerEvent(PrintHerstellerEvent event) {
-        List<HerstellerImpl> herstellerList = SingletonVendingMachine.getInstance().getVendingMachine().getHerstellerList();
+        List<HerstellerImpl> herstellerList = SingletonVendingMachine.getInstance().getVendingMachine().printHersteller();
         server.sendHerstellerListToServer(herstellerList); // Sends the list to client
     }
 

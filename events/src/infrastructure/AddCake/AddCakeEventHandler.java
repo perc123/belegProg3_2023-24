@@ -16,7 +16,6 @@ public class AddCakeEventHandler {
 
     public void handle(AddCakeEvent event){
         for(AddCakeEventListener listener: listenerList) listener.onAddEvent(event);
-        System.out.println("Added2");
     }
 
 }

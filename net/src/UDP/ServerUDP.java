@@ -95,7 +95,7 @@ public class ServerUDP {
 
     public void sendHerstellerListToServer(List<HerstellerImpl> output){
         StringBuilder result = new StringBuilder();
-        for (Hersteller h : output) {
+        for (HerstellerImpl h : output) {
             result.append("[").append(h).append("] [Cake count: ").append(h.getCakeCount()).append("] || ");
         }
         respondToClient = result.toString();
@@ -104,7 +104,7 @@ public class ServerUDP {
     public void sendKuchenListToServer(List<KuchenImpl> output){
         StringBuilder result = new StringBuilder();
         for (KuchenImpl k : output) {
-            result.append(k).append(" || ");
+            result.append(k.getKuchenTyp()).append(" || ");
         }
         respondToClient = result.toString();
     }
