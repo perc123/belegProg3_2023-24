@@ -25,7 +25,7 @@ Ergänzende Anmerkungen bitte immer _kursiv_ setzen. Andere Änderungen sind nic
 - [ ] keine Duplikate (1)
 
 ## Tests (28)
-- [ ] **Testqualität** (7)
+- [+] **Testqualität** (7)
 - [ ] **Testabdeckung GL (inkl. Abhängigkeiten)** (7) _Abdeckung in Prozent angeben_
 - [ ] **Testabdeckung Rest** (6)
   - [ ] Einfügen von Kund*innen über das CLI _getestete Klassen angeben_
@@ -34,7 +34,7 @@ Ergänzende Anmerkungen bitte immer _kursiv_ setzen. Andere Änderungen sind nic
   - [ ] deterministische Funktionalität der Simulationen _getestete Klassen angeben_
   - [ ] Speichern via JOS oder JBP _getestete Klassen angeben_
   - [ ] Laden via JOS oder JBP _getestete Klassen angeben_
-- [ ] **mindestens 5 Unittests, die Mockito verwenden** (4)
+- [+] **mindestens 5 Unittests, die Mockito verwenden** (4)
 - [ ] mindestens 4 Spy- / Verhaltens-Tests (3)
 - [ ] keine unbeabsichtigt fehlschlagenden Test (1)
 

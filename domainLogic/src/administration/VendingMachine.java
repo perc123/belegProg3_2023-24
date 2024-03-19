@@ -1,15 +1,11 @@
 package administration;
 
-import cakes.KremkuchenImpl;
 import cakes.KuchenImpl;
 import kuchen.Allergen;
-import kuchen.Kuchen;
 import observer.Subject;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 
 
@@ -81,19 +77,20 @@ public class VendingMachine extends Subject implements Serializable {
 
     public boolean addItem(KuchenImpl kuchen) {
         // In full capacity no cake will be added
-        if(isFull())
-            return false;
-                for (HerstellerImpl h : herstellerList) {
-                    if (h.equals(kuchen.getHersteller())) {
-                        // Give a tray number
-                        int fachnummer = inventory.size() + 1;
-                        kuchen.setFachnummer(fachnummer);
-                        inventory.add(kuchen);
-                        updateInspectionDate(fachnummer);
-                        notifyObservers();
-                        return true;
-                    }
-                }
+        if(isFull()){
+            return false;}
+
+        for (HerstellerImpl h : herstellerList) {
+            if (h.equals(kuchen.getHersteller())) {
+                // Give a tray number
+                int fachnummer = inventory.size() + 1;
+                kuchen.setFachnummer(fachnummer);
+                inventory.add(kuchen);
+                updateInspectionDate(fachnummer);
+                notifyObservers();
+                return true;
+            }
+        }
         return false;
     }
 

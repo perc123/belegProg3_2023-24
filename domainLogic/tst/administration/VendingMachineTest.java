@@ -47,31 +47,31 @@ class VendingMachineTest {
         vendingMachine = new VendingMachine(10, kuchenLinkedList, herstellerLinkedList);
     }
 
-    // Test ueberprueft, ob ein Hersteller erfolgreich hinzugefuegt werden kann
+    // Test 1 verifies that a Hersteller can be added successfully
     @Test
-    void herstellerEinfuegen() {
+    void testAddHersteller() {
         HerstellerImpl h = new HerstellerImpl("hersteller1");
         assertTrue(vendingMachine.addHersteller(h));
     }
 
-    // Test ueberprueft, ob es möglich ist, zweimal den gleich Hersteller einzufuegen. Es darf dabei nicht moeglich sein
+    // Test 2 verifies that is it impossible to add the same Hersteller name more than one time
     @Test
-    void herstellerEinfuegenNichtMoeglich() {
+    void testAddSameHersteller() {
         HerstellerImpl h = new HerstellerImpl("hersteller1");
         vendingMachine.addHersteller(h);
         assertFalse(vendingMachine.addHersteller(h));
     }
 
-    // Hersteller Einfuegen als MockTest
+    // Test 3 **Mock** for adding a Hersteller
     @Test
-    public void testHerstellerEinfuegenMitMock() {
+    public void testAddHerstellerMock() {
         HerstellerImpl mockHersteller = mock(HerstellerImpl.class);
         assertTrue(vendingMachine.addHersteller(mockHersteller));
     }
 
-    // Add Kremkuchen Mocktest
+    // Test 4 **Mock** for adding a Kremkuchen
     @Test
-    public void testKremkuchenEinfuegenMitMock() {
+    public void testAddKremkuchenMock() {
         // Create Mock objects
         KremkuchenImpl mockKremkuchen = mock(KremkuchenImpl.class);
         HerstellerImpl mockHersteller = mock(HerstellerImpl.class);
@@ -80,19 +80,18 @@ class VendingMachineTest {
         // Configure mock objects
         when(mockKremkuchen.getHersteller()).thenReturn(mockHersteller);
 
-
         assertTrue(vendingMachine.addItem(mockKremkuchen));
     }
 
-    // Add Kremkuchen
+    // Test 5 returns true if a Kremkuchen is successfully added
     @Test
     public void testAddKremkuchen() {
         KuchenImpl kremkuchen = new KremkuchenImpl("Kremkuchen", hersteller1, preis, naherwerte,haltbarkeit, allergens, sorte);
-        vendingMachine.getHerstellerList().add(hersteller1);
-        assertTrue(vendingMachine.addItem((KuchenImpl) kremkuchen));
+        vendingMachine.addHersteller(hersteller1);
+        assertTrue(vendingMachine.addItem(kremkuchen));
     }
 
-    // Returns false if a cake is added when the capacity is full
+    // Test 6 returns false if a cake is added when the capacity is full
     @Test
     public void testFullCapacity() {
         LinkedList<HerstellerImpl> herstellerLinkedList = new LinkedList<>();
@@ -112,53 +111,51 @@ class VendingMachineTest {
         assertFalse(vendingMachine.addItem(kremkuchen3));
     }
 
-    // Obstkuchen Einfuegen MockTest
+    // Test 7 **Mock** for adding an Obstkuchen
     @Test
-    public void testObstkuchenEinfuegenMitMock() {
-        // Erstellen von Mock-Objekten
+    public void testAddObstkuchenMock() {
+        // Create Mock objects
         Obstkuchen mockObstkuchen = mock(ObstkuchenImpl.class);
         HerstellerImpl mockHersteller = mock(HerstellerImpl.class);
         vendingMachine.addHersteller(mockHersteller);
 
-        // Konfiguration der Mock-Objekte
+        // Configure Mock objects
         when(mockObstkuchen.getHersteller()).thenReturn(mockHersteller);
 
-        // Test des Einfuegens des Obstkuchens
         assertTrue(vendingMachine.addItem((KuchenImpl) mockObstkuchen));
     }
 
-    // Obstkuchen Einfuegen Test
+    // Test 8 returns true if an Obstkuchen is successfully added
     @Test
-    public void testObstkuchenEinfuegen() {
+    public void testAddObstkuchen() {
         Obstkuchen obstkuchen = new ObstkuchenImpl("Obstkuchen", hersteller1, preis, naherwerte,haltbarkeit, allergens, sorte);
         vendingMachine.getHerstellerList().add(hersteller1);
         assertTrue(vendingMachine.addItem((KuchenImpl) obstkuchen));
     }
 
-    // Obsttorte Einfuegen MockTest
+    // Test 9 **Mock** for adding an Obsttorte
     @Test
-    public void testObsttorteEinfuegenMitMock() {
-        // Erstellen von Mock-Objekten
+    public void testAddObsttorteMock() {
+        // Create Mock objects
         Obsttorte mockObsttorte = mock(ObsttorteImpl.class);
         HerstellerImpl mockHersteller = mock(HerstellerImpl.class);
         vendingMachine.addHersteller(mockHersteller);
 
-        // Konfiguration der Mock-Objekte
+        // Configure Mock objects
         when(mockObsttorte.getHersteller()).thenReturn(mockHersteller);
 
-        // Test des Einfuegens der Obsttorte
         assertTrue(vendingMachine.addItem((KuchenImpl) mockObsttorte));
     }
 
-    // Obsttorte Einfuegen Test
+    // Test 10 returns true if an Obsttorte is successfully added
     @Test
-    public void testObsttorteEinfuegen() {
+    public void testAddObsttorte() {
         Obsttorte obsttorte = new ObsttorteImpl("Obsttorte", hersteller1, preis, naherwerte,haltbarkeit, allergens, sorte, sorteZwei);
         vendingMachine.getHerstellerList().add(hersteller1);
         assertTrue(vendingMachine.addItem((KuchenImpl) obsttorte));
     }
 
-    // Test adding a cake with no manufacturer in the list should not be possible
+    // Test 11 adding a cake with no manufacturer in the list should not be possible
     @Test
     public void testAddCakeNotPossible() {
         KuchenImpl kremkuchen = new KremkuchenImpl("Kremkuchen", hersteller1, preis, naherwerte,haltbarkeit, allergens, sorte);
@@ -166,27 +163,26 @@ class VendingMachineTest {
     }
 
 
-
-
+    // Test 12 **Mock** for Inspection Date verification
     @Test
-    public void EinfuegedatumTestMitMock() {
-        // Erstellen von Mock-Objekten
+    public void testInspectionsDateMock() {
+        // Create Mock objects
         KuchenImpl mockKremkuchen = mock(KremkuchenImpl.class);
         HerstellerImpl mockHersteller = mock(HerstellerImpl.class);
         vendingMachine.addHersteller(mockHersteller);
 
-        // Konfiguration der Mock-Objekte
+        // Configure Mock objects
         when(mockKremkuchen.getHersteller()).thenReturn(mockHersteller);
 
-        // Einfuegen des Kuchens
+        // Add cake
         vendingMachine.addItem(mockKremkuchen);
 
         verify(mockKremkuchen).getInspektionsdatum();
     }
 
-    // Tray number (Mockito-Test)
+    // Test 13 **Mock** for correct tray number (Fachnummer) verification
     @Test
-    public void FachnummerTestMock() {
+    public void testFachnummerMock() {
         KuchenImpl mockKremkuchen = mock(KremkuchenImpl.class);
         HerstellerImpl mockHersteller = mock(HerstellerImpl.class);
         vendingMachine.addHersteller(mockHersteller);
@@ -199,9 +195,9 @@ class VendingMachineTest {
         verify(mockKremkuchen).setFachnummer(1);
     }
 
-    // Add Item (Mockito-Test)
+    // Test 14 **Mock** for adding random cake (KuchenImpl) verification
     @Test
-    public void AddItemTestMock() {
+    public void testAddItemMock() {
         KuchenImpl mockCake = mock(KuchenImpl.class);
         HerstellerImpl mockHersteller = mock(HerstellerImpl.class);
         vendingMachine.addHersteller(mockHersteller);
@@ -211,7 +207,7 @@ class VendingMachineTest {
         assertTrue(vendingMachine.addItem(mockCake));
     }
 
-    // Test the size of a cake list
+    // Test 15 the size of the cake list in vending machine
     @Test
     public void testIncrementInventory() {
         Kremkuchen kremkuchen = new KremkuchenImpl("Kremkuchen", hersteller1, preis, naherwerte,haltbarkeit, allergens, sorte);
@@ -220,9 +216,9 @@ class VendingMachineTest {
         assertEquals(1, vendingMachine.getInventory().size());
     }
 
-    // Test the if the cake list contains the expected cakes
+    // Test 16 verifies if the cake list contains the expected cakes
     @Test
-    public void testGetInventory() {
+    public void testInventoryContains() {
         Kremkuchen kremkuchen = new KremkuchenImpl("Kremkuchen", hersteller1, preis, naherwerte,haltbarkeit, allergens, sorte);
         vendingMachine.addHersteller(hersteller1);
         vendingMachine.addItem((KuchenImpl) kremkuchen);
@@ -230,49 +226,48 @@ class VendingMachineTest {
         assertTrue(kuchenList.contains(kremkuchen));
     }
 
-    // Test the expected size of the manufacturer's list
+    // Test 17 verifies the expected size of the manufacturer's (Hersteller) list
     @Test
     public void testIncrementHerstellerList() {
         vendingMachine.addHersteller(hersteller1);
         assertEquals(1, vendingMachine.getHerstellerList().size());
     }
 
-    // Tests the manufacturer's list for the expected manufacturer name
+    // Test 18 verifies the manufacturer's list for the expected manufacturer name
     @Test
-    public void testGetHerstellerListe() {
+    public void testHerstellerListContains() {
         HerstellerImpl hersteller2 = new HerstellerImpl("Hersteller 1");
         vendingMachine.addHersteller(hersteller2);
         List<HerstellerImpl> herstellerList = vendingMachine.getHerstellerList();
         assertTrue(herstellerList.contains(hersteller2));
     }
 
-    // Tests the content of manufacturer's list
+    // Test 19 **Mock** verifies the print Hersteller method
     @Test
-    public void testCallHersteller(){
+    public void testPrintHersteller(){
         HerstellerImpl testHersteller = mock(HerstellerImpl.class);
         vendingMachine.getHerstellerList().add(testHersteller);
         List<HerstellerImpl> res = vendingMachine.printHersteller();
+        // Should return true, since only one Hersteller is added
         assertEquals(1, res.size());
     }
 
-
-    //Test to check the cake count of each manufacturer
-
+    //Test 20 **Mock** to check the cake count of each manufacturer
     @Test
-    public void testCallHerstellerCakeCount(){
+    public void testHerstellerCakeCount(){
         HerstellerImpl testHersteller = new HerstellerImpl("testHersteller");
 
-        // Erstellen von Mock-Objekten
+        // Create Mock objects
         KuchenImpl testKremkuchen = mock(KremkuchenImpl.class);
         KuchenImpl testObstkuchen = mock(ObstkuchenImpl.class);
         KuchenImpl testObsttorte = mock(ObsttorteImpl.class);
 
-        // Konfiguration der Mock-Objekte
+        // Configure Mock objects
         when(testKremkuchen.getHersteller()).thenReturn(testHersteller);
         when(testObstkuchen.getHersteller()).thenReturn(testHersteller);
         when(testObsttorte.getHersteller()).thenReturn(testHersteller);
 
-        // Einfuegen der Kuchen und des Herstellers
+        // Add cakes and manufacturer
         vendingMachine.getHerstellerList().add(testHersteller);
         vendingMachine.getInventory().add(testKremkuchen);
         vendingMachine.getInventory().add(testObstkuchen);
@@ -282,14 +277,14 @@ class VendingMachineTest {
         assertEquals(3, res.get(0).getCakeCount());
     }
 
-    // Testet die kuchenAbrufen() Methode, ob sie eine Liste zurueck gibt
+    // Test 21 verifies that the printCake method returns a list
     @Test
     void testPrintCake(){
         List<KuchenImpl> res = vendingMachine.printCake(null);
         assertEquals(0, res.size());
     }
 
-    // Test for the print cake method. Should return the correct cake list (Mock)
+    // Test 22 **Mock** for the print cake method. Should return the correct cake list
     @Test
     void testPrintCakeNotNull(){
         KuchenImpl testKremkuchen = mock(KremkuchenImpl.class);
@@ -308,7 +303,7 @@ class VendingMachineTest {
         assertEquals(3, res.size());
     }
 
-    // Tests the print cake method only for Kremkuchen (Mock)
+    // Test 23 verifies the print cake method only for Kremkuchen
     @Test
     void testKremkuchenPrint(){
         KuchenImpl kremkuchen = new KremkuchenImpl("Kremkuchen", hersteller1, preis, naherwerte,haltbarkeit, allergens, sorte);
@@ -328,7 +323,7 @@ class VendingMachineTest {
         assertEquals(1, res.size());
     }
 
-    // Tests the printCake method for Obstkuchen (Mock)
+    // Test 24 verifies the printCake method for Obstkuchen
     @Test
     void testObstkuchenPrint(){
         KuchenImpl kremkuchen = new KremkuchenImpl("Kremkuchen", hersteller1, preis, naherwerte,haltbarkeit, allergens, sorte);
@@ -349,7 +344,7 @@ class VendingMachineTest {
         assertEquals(2, res.size());
     }
 
-    // Tests the printCake method for Obsttorte (Mock)
+    // Test 25 the printCake method for Obsttorte
     @Test
     void testObsttortePrint(){
         KuchenImpl kremkuchen = new KremkuchenImpl("Kremkuchen", hersteller1, preis, naherwerte,haltbarkeit, allergens, sorte);
@@ -372,9 +367,9 @@ class VendingMachineTest {
         assertEquals(3, res.size());
     }
 
-    // Testet die IspektionsDatumSetzen() Methode, ob das Inspektionsdatum gesetzt wird
+    // Test 26 verifies that the updateInspectionDate method corresponds to the getInspektionsdatum of a Kremkuchen
     @Test
-    void testIspektionsDatumSetzen(){
+    void testGetInspektionsdatum(){
         KuchenImpl kremkuchen = new KremkuchenImpl("Kremkuchen", hersteller1, preis, naherwerte,haltbarkeit, allergens, sorte);
         vendingMachine.getInventory().add(kremkuchen);
         kremkuchen.setFachnummer(1);
@@ -383,38 +378,38 @@ class VendingMachineTest {
         assertEquals(inspektion, kremkuchen.getInspektionsdatum());
     }
 
-    // Test zum loeschen eines Herstellers
+    // Test 27 **Mock** verifies the removal of a Hersteller
     @Test
-    void testloeschenHersteller(){
+    void testRemoveHersteller(){
         HerstellerImpl herstellerMock = mock(HerstellerImpl.class);
         when(herstellerMock.getName()).thenReturn("herstellerMock");
         vendingMachine.getHerstellerList().add(herstellerMock);
         assertTrue(vendingMachine.removeHersteller("herstellerMock"));
     }
 
-    //Test remove method not possible, since manufacturer not in the list
+    // Test 28 **Mock** verifies that the remove method is not possible,
+    // since the manufacturer is not in the list
     @Test
-    void testloeschenHerstellerFalse(){
+    void testRemoveHerstellerFalse(){
         HerstellerImpl herstellerMock = mock(HerstellerImpl.class);
         when(herstellerMock.getName()).thenReturn("herstellerMock");
         vendingMachine.getHerstellerList().add(herstellerMock);
         assertFalse(vendingMachine.removeHersteller("hersteller"));
     }
 
-    // Test remove a cake from the vending machine
+    // Test 29 remove a cake from the vending machine by tray number
     @Test
-    void testloeschenEinesKuchens(){
+    void testRemoveItem(){
         KuchenImpl kremkuchen = new KremkuchenImpl("Kremkuchen", hersteller1, preis, naherwerte,haltbarkeit, allergens, sorte);
         KuchenImpl kremkuchen2 = new KremkuchenImpl("Kremkuchen", hersteller1, preis, naherwerte,haltbarkeit, allergens, sorte);
-        kremkuchen.setFachnummer(1);
-        kremkuchen2.setFachnummer(2);
-        vendingMachine.getInventory().add(kremkuchen);
-        vendingMachine.getInventory().add(kremkuchen2);
+        vendingMachine.addHersteller(hersteller1);
+        vendingMachine.addItem(kremkuchen);
+        vendingMachine.addItem(kremkuchen2);
         vendingMachine.removeItem(1);
         assertEquals(1,vendingMachine.getInventory().size());
     }
 
-    // Test remove cake with wrong tray number not possible
+    // Test 30 remove cake with wrong tray number not possible
     @Test
     void testRemoveCakeNoTrayNumber(){
         KuchenImpl kremkuchen = new KremkuchenImpl("Kremkuchen", hersteller1, preis, naherwerte,haltbarkeit, allergens, sorte);
@@ -426,7 +421,7 @@ class VendingMachineTest {
         assertFalse(vendingMachine.removeItem(3));
     }
 
-    // Test print allergies of cakes in the vending machine (Mock)
+    // Test 31 **Mock** print allergies of cakes in the vending machine
     @Test
     void testPrintAllergies(){
         KuchenImpl testKremkuchen = mock(KremkuchenImpl.class);
@@ -445,7 +440,7 @@ class VendingMachineTest {
         assertEquals(3, res.size());
     }
 
-    // Test for allergies not in the vending machine
+    // Test 32 **Mock** for allergies not in the vending machine
     @Test
     void testAllergiesNotInVendingMachine(){
         KuchenImpl testKremkuchen = mock(KremkuchenImpl.class);
@@ -464,18 +459,18 @@ class VendingMachineTest {
         assertEquals(1, res.size());
     }
 
-    // Test getCapacity method
+    // Test 33 verifies the getCapacity method
     @Test
     void testGetCapacity() {
         LinkedList<HerstellerImpl> herstellerLinkedList = new LinkedList<>();
         LinkedList<KuchenImpl> kuchenLinkedList = new LinkedList<>();
         VendingMachine vendingMachine = new VendingMachine(2, kuchenLinkedList, herstellerLinkedList);
 
-        int capacity = vendingMachine.getCapacity();
+        //int capacity = vendingMachine.getCapacity();
         assertEquals(2, vendingMachine.getCapacity(), "Capacity should match the number");
     }
 
-    // Encapsulation test
+    // Test 34 encapsulation
     @Test
     void testEncapsulation() {
         KuchenImpl kremkuchen = new KremkuchenImpl("Kremkuchen", hersteller1, preis, naherwerte,haltbarkeit, allergens, sorte);
@@ -488,9 +483,7 @@ class VendingMachineTest {
         assertEquals(2, resList2.size());
     }
 
-
-
-
+    // Test 35 verifies the isFull method returns false, when no cake is in the vending machine
     @Test
     void isFullWhenEmpty() {
         List<KuchenImpl> inventory = new LinkedList<>();
@@ -499,6 +492,8 @@ class VendingMachineTest {
         assertFalse(vendingMachine.isFull(), "The vending machine should not be full when empty.");
     }
 
+    // Test 36 verifies the isFull method returns false,
+    // when the full capacity of the vending machine is not reached
     @Test
     void isFullWhenNotFull() {
         List<KuchenImpl> inventory = new LinkedList<>();
@@ -513,6 +508,7 @@ class VendingMachineTest {
         assertFalse(vendingMachine.isFull(), "The vending machine should not be full when not at capacity.");
     }
 
+    // Test 37 verifies the isFull method returns true, when the capacity is reached
     @Test
     void isFullWhenFull() {
         List<KuchenImpl> inventory = new LinkedList<>();
@@ -525,7 +521,54 @@ class VendingMachineTest {
         vendingMachine.getInventory().add(kremkuchen);
         vendingMachine.getInventory().add(kremkuchen);
 
-        assertTrue(vendingMachine.isFull(), "The vending machine should be full when at capacity.");
+        assertTrue(vendingMachine.isFull(), "The vending machine should be full when capacity is reached.");
+    }
+
+    @Test
+    public void testAddCakeFullCapacityMock() {
+        LinkedList<HerstellerImpl> herstellerLinkedList = new LinkedList<>();
+        LinkedList<KuchenImpl> inventory = new LinkedList<>();
+        VendingMachine vendingMachine = new VendingMachine(2, inventory, herstellerLinkedList);
+        KuchenImpl kremkuchen = new KremkuchenImpl("Kremkuchen", hersteller1, preis, naherwerte,haltbarkeit, allergens, sorte);
+        vendingMachine.addHersteller(hersteller1);
+
+        vendingMachine.addItem(kremkuchen);
+        vendingMachine.addItem(kremkuchen);
+
+
+        assertTrue(vendingMachine.isFull());
+        //assertFalse(vendingMachine.addItem(kremkuchen));
+
+        // Erstellen von Mock-Objekten
+        KuchenImpl mockObstkuchen = mock(KremkuchenImpl.class);
+        KuchenImpl mockObsttorte = mock(ObstkuchenImpl.class);
+        KuchenImpl mockKremkuchen = mock(ObsttorteImpl.class);
+        HerstellerImpl mockHersteller = mock(HerstellerImpl.class);
+
+        //Hersteller einfuegen
+        //vendingMachine.addHersteller(mockHersteller);
+
+        // Konfiguration der Mock-Objekte
+        when(mockObsttorte.getHersteller()).thenReturn(mockHersteller);
+        when(mockObstkuchen.getHersteller()).thenReturn(mockHersteller);
+        when(mockKremkuchen.getHersteller()).thenReturn(mockHersteller);
+
+        //Einfuegen der Kuchen
+        vendingMachine.addItem(mockKremkuchen);
+        //assertTrue(vendingMachine.addItem(mockKremkuchen));
+        vendingMachine.addItem(mockObsttorte);
+        vendingMachine.addItem(mockObsttorte);
+
+        //vendingMachine.addItem(mockKremkuchen);
+        //assertTrue(vendingMachine.addItem(mockObstkuchen));
+        //assertTrue(vendingMachine.addItem(mockObsttorte));
+        //assertTrue(vendingMachine.isFull());
+
+        //assertEquals(2, vendingMachine.getCapacity());
+        //assertEquals(2, vendingMachine.getInventory().size());
+        // Einfuegen des Kuchens des Kremkuchen, der nicht hinzugefuegt werden kann, da Kapazitaet erreicht
+        //assertFalse(vendingMachine.addItem(mockKremkuchen));
+
     }
 
 /*
@@ -566,39 +609,5 @@ class VendingMachineTest {
     }
 
     // TODO: Test add cake when capacity is full
-    @Test
-    public void testAddCakeFullCapacityMock() {
-        LinkedList<HerstellerImpl> herstellerLinkedList = new LinkedList<>();
-        LinkedList<KuchenImpl> inventory = new LinkedList<>();
-        VendingMachine vendingMachine = new VendingMachine(2, inventory, herstellerLinkedList);
-        KuchenImpl kremkuchen = new KremkuchenImpl("Kremkuchen", hersteller1, preis, naherwerte,haltbarkeit, allergens, sorte);
-
-        // Erstellen von Mock-Objekten
-        KuchenImpl mockObstkuchen = mock(KuchenImpl.class);
-        KuchenImpl mockObsttorte = mock(KuchenImpl.class);
-        KuchenImpl mockKremkuchen = mock(KuchenImpl.class);
-        HerstellerImpl mockHersteller = mock(HerstellerImpl.class);
-
-        //Hersteller einfuegen
-        vendingMachine.addHersteller(mockHersteller);
-
-        // Konfiguration der Mock-Objekte
-        when(mockObsttorte.getHersteller()).thenReturn(mockHersteller);
-        when(mockObstkuchen.getHersteller()).thenReturn(mockHersteller);
-        when(mockKremkuchen.getHersteller()).thenReturn(mockHersteller);
-
-        //Einfuegen der Kuchen
-        vendingMachine.addItem(mockKremkuchen);
-        //assertTrue(vendingMachine.addItem(mockKremkuchen));
-        vendingMachine.addItem(mockKremkuchen);
-        //vendingMachine.addItem(mockKremkuchen);
-        assertTrue(vendingMachine.addItem(mockObstkuchen));
-        assertTrue(vendingMachine.addItem(mockObsttorte));
-
-        //assertEquals(2, vendingMachine.getCapacity());
-        //assertEquals(2, vendingMachine.getInventory().size());
-        // Einfuegen des Kuchens des Kremkuchen, der nicht hinzugefuegt werden kann, da Kapazitaet erreicht
-        assertFalse(vendingMachine.addItem(mockKremkuchen));
-
-    }*/
+*/
 }

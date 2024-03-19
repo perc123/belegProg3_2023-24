@@ -1,7 +1,5 @@
 package listener;
 
-
-
 import UDP.ServerUDP;
 import administration.HerstellerImpl;
 import administration.VendingMachine;

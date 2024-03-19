@@ -40,8 +40,6 @@ public class MainScene implements Initializable {
                 Scene hauptfenster_scene = new Scene(root);
                 hauptfenster_scene.getStylesheets().add(getClass().getResource("/fxml/style.css").toExternalForm());
                 Stage app_stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-                //String css = this.getClass().getResource("/fxml/styles.css").toExternalForm();
-                //hauptfenster_scene.getStylesheets().add(css);
                 app_stage.hide();
                 app_stage.setScene(hauptfenster_scene);
                 app_stage.show();
