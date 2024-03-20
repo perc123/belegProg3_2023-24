@@ -1,8 +1,6 @@
 package administration;
 
-import administration.HerstellerImpl;
 import org.junit.jupiter.api.Test;
-import verwaltung.Hersteller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,7 +19,7 @@ class HerstellerTest {
     // Test for the cake count Getter and Setter methods
     @Test
     void testGetterUndSetterCakeCount(){
-        HerstellerImpl hersteller = new HerstellerImpl("Hersteller XYZ");
+        HerstellerImpl hersteller = new HerstellerImpl("Hersteller");
         hersteller.setCakeCount(2);
         assertEquals(2, hersteller.getCakeCount());
     }

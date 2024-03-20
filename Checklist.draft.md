@@ -17,12 +17,12 @@ Ergänzende Anmerkungen bitte immer _kursiv_ setzen. Andere Änderungen sind nic
 - [ ] geforderte main-Methoden nur im default package des module belegProg3
 
 ## Entwurf (10)
-- [ ] **Benennung** (2)
-- [ ] **Zuständigkeit** (2)
-- [ ] **Paketierung** (2)
-- [ ] Schichtenaufteilung (2)
+- [+] **Benennung** (2)
+- [+] **Zuständigkeit** (2)
+- [+] **Paketierung** (2)
+- [+] Schichtenaufteilung (2)
 - [ ] Architekturdiagramm (1)
-- [ ] keine Duplikate (1)
+- [+] keine Duplikate (1)
 
 ## Tests (28)
 - [+] **Testqualität** (7)
@@ -32,19 +32,19 @@ Ergänzende Anmerkungen bitte immer _kursiv_ setzen. Andere Änderungen sind nic
   - [ ] Anzeigen von Kund*innen über das CLI _getestete Klassen angeben_
   - [ ] ein Beobachter bzw. dessen alternative Implementierung _getestete Klassen angeben_
   - [ ] deterministische Funktionalität der Simulationen _getestete Klassen angeben_
-  - [ ] Speichern via JOS oder JBP _getestete Klassen angeben_
-  - [ ] Laden via JOS oder JBP _getestete Klassen angeben_
+  - [+] Speichern via JOS oder JBP _getestete Klassen angeben_
+  - [+] Laden via JOS oder JBP _getestete Klassen angeben_
 - [+] **mindestens 5 Unittests, die Mockito verwenden** (4)
 - [ ] mindestens 4 Spy- / Verhaltens-Tests (3)
-- [ ] keine unbeabsichtigt fehlschlagenden Test (1)
+- [+] keine unbeabsichtigt fehlschlagenden Test (1)
 
 ## Fehlerfreiheit (10)
 - [ ] **Kapselung** (5)
 - [ ] **keine Ablauffehler** (5)
 
 ## Basisfunktionalität (12)
-- [ ] **CRUD** (2)
-- [ ] **CLI** (2)
+- [+] **CRUD** (2)
+- [+] **CLI** (2)
   * Syntax gemäß Anforderungen
 - [ ] **Simulation** (2)
   * ohne race conditions
@@ -70,7 +70,7 @@ Ergänzende Anmerkungen bitte immer _kursiv_ setzen. Andere Änderungen sind nic
 - [ ] Änderung des Lagerplatzes mittels drag&drop (1)
 - [ ] Einfügen von Frachtstücken via GUI erfolgt nebenläufig (1)
 - [ ] sowohl JBP als auch JOS (2)
-- [ ] sowohl TCP als auch UDP (1)
+- [+] sowohl TCP als auch UDP (1)
 - [ ] Server unterstützt konkurierende Clients für TCP oder UDP (2)
 
 ## zusätzliche Anforderungen (10)

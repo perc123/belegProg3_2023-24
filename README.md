@@ -45,9 +45,9 @@ das Singleton Pattern verwendet.
 24. testObstkuchenPrint
 25. testObsttortePrint
 26. testGetInspektionsdatum
-27. testRemoveHersteller - ***Mock***
+27. testRemoveHersteller - ***Mock / Spy***
 28. testRemoveHerstellerFalse - ***Mock***
-29. testRemoveItem
+29. testRemoveItem fix
 30. testRemoveCakeNoTrayNumber
 31. testPrintAllergies - ***Mock***
 32. testAllergiesNotInVendingMachine - ***Mock***

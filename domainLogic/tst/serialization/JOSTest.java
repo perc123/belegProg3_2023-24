@@ -15,9 +15,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JOSTest {
 
-    // Test um die Erstellung der Datei zu pruefen
+    // Test 1 checks if the file is created
     @Test
-    public void testSerialisierenJOSDateiErstellung() {
+    public void testSerializationJOSCreateFile() {
         LinkedList<HerstellerImpl> herstellerLinkedList = new LinkedList<>();
         LinkedList<KuchenImpl> kuchenLinkedList = new LinkedList<>();
         VendingMachine vendingMachine = new VendingMachine(10, kuchenLinkedList, herstellerLinkedList);
@@ -27,11 +27,9 @@ class JOSTest {
         assertTrue(file.exists());
     }
 
-
-
-    // Test überprueft, ob das gelesene Objekt eine Instanz von Model ist
+    // Test 2 verifies if the saved object is an instance of the vending machine
     @Test
-    void serialisierenJOSInstanz() throws IOException, ClassNotFoundException {
+    void testSerializationJOSInstance() throws IOException, ClassNotFoundException {
         LinkedList<HerstellerImpl> herstellerLinkedList = new LinkedList<>();
         LinkedList<KuchenImpl> kuchenLinkedList = new LinkedList<>();
         VendingMachine vendingMachine = new VendingMachine(10, kuchenLinkedList, herstellerLinkedList);
@@ -49,9 +47,10 @@ class JOSTest {
         }
     }
 
-    // Test prueft ob die Eigenschaften des gelesenen Modells übereinstimmen
+    // Test 3 verifies that the capacity is the same between the vending machine and the serialized object
+    // reassuring that the vending machine is correctly saved
     @Test
-    public void testSerialisierenJOSDateiInhalt() throws IOException, ClassNotFoundException {
+    public void testSerializationJOSCapacity() throws IOException, ClassNotFoundException {
         LinkedList<HerstellerImpl> herstellerLinkedList = new LinkedList<>();
         LinkedList<KuchenImpl> kuchenLinkedList = new LinkedList<>();
         VendingMachine vendingMachine = new VendingMachine(10, kuchenLinkedList, herstellerLinkedList);
@@ -68,9 +67,9 @@ class JOSTest {
         }
     }
 
-    // Test ueberprueft ob eine Vorhandene Datei deserialsiert wird
+    // Test 4 verifies that a file is deserialized
     @Test
-    public void testDeserialisierenJOSDateiVorhanden() {
+    public void testDeserializationJOSFile() {
         LinkedList<HerstellerImpl> herstellerLinkedList = new LinkedList<>();
         LinkedList<KuchenImpl> kuchenLinkedList = new LinkedList<>();
         VendingMachine vendingMachine = new VendingMachine(10, kuchenLinkedList, herstellerLinkedList);
@@ -81,8 +80,10 @@ class JOSTest {
         assertTrue(Objects.nonNull(deserializedVendingMachine));
     }
 
+    // Test 5 verifies that the capacity is the same between the vending machine and the deserialized object
+    // reassuring that the vending machine is correctly loaded
     @Test
-    public void testDeserialisierenJOSRichtigeEigenschaften() {
+    public void testDeserializationJOSCapacity() {
         LinkedList<HerstellerImpl> herstellerLinkedList = new LinkedList<>();
         LinkedList<KuchenImpl> kuchenLinkedList = new LinkedList<>();
         VendingMachine vendingMachine = new VendingMachine(10, kuchenLinkedList, herstellerLinkedList);
@@ -95,9 +96,4 @@ class JOSTest {
 
         assertEquals(vendingMachine.getCapacity(), deserializedVendingMachine.getCapacity());
     }
-
-
-
-
-
 }
