@@ -11,7 +11,7 @@
     <orderEntry type="module" module-name="contract" />
     <orderEntry type="library" name="mockito.core" level="project" />
     <orderEntry type="module" module-name="events" />
-    <orderEntry type="module" module-name="userInterface" />
+    <orderEntry type="module" module-name="cli" />
     <orderEntry type="module" module-name="simulation" />
     <orderEntry type="library" name="lib" level="application" />
     <orderEntry type="module" module-name="guiContainer" />

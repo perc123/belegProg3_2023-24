@@ -1,16 +1,13 @@
 package cakes;
 
 import administration.HerstellerImpl;
+import administration.VendingMachine;
 import kuchen.Allergen;
-import kuchen.Kremkuchen;
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
@@ -18,7 +15,8 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-class KremkuchenTest {
+class KremkuchenImplTest {
+
 
     String kuchenTyp;
     HerstellerImpl hersteller;
@@ -27,7 +25,7 @@ class KremkuchenTest {
     Duration haltbarkeit;
     Collection<Allergen> allergene;
     String sorte;
-    Kremkuchen testKremkuchen;
+    KremkuchenImpl testKremkuchen;
 
     @BeforeEach
     void setUp() {
@@ -38,7 +36,7 @@ class KremkuchenTest {
         haltbarkeit = Duration.ofDays(3);
         allergene = List.of(Allergen.Gluten, Allergen.Sesamsamen);
         sorte = "Butter";
-        KuchenImpl testKremkuchen = new KremkuchenImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit, allergene, sorte);
+        testKremkuchen = new KremkuchenImpl(kuchenTyp, hersteller, preis, naehrwert, haltbarkeit, allergene, sorte);
     }
 
     // Test 1 for getKremsorte method
@@ -86,26 +84,26 @@ class KremkuchenTest {
         assertEquals(inspektion, testKremkuchen.getInspektionsdatum());
     }
 
-    // Testet die getEinfuegedatum Methode
+    // Test 8 for getEinfuegedatum
     @Test
-    void  getEinfuegedatum() {
-        LocalDateTime einfuegedatum = LocalDateTime.of(2022, 3, 1, 12, 0, 0);
-        testKremkuchen.setEinfuegedatum(einfuegedatum);
-        assertEquals(einfuegedatum, testKremkuchen.getEinfuegedatum());
+    void  testGetEinfuegedatum() {
+        Date date = new Date();
+        testKremkuchen.setInspektionsdatum(date);
+        assertEquals(date, testKremkuchen.getInspektionsdatum());
     }
 
-    // Testet die getFachnummer Methode
+    // Test 9 for the getFachnummer method
     @Test
     void getFachnummer() {
-        LinkedList<Hersteller> herstellerLinkedList = new LinkedList<>();
-        LinkedList<Verkaufsobjekt> verkaufsobjektLinkedList = new LinkedList<>();
-        Model model = new Model(3, verkaufsobjektLinkedList, herstellerLinkedList);
-        model.herstellerEinfuegen(hersteller);
-        model.verkaufsObjektEinfuegen(testKremkuchen);
+        LinkedList<HerstellerImpl> herstellerLinkedList = new LinkedList<>();
+        LinkedList<KuchenImpl> kuchenLinkedList = new LinkedList<>();
+        VendingMachine vendingMachine = new VendingMachine(3, kuchenLinkedList, herstellerLinkedList);
+        vendingMachine.addHersteller(hersteller);
+        vendingMachine.addItem(testKremkuchen);
         assertEquals(1, testKremkuchen.getFachnummer());
     }
 
-    // Testet die setFachnummer Methode
+    // Test 10 for the setFachnummer method
     @Test
     void setFachnummer() {
         int fachnummer = 42;
@@ -113,12 +111,36 @@ class KremkuchenTest {
         assertEquals(42, testKremkuchen.getFachnummer());
     }
 
-    // Testet die setEinfuegedatum Methode
+    // Test 11 for the setEinfuegedatum method
     @Test
     void setEinfuegedatum() {
-        LocalDateTime erwartetesDatum = LocalDateTime.of(2022, 1, 1, 12, 0, 0);
-        testKremkuchen.setEinfuegedatum(erwartetesDatum);
-        assertEquals(erwartetesDatum, testKremkuchen.getEinfuegedatum());
+        Date date = new Date();
+        testKremkuchen.setInspektionsdatum(date);
+        assertEquals(date, testKremkuchen.getInspektionsdatum());
+    }
+
+    // Test 12 for the calculateRemainingShelfLife method
+    @Test
+    void calculateRemainingShelfLife() {
+        Date date = new Date();
+        Instant currentDate = Instant.now();
+        Instant expirationDate = currentDate.plus(haltbarkeit);
+        testKremkuchen.setInspektionsdatum(date);
+
+        // Calculate the remaining shelf life
+        long remainingShelfLife = testKremkuchen.calculateRemainingShelfLife();
+
+        // Expected shelf life is 3 days
+        long expectedShelfLife = Duration.between(currentDate, expirationDate).toDays();
+
+        // Assert that the remaining shelf life matches the expected value
+        assertEquals(expectedShelfLife, remainingShelfLife);
+    }
+
+    // Test 13 for the getKuchenTyp method
+    @Test
+    void getKuchenTyp() {
+        assertEquals(kuchenTyp, testKremkuchen.getKuchenTyp());
     }
 
 

@@ -14,7 +14,7 @@ public class CapacityObserver implements Observer {
     @Override
     public void update(observer.Subject subject) {
         if (subject instanceof VendingMachine) {
-            int usedCapacity = this.vendingMachine.getCapacity();
+            int usedCapacity = this.vendingMachine.getInventory().size();
             double percentage = (double) usedCapacity / this.vendingMachine.getCapacity()* 100;
             if (percentage >= 90) {
                 System.out.println("ACHTUNG: Kapazitaet zu " + (int) percentage + "% ausgelastet!");

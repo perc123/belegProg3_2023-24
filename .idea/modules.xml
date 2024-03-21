@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/belegProg3.iml" filepath="$PROJECT_DIR$/belegProg3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cli/cli.iml" filepath="$PROJECT_DIR$/cli/cli.iml" />
       <module fileurl="file://$PROJECT_DIR$/contract/contract.iml" filepath="$PROJECT_DIR$/contract/contract.iml" />
       <module fileurl="file://$PROJECT_DIR$/domainLogic/domainLogic.iml" filepath="$PROJECT_DIR$/domainLogic/domainLogic.iml" />
       <module fileurl="file://$PROJECT_DIR$/events/events.iml" filepath="$PROJECT_DIR$/events/events.iml" />
@@ -11,7 +12,6 @@
       <module fileurl="file://$PROJECT_DIR$/net/net.iml" filepath="$PROJECT_DIR$/net/net.iml" />
       <module fileurl="file://$PROJECT_DIR$/serialization/serialization.iml" filepath="$PROJECT_DIR$/serialization/serialization.iml" />
       <module fileurl="file://$PROJECT_DIR$/simulation/simulation.iml" filepath="$PROJECT_DIR$/simulation/simulation.iml" />
-      <module fileurl="file://$PROJECT_DIR$/userInterface/userInterface.iml" filepath="$PROJECT_DIR$/userInterface/userInterface.iml" />
     </modules>
   </component>
 </project>

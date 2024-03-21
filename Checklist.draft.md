@@ -26,11 +26,11 @@ Ergänzende Anmerkungen bitte immer _kursiv_ setzen. Andere Änderungen sind nic
 
 ## Tests (28)
 - [+] **Testqualität** (7)
-- [ ] **Testabdeckung GL (inkl. Abhängigkeiten)** (7) _Abdeckung in Prozent angeben_
+- [+] **Testabdeckung GL (inkl. Abhängigkeiten)** (7) _Abdeckung in Prozent angeben_ 100%
 - [ ] **Testabdeckung Rest** (6)
-  - [ ] Einfügen von Kund*innen über das CLI _getestete Klassen angeben_
-  - [ ] Anzeigen von Kund*innen über das CLI _getestete Klassen angeben_
-  - [ ] ein Beobachter bzw. dessen alternative Implementierung _getestete Klassen angeben_
+  - [+] Einfügen von Kund*innen über das CLI _getestete Klassen angeben_
+  - [+] Anzeigen von Kund*innen über das CLI _getestete Klassen angeben_
+  - [+] ein Beobachter bzw. dessen alternative Implementierung _getestete Klassen angeben_
   - [ ] deterministische Funktionalität der Simulationen _getestete Klassen angeben_
   - [+] Speichern via JOS oder JBP _getestete Klassen angeben_
   - [+] Laden via JOS oder JBP _getestete Klassen angeben_
@@ -69,7 +69,7 @@ Ergänzende Anmerkungen bitte immer _kursiv_ setzen. Andere Änderungen sind nic
 - [ ] data binding verwendet (1)
 - [ ] Änderung des Lagerplatzes mittels drag&drop (1)
 - [ ] Einfügen von Frachtstücken via GUI erfolgt nebenläufig (1)
-- [ ] sowohl JBP als auch JOS (2)
+- [+] sowohl JBP als auch JOS (2)
 - [+] sowohl TCP als auch UDP (1)
 - [ ] Server unterstützt konkurierende Clients für TCP oder UDP (2)
 
